@@ -1005,18 +1005,18 @@
         <span class="n">gender</span><span class="o">=</span><span class="n">OpprlPii</span><span class="o">.</span><span class="n">gender</span><span class="p">,</span>
         <span class="n">birth_date</span><span class="o">=</span><span class="n">OpprlPii</span><span class="o">.</span><span class="n">birth_date</span><span class="p">,</span>
     <span class="p">),</span>
-    <span class="n">tokens</span><span class="o">=</span><span class="p">[</span><span class="n">OpprlToken</span><span class="o">.</span><span class="n">token1</span><span class="p">,</span> <span class="n">OpprlToken</span><span class="o">.</span><span class="n">token2</span><span class="p">],</span>
+    <span class="n">tokens</span><span class="o">=</span><span class="p">[</span><span class="n">OpprlToken</span><span class="o">.</span><span class="n">token1</span><span class="p">,</span> <span class="n">OpprlToken</span><span class="o">.</span><span class="n">token2</span><span class="p">,</span> <span class="n">OpprlToken</span><span class="o">.</span><span class="n">token3</span><span class="p">],</span>
     <span class="n">private_key</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;&quot;&quot;-----BEGIN PRIVATE KEY----- ...&quot;&quot;&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="c1"># +-----+--------------------+--------------------+</span>
-<span class="c1"># |label|       opprl_token_1|       opprl_token_2|</span>
-<span class="c1"># +-----+--------------------+--------------------+</span>
-<span class="c1"># |    1|d2tUj3yRFPIBSwR/n...|DQhKG+AMgrFh16dLi...|</span>
-<span class="c1"># |    1|d2tUj3yRFPIBSwR/n...|DQhKG+AMgrFh16dLi...|</span>
-<span class="c1"># |    2|2wnRWhN9Y4DBMeuvw...|A7fUKAZi/Ra2T6p8y...|</span>
-<span class="c1"># |    3|I17X+CT3kjqB9l0rA...|qGCUVyI7MJLkQ9SSr...|</span>
-<span class="c1"># |    4|6Ee3NabHaa/lyKsrp...|dbwNqy0rN6hFoHJYn...|</span>
-<span class="c1"># +-----+--------------------+--------------------+</span>
+<span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;last_name&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;birth_date&quot;</span><span class="p">)</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
+<span class="c1"># |label|       opprl_token_1|       opprl_token_2|       opprl_token_3|</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
+<span class="c1"># |    1|4YO6eFn0u75yrF+Td...|V6uRRgDgXylFsNM2c...|6N+/voOASNM0ivgA7...|</span>
+<span class="c1"># |    1|4YO6eFn0u75yrF+Td...|V6uRRgDgXylFsNM2c...|6N+/voOASNM0ivgA7...|</span>
+<span class="c1"># |    2|OLU6TLB4XdWmfhvIS...|3QtCKgeIqO20Jgp9E...|JrrjTxjy97Xe93afx...|</span>
+<span class="c1"># |    3|mks197t0d8Uhc3l3s...|YccsE4wMErZvz9oBd...|7wMcWiDjImAhuP307...|</span>
+<span class="c1"># |    4|kRZfUY8KScpiHKmxC...|1gKSJDcq6YtwdUc7C...|3h8jUydHTIcOU8jhW...|</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
 </code></pre></div>
 <p>Notice that both records with <code>label = 1</code> received the same pair of tokens despite slight representation differences in the original PII.</p>
 <p>The <code>pii_transforms</code> argument is a dictionary that maps column names from the <code>pii</code> DataFrame to the corresponding OPPRL PII field. This tells Carduus how to normalize and enhance the values found in that column. For example, the <code>OpprlPii.first_name</code> object will apply name cleaning rules to the values found in the <code>first_name</code> column and automatically derive additional PII columns called <code>first_initial</code> and <code>first_soundex</code> which are used to create both OPPRL tokens.</p>
@@ -1058,22 +1058,22 @@
 <p>Carduus provides the <code>transcrypt_out</code> function in for the sender to call on their tokenized datasets. In the following code snippet, notice the 2 records pertaining to the same subject (<code>label = 1</code>) no longer have identical tokens. The <code>tokens_to_send</code> DataFrame can safely be written files or a database and delivered to the recipient.</p>
 <div class="highlight"><pre><span></span><code><span class="n">tokens_to_send</span> <span class="o">=</span> <span class="n">transcrypt_out</span><span class="p">(</span>
     <span class="n">tokens</span><span class="p">,</span> 
-    <span class="n">token_columns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;opprl_token_1&quot;</span><span class="p">,</span> <span class="s2">&quot;opprl_token_3&quot;</span><span class="p">),</span> 
-    <span class="n">recipient_public_key</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;&quot;&quot;-----BEGIN PUBLIC KEY----- ...&quot;&quot;&quot;</span><span class="o">.</span>
+    <span class="n">token_columns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;opprl_token_1&quot;</span><span class="p">,</span> <span class="s2">&quot;opprl_token_2&quot;</span><span class="p">,</span> <span class="s2">&quot;opprl_token_3&quot;</span><span class="p">),</span> 
+    <span class="n">recipient_public_key</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;&quot;&quot;-----BEGIN PUBLIC KEY----- ...&quot;&quot;&quot;</span><span class="p">,</span>
     <span class="c1"># This is the private key of the sender</span>
     <span class="c1"># It is NOT the private key associated with the recipient_public_key.</span>
     <span class="n">private_key</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;&quot;&quot;-----BEGIN PRIVATE KEY----- ...&quot;&quot;&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">tokens</span><span class="o">.</span><span class="n">to_send</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="c1"># +-----+--------------------+--------------------+</span>
-<span class="c1"># |label|       opprl_token_1|       opprl_token_3|</span>
-<span class="c1"># +-----+--------------------+--------------------+</span>
-<span class="c1"># |    1|IL17HgISJv5ol+ftJ...|YPnfuGBBhbOZChlhR...|</span>
-<span class="c1"># |    1|IVwfYY0dbmFc6cf0/...|jF8N2HYEYPr5lFSSx...|</span>
-<span class="c1"># |    2|I5Oe3oC0heF8L+Zcy...|BkBPzMDXeKlprUd8l...|</span>
-<span class="c1"># |    3|dOQtYZZV8j/E6wGMB...|FU6MbMjsU8WrJoiXa...|</span>
-<span class="c1"># |    4|N0VzhvFHrTtWNt+P7...|jvbFTWbmBzB06lDpv...|</span>
-<span class="c1"># +-----+--------------------+--------------------+</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
+<span class="c1"># |label|       opprl_token_1|       opprl_token_2|       opprl_token_3|</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
+<span class="c1"># |    1|EUqTdA0Yjb5F82oqj...|iiI/sd+sn+t5qhPDg...|JwpZVzJe+3CMocLGK...|</span>
+<span class="c1"># |    1|AXVDGgQ0KMa1ek1/v...|YJeYE9pz507CUzlks...|EKY2JdLhduCq+zj+p...|</span>
+<span class="c1"># |    2|XmYqnnMDqD9ZUR6yS...|A4e3L03NWeKbbL8vR...|CAZtbKDYjbbHsqVdc...|</span>
+<span class="c1"># |    3|mVhnJ1kz+ZRZvlfKo...|uO13H3LHjVnZ1flUp...|C16RKoV4SvWD5wuVp...|</span>
+<span class="c1"># |    4|oI/KS52K4H3M+WBdn...|vczsK9qlbU6TN1vBi...|fpTSrlGgtz3vASFXc...|</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
 </code></pre></div>
 <p>The <code>token_columns</code> argument is a iterable collection containing the column names of the <code>tokens</code> DataFrame that correspond to tokens that need to be transcrypted.</p>
 <p>The <code>recipient</code> argument denotes the name given to the public key associated with the intended recipient. If using the default encryption key provider (via Spark session properties) the above code snippet will grab the public key from <code>carduus.token.publicKey.AcmeCorp</code> spark session property.</p>
@@ -1084,21 +1084,21 @@
 
 <span class="n">tokens_received</span> <span class="o">=</span> <span class="n">transcrypt_in</span><span class="p">(</span>
     <span class="n">tokens_to_send</span><span class="p">,</span> 
-    <span class="n">token_columns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;opprl_token_1&quot;</span><span class="p">,</span> <span class="s2">&quot;opprl_token_3&quot;</span><span class="p">),</span>
+    <span class="n">token_columns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;opprl_token_1&quot;</span><span class="p">,</span> <span class="s2">&quot;opprl_token_2&quot;</span><span class="p">,</span> <span class="s2">&quot;opprl_token_3&quot;</span><span class="p">),</span>
     <span class="c1"># This is the private key corresponding to the public key used to the prepare the data.</span>
     <span class="c1"># It is NOT the private key used to tokenize the PII.</span>
     <span class="n">private_key</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;&quot;&quot;-----BEGIN PRIVATE KEY----- ...&quot;&quot;&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">tokens_received</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="c1"># +-----+--------------------+--------------------+</span>
-<span class="c1"># |label|       opprl_token_1|       opprl_token_3|</span>
-<span class="c1"># +-----+--------------------+--------------------+</span>
-<span class="c1"># |    1|O47siK/9rItAv6lwa...|uoPojmvjl3Mk734Ul...|</span>
-<span class="c1"># |    1|O47siK/9rItAv6lwa...|uoPojmvjl3Mk734Ul...|</span>
-<span class="c1"># |    2|LfRQxBPEW0tEskwxt...|P9PLhpSz+kWSSVmYQ...|</span>
-<span class="c1"># |    3|QWvpT0wMEezlurVFM...|W9BxmxZf1/yqIDx3W...|</span>
-<span class="c1"># |    4|aS/BfI5qw8UnhOWUX...|nWfWyxQcrSfeiMEHr...|</span>
-<span class="c1"># +-----+--------------------+--------------------+</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
+<span class="c1"># |label|       opprl_token_1|       opprl_token_2|       opprl_token_3|</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
+<span class="c1"># |    1|q1a5o2gg1hX+CFjdP...|gS2WMqSs0SReCN7Xp...|2XAgeBwomiKq2s4xO...|</span>
+<span class="c1"># |    1|q1a5o2gg1hX+CFjdP...|gS2WMqSs0SReCN7Xp...|2XAgeBwomiKq2s4xO...|</span>
+<span class="c1"># |    2|FEyzz52oI5hym0G/+...|UQDqblSWpqoH5znps...|ud2cG5YD/2yBhjZel...|</span>
+<span class="c1"># |    3|aEgXJZGUpkZxt7Z7T...|QZ5LaSiE8pMDmMKEu...|0yQxfv4EFAUHatIva...|</span>
+<span class="c1"># |    4|CgmXSDhY8mxZCRV+O...|wu+eNOqsOvh14Bjei...|7aGCrwy8tTDL3RkO6...|</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
 </code></pre></div>
 <p>As with <code>transcrypt_out</code>, the <code>token_columns</code> argument is a iterable collection containing the column names of the <code>tokens</code> DataFrame that correspond to tokens that need to be transcrypted. </p>
 <h2 id="deployment">Deployment</h2>
