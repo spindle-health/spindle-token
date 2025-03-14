@@ -94,18 +94,18 @@ tokens = tokenize(
         gender=OpprlPii.gender,
         birth_date=OpprlPii.birth_date,
     ),
-    tokens=[OpprlToken.token1, OpprlToken.token2],
+    tokens=[OpprlToken.token1, OpprlToken.token2, OpprlToken.token3],
     private_key=b"""-----BEGIN PRIVATE KEY----- ...""",
-)
-# +-----+--------------------+--------------------+
-# |label|       opprl_token_1|       opprl_token_2|
-# +-----+--------------------+--------------------+
-# |    1|d2tUj3yRFPIBSwR/n...|DQhKG+AMgrFh16dLi...|
-# |    1|d2tUj3yRFPIBSwR/n...|DQhKG+AMgrFh16dLi...|
-# |    2|2wnRWhN9Y4DBMeuvw...|A7fUKAZi/Ra2T6p8y...|
-# |    3|I17X+CT3kjqB9l0rA...|qGCUVyI7MJLkQ9SSr...|
-# |    4|6Ee3NabHaa/lyKsrp...|dbwNqy0rN6hFoHJYn...|
-# +-----+--------------------+--------------------+
+).drop("first_name", "last_name", "gender", "birth_date")
+# +-----+--------------------+--------------------+--------------------+
+# |label|       opprl_token_1|       opprl_token_2|       opprl_token_3|
+# +-----+--------------------+--------------------+--------------------+
+# |    1|4YO6eFn0u75yrF+Td...|V6uRRgDgXylFsNM2c...|6N+/voOASNM0ivgA7...|
+# |    1|4YO6eFn0u75yrF+Td...|V6uRRgDgXylFsNM2c...|6N+/voOASNM0ivgA7...|
+# |    2|OLU6TLB4XdWmfhvIS...|3QtCKgeIqO20Jgp9E...|JrrjTxjy97Xe93afx...|
+# |    3|mks197t0d8Uhc3l3s...|YccsE4wMErZvz9oBd...|7wMcWiDjImAhuP307...|
+# |    4|kRZfUY8KScpiHKmxC...|1gKSJDcq6YtwdUc7C...|3h8jUydHTIcOU8jhW...|
+# +-----+--------------------+--------------------+--------------------+
 ```
 
 Notice that both records with `label = 1` received the same pair of tokens despite slight representation differences in the original PII.
@@ -141,22 +141,22 @@ Carduus provides the `transcrypt_out` function in for the sender to call on thei
 ```python
 tokens_to_send = transcrypt_out(
     tokens, 
-    token_columns=("opprl_token_1", "opprl_token_3"), 
-    recipient_public_key=b"""-----BEGIN PUBLIC KEY----- ...""".
+    token_columns=("opprl_token_1", "opprl_token_2", "opprl_token_3"), 
+    recipient_public_key=b"""-----BEGIN PUBLIC KEY----- ...""",
     # This is the private key of the sender
     # It is NOT the private key associated with the recipient_public_key.
     private_key=b"""-----BEGIN PRIVATE KEY----- ...""",
 )
 tokens.to_send.show()
-# +-----+--------------------+--------------------+
-# |label|       opprl_token_1|       opprl_token_3|
-# +-----+--------------------+--------------------+
-# |    1|IL17HgISJv5ol+ftJ...|YPnfuGBBhbOZChlhR...|
-# |    1|IVwfYY0dbmFc6cf0/...|jF8N2HYEYPr5lFSSx...|
-# |    2|I5Oe3oC0heF8L+Zcy...|BkBPzMDXeKlprUd8l...|
-# |    3|dOQtYZZV8j/E6wGMB...|FU6MbMjsU8WrJoiXa...|
-# |    4|N0VzhvFHrTtWNt+P7...|jvbFTWbmBzB06lDpv...|
-# +-----+--------------------+--------------------+
+# +-----+--------------------+--------------------+--------------------+
+# |label|       opprl_token_1|       opprl_token_2|       opprl_token_3|
+# +-----+--------------------+--------------------+--------------------+
+# |    1|EUqTdA0Yjb5F82oqj...|iiI/sd+sn+t5qhPDg...|JwpZVzJe+3CMocLGK...|
+# |    1|AXVDGgQ0KMa1ek1/v...|YJeYE9pz507CUzlks...|EKY2JdLhduCq+zj+p...|
+# |    2|XmYqnnMDqD9ZUR6yS...|A4e3L03NWeKbbL8vR...|CAZtbKDYjbbHsqVdc...|
+# |    3|mVhnJ1kz+ZRZvlfKo...|uO13H3LHjVnZ1flUp...|C16RKoV4SvWD5wuVp...|
+# |    4|oI/KS52K4H3M+WBdn...|vczsK9qlbU6TN1vBi...|fpTSrlGgtz3vASFXc...|
+# +-----+--------------------+--------------------+--------------------+
 ```
 
 The `token_columns` argument is a iterable collection containing the column names of the `tokens` DataFrame that correspond to tokens that need to be transcrypted.
@@ -174,21 +174,21 @@ from carduus.token import transcrypt_in
 
 tokens_received = transcrypt_in(
     tokens_to_send, 
-    token_columns=("opprl_token_1", "opprl_token_3"),
+    token_columns=("opprl_token_1", "opprl_token_2", "opprl_token_3"),
     # This is the private key corresponding to the public key used to the prepare the data.
     # It is NOT the private key used to tokenize the PII.
     private_key=b"""-----BEGIN PRIVATE KEY----- ...""",
 )
 tokens_received.show()
-# +-----+--------------------+--------------------+
-# |label|       opprl_token_1|       opprl_token_3|
-# +-----+--------------------+--------------------+
-# |    1|O47siK/9rItAv6lwa...|uoPojmvjl3Mk734Ul...|
-# |    1|O47siK/9rItAv6lwa...|uoPojmvjl3Mk734Ul...|
-# |    2|LfRQxBPEW0tEskwxt...|P9PLhpSz+kWSSVmYQ...|
-# |    3|QWvpT0wMEezlurVFM...|W9BxmxZf1/yqIDx3W...|
-# |    4|aS/BfI5qw8UnhOWUX...|nWfWyxQcrSfeiMEHr...|
-# +-----+--------------------+--------------------+
+# +-----+--------------------+--------------------+--------------------+
+# |label|       opprl_token_1|       opprl_token_2|       opprl_token_3|
+# +-----+--------------------+--------------------+--------------------+
+# |    1|q1a5o2gg1hX+CFjdP...|gS2WMqSs0SReCN7Xp...|2XAgeBwomiKq2s4xO...|
+# |    1|q1a5o2gg1hX+CFjdP...|gS2WMqSs0SReCN7Xp...|2XAgeBwomiKq2s4xO...|
+# |    2|FEyzz52oI5hym0G/+...|UQDqblSWpqoH5znps...|ud2cG5YD/2yBhjZel...|
+# |    3|aEgXJZGUpkZxt7Z7T...|QZ5LaSiE8pMDmMKEu...|0yQxfv4EFAUHatIva...|
+# |    4|CgmXSDhY8mxZCRV+O...|wu+eNOqsOvh14Bjei...|7aGCrwy8tTDL3RkO6...|
+# +-----+--------------------+--------------------+--------------------+
 ```
 
 As with `transcrypt_out`, the `token_columns` argument is a iterable collection containing the column names of the `tokens` DataFrame that correspond to tokens that need to be transcrypted. 
