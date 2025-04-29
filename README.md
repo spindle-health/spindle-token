@@ -22,7 +22,7 @@ Carduus is the first (and canonical) implementation of the [Open Privacy Preserv
 
 See the [getting started guide](https://spindle-health.github.io/carduus/guides/getting-started/) on the project's web page for an detailed explanation of how carduus is used including example code snippets.
 
-The full [API](https://spindle-health.github.io/carduus/api/) and an [example usage on Databricks](https://spindle-health.github.io/carduus/databricks/) are also provided on the project's web page.
+The full [API](https://spindle-health.github.io/carduus/api/) and an [example usage on Databricks](https://spindle-health.github.io/carduus/guides/databricks/) are also provided on the project's web page.
 
 ## Contributing
 
