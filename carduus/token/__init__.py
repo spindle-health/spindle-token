@@ -1,6 +1,5 @@
-from collections.abc import Sequence
+from collections.abc import Iterable, Sequence, Mapping
 from dataclasses import dataclass
-from typing import Iterable
 from enum import Enum
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import (
@@ -130,7 +129,7 @@ class OpprlToken(Enum):
 
 def tokenize(
     df: DataFrame,
-    pii_transforms: dict[str, PiiTransform | OpprlPii],
+    pii_transforms: Mapping[str, PiiTransform | OpprlPii],
     tokens: Sequence[TokenSpec | OpprlToken],
     private_key: bytes,
 ) -> DataFrame:
