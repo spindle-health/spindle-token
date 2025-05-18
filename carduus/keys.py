@@ -1,7 +1,6 @@
-from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.hashes import Hash, SHAKE256
-
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives.hashes import SHAKE256, Hash
 
 __all__ = [
     "generate_pem_keys",

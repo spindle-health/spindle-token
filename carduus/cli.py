@@ -1,11 +1,12 @@
-import tempfile
 import shutil
-from pathlib import Path
+import tempfile
 from io import BytesIO
-import click
-from pyspark.sql import SparkSession, DataFrameWriter
-import carduus.token as t
+from pathlib import Path
 
+import click
+from pyspark.sql import DataFrameWriter, SparkSession
+
+import carduus.token as t
 
 # All OPPRL token specifications in a dictionary for easy lookup by the token name.
 TOKEN_SPECS: dict[str, t.OpprlToken] = {

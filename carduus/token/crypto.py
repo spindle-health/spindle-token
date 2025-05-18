@@ -1,7 +1,6 @@
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding, rsa
 
-
 # For tokenizing PII, We use the same nonce to encrypt
 # The AES GCM SIV encryption scheme does NOT fail catastrophically when a nonce is
 # reused, however an attacker can use a chosen-plaintext attack to attack specific

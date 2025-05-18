@@ -1,18 +1,18 @@
 from typing import Any, Callable
-import jellyfish as j
 
+import jellyfish as j
 from pyspark.sql import Column
 from pyspark.sql.functions import (
-    lit,
-    when,
+    base64,
     length,
-    substring,
-    upper,
+    lit,
     regexp_replace,
+    replace,
+    substring,
     trim,
     udf,
-    base64,
-    replace,
+    upper,
+    when,
 )
 from pyspark.sql.types import StringType
 

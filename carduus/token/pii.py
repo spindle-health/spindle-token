@@ -5,25 +5,19 @@ from pyspark.sql import Column, DataFrame
 from pyspark.sql.functions import (
     array,
     array_join,
+    coalesce,
     col,
+    dayofmonth,
+    month,
+    regexp_replace,
+    soundex,
+    to_date,
     when,
     year,
-    month,
-    dayofmonth,
-    coalesce,
-    soundex,
-    regexp_replace,
-    to_date,
 )
-from pyspark.sql.types import (
-    DataType,
-    StringType,
-    DateType,
-    TimestampType,
-    TimestampNTZType,
-)
+from pyspark.sql.types import DataType, DateType, StringType, TimestampNTZType, TimestampType
 
-from carduus.token._impl import null_safe, remap, normalize_text, first_char, metaphone
+from carduus.token._impl import first_char, metaphone, normalize_text, null_safe, remap
 
 
 class PiiTransform(ABC):
