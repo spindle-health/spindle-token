@@ -1,32 +1,30 @@
-from collections.abc import Iterable, Sequence, Mapping
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from enum import Enum
-from pyspark.sql import DataFrame
-from pyspark.sql.functions import (
-    col,
-    lit,
-    sha2,
-    udf,
-    to_binary,
-)
-from pyspark.sql.types import BinaryType
+
 from cryptography.hazmat.primitives.serialization import (
     load_pem_private_key,
     load_pem_public_key,
 )
-from carduus.token.pii import (
-    normalize_pii,
-    enhance_pii,
-    join_pii,
-    PiiTransform,
-    NameTransform,
-    GenderTransform,
-    DateTransform,
-)
-import carduus.token.crypto as crypto
-from carduus.token._impl import base64_no_newline
-from carduus.keys import derive_aes_key
+from pyspark.sql import DataFrame
+from pyspark.sql.functions import col, lit, sha2, to_binary, udf
+from pyspark.sql.types import BinaryType
 
+import carduus.token.crypto as crypto
+from carduus.keys import derive_aes_key
+from carduus.token._impl import base64_no_newline
+from carduus.token.pii import (
+    DateTransform,
+    EmailTransform,
+    GenderTransform,
+    GroupNumber,
+    MemberId,
+    NameTransform,
+    PhoneTransform,
+    PiiTransform,
+    SsnTransform,
+    join_pii,
+)
 
 __all__ = [
     "tokenize",
@@ -62,6 +60,11 @@ class OpprlPii(Enum):
     last_name: NameTransform = NameTransform("last")
     gender: GenderTransform = GenderTransform()
     birth_date: DateTransform = DateTransform("birth")  # @TODO: Parameterize date format
+    email: EmailTransform = EmailTransform("email")
+    phone: PhoneTransform = PhoneTransform("phone", default_region="US")
+    ssn: SsnTransform = SsnTransform()
+    group_number: GroupNumber = GroupNumber()
+    member_id: MemberId = MemberId()
 
 
 @dataclass(frozen=True)
@@ -105,7 +108,6 @@ class OpprlToken(Enum):
             OpprlPii.birth_date.name,
         ),
     )
-
     token2: TokenSpec = TokenSpec(
         "opprl_token_2",
         (
@@ -115,7 +117,6 @@ class OpprlToken(Enum):
             OpprlPii.birth_date.name,
         ),
     )
-
     token3: TokenSpec = TokenSpec(
         "opprl_token_3",
         (
@@ -125,6 +126,46 @@ class OpprlToken(Enum):
             OpprlPii.birth_date.name,
         ),
     )
+
+    token4: TokenSpec = TokenSpec(
+        "opprl_token_4",
+        (
+            "first_initial",
+            OpprlPii.last_name.name,
+            OpprlPii.birth_date.name,
+        ),
+    )
+
+    token5: TokenSpec = TokenSpec(
+        "opprl_token_5",
+        (
+            "first_soundex",
+            "last_soundex",
+            OpprlPii.birth_date.name,
+        ),
+    )
+    token6: TokenSpec = TokenSpec(
+        "opprl_token_6",
+        (
+            "first_metaphone",
+            "last_metaphone",
+            OpprlPii.birth_date.name,
+        ),
+    )
+    token7: TokenSpec = TokenSpec("opprl_token_7", (OpprlPii.email.name,))
+    token8: TokenSpec = TokenSpec("opprl_token_8", (OpprlPii.phone.name,))
+    token9: TokenSpec = TokenSpec("opprl_token_9", (OpprlPii.ssn.name,))
+    token10: TokenSpec = TokenSpec("opprl_token_10", (OpprlPii.group_number.name, OpprlPii.member_id.name))
+
+
+def _all_pii_attrs(df: DataFrame, pii_transforms: dict[str, PiiTransform], tokens: list[TokenSpec]):
+    exprs = {}
+    for column, tr in pii_transforms.items():
+        if column in df.columns:
+            exprs[column] = tr.normalize(df[column], df.schema[column].dataType)
+            for enhancement_name, enhancement_col in tr.enhancements(exprs[column]).items():
+                exprs[enhancement_name] = enhancement_col
+    return exprs   
 
 
 def tokenize(
@@ -173,13 +214,19 @@ def tokenize(
         returnType=BinaryType(),
     )
 
-    pii = normalize_pii(df, pii_transforms_)
-    pii, new_pii_columns = enhance_pii(pii, pii_transforms_)
+    pii = _all_pii_attrs(df, pii_transforms_, tokens_)
+
+    token_pii_strings = []
+    for token in tokens_:
+        for field in token.fields:
+            if field not in pii:
+                raise ValueError(f"PII field {field} not found on the input data. Found {list(pii.keys())}")
+        token_pii_str = join_pii(*[pii[field] for field in sorted(token.fields)]).alias(token.name)
+        token_pii_strings.append(token_pii_str)
 
     return (
-        pii.withColumns(
-            {t.name: join_pii(*[col(f) for f in sorted(t.fields)]) for t in tokens_}
-        )
+        df
+        .select(col("*"), *token_pii_strings)
         .withColumns(
             {
                 column: base64_no_newline(
@@ -188,7 +235,6 @@ def tokenize(
                 for column in token_columns
             }
         )
-        .drop(*new_pii_columns)
     )
 
 

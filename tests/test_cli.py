@@ -17,9 +17,9 @@ class TestTokenizeCommand:
     )
     expected = pd.DataFrame(
         {
-            "first_name": pd.Series(["LOUIS", "LOUIS"]),
-            "last_name": pd.Series(["PASTEUR", "PASTEUR"]),
-            "gender": pd.Series(["M", "M"]),
+            "first_name": pd.Series(["Louis", "louis"]),
+            "last_name": pd.Series(["Pasteur", "pasteur"]),
+            "gender": pd.Series(["male", "M"]),
             "birth_date": pd.Series(["1822-12-27", "1822-12-27"]),
             "opprl_token_1": pd.Series(
                 [
@@ -164,7 +164,7 @@ class TestTokenizeCommand:
             ],
         )
         assert result.exit_code == 1
-        assert isinstance(result.exception, AnalysisException)
+        assert isinstance(result.exception, ValueError)
         assert sorted(os.listdir(tmp_path)) == ["pii.csv", "test_key.pem"]
 
     def test_multipart_files_and_no_parallelism(self, tmp_path: Path, private_key: bytes):
@@ -454,8 +454,6 @@ class TestTranscryptCommands:
         self,
         tmp_path: Path,
         private_key: bytes,
-        acme_public_key: bytes,
-        acme_private_key: bytes,
     ):
         runner = CliRunner()
 

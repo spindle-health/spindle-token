@@ -1,23 +1,29 @@
 from abc import ABC
 from dataclasses import dataclass
 
+import phonenumbers
 from pyspark.sql import Column, DataFrame
 from pyspark.sql.functions import (
     array,
     array_join,
     coalesce,
-    col,
     dayofmonth,
+    length,
+    lit,
+    lower,
     month,
     regexp_replace,
     soundex,
+    substring,
     to_date,
+    upper,
+    udf,
     when,
     year,
 )
-from pyspark.sql.types import DataType, DateType, StringType, TimestampNTZType, TimestampType
+from pyspark.sql.types import DataType, DateType, IntegerType, LongType, StringType, TimestampNTZType, TimestampType
 
-from carduus.token._impl import first_char, metaphone, normalize_text, null_safe, remap
+from carduus.token._impl import empty_to_null, first_char, metaphone, normalize_text, null_safe, remap
 
 
 class PiiTransform(ABC):
@@ -51,7 +57,6 @@ class PiiTransform(ABC):
 
     def enhancements(self, column: Column) -> dict[str, Column]:
         """A collection of PII attributes that can be automatically derived from a given normalized PII attribute
-
 
         If an implementation of [PiiTransform][carduus.token.PiiTransform] does not override this method, it is
         assumed that no enhancements can be derived
@@ -124,48 +129,71 @@ class DateTransform(PiiTransform):
 
 
 @dataclass
-class Pii:
-    data: DataFrame
-    pii_columns: set[str]
+class EmailTransform(PiiTransform):
+    enhancement_prefix: str
+
+    def normalize(self, column: Column, _: DataType) -> Column:
+        return empty_to_null(regexp_replace(lower(column), "\\s", ""))
 
 
-def normalize_pii(
-    df: DataFrame,
-    pii_transforms: dict[str, PiiTransform],
-) -> DataFrame:
-    return df.select(
-        *[
-            (
-                pii_transforms[column]
-                .normalize(df[column], df.schema[column].dataType)
-                .alias(column)
-                if column in pii_transforms
-                else col(column)
-            )
-            for column in df.columns
-        ]
+@udf(returnType=StringType())
+def _to_e164(phone: str, default_region: str) -> str | None:
+    try:
+        return phonenumbers.format_number(
+            phonenumbers.parse(phone, default_region),
+            phonenumbers.PhoneNumberFormat.E164
+        )
+    except phonenumbers.NumberParseException:
+        return None
+
+
+@dataclass
+class PhoneTransform(PiiTransform):
+    enhancement_prefix: str
+    default_region: str
+
+    def normalize(self, column: Column, from_type: DataType) -> Column:
+        if isinstance(from_type, (IntegerType, LongType)):
+            column = column.cast(StringType())
+        return _to_e164(column, lit(self.default_region))
+
+
+def _is_valid_ssn(ssn: Column) -> Column:
+    return ~(
+        (length(ssn) != lit(9)) |
+        (first_char(ssn) == "9") |
+        (substring(ssn, 1, 3).isin("000", "666")) |
+        (substring(ssn, 4, 2) == "00") |
+        (substring(ssn, 6, 4) == "0000")
     )
 
 
-def enhance_pii(
-    df: DataFrame,
-    pii_transforms: dict[str, PiiTransform],
-) -> tuple[DataFrame, set[str]]:
-    new_pii: set[str] = set()
-    all_columns = []
-    for column in df.columns:
-        all_columns.append(col(column))
-        if column in pii_transforms:
-            enhancements = pii_transforms[column].enhancements(col(column))
-            all_columns.extend(
-                [
-                    enhancement_col.alias(enhancement_name)
-                    for enhancement_name, enhancement_col in enhancements.items()
-                    if enhancement_name not in df.columns
-                ]
-            )
-            new_pii = new_pii | set(enhancements.keys())
-    return df.select(*all_columns), new_pii
+@dataclass
+class SsnTransform(PiiTransform):
+
+    def normalize(self, column: Column, from_type: DataType) -> Column:
+        if isinstance(from_type, (IntegerType, LongType)):
+            column = column.cast(StringType())
+        column = regexp_replace(column, "[^\\D]", "")
+        return when(_is_valid_ssn(column), column)
+
+
+@dataclass
+class GroupNumber(PiiTransform):
+
+    def normalize(self, column: Column, from_type: DataType) -> Column:
+        if not isinstance(from_type, StringType):
+            column = column.cast(StringType())
+        return empty_to_null(regexp_replace(upper(column), "\\s", ""))
+
+
+@dataclass
+class MemberId(PiiTransform):
+
+    def normalize(self, column: Column, from_type: DataType) -> Column:
+        if not isinstance(from_type, StringType):
+            column = column.cast(StringType())
+        return empty_to_null(regexp_replace(upper(column), "\\s", ""))
 
 
 @null_safe

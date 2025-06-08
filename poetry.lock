@@ -1882,6 +1882,18 @@ files = [
 ptyprocess = ">=0.5"
 
 [[package]]
+name = "phonenumberslite"
+version = "9.0.5"
+description = "Python version of Google's common library for parsing, formatting, storing and validating international phone numbers."
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "phonenumberslite-9.0.5-py2.py3-none-any.whl", hash = "sha256:2e9f94dcf47644ce47a34c4721a3da5c372ea26d2a2a841c40fe496b51e14c1e"},
+    {file = "phonenumberslite-9.0.5.tar.gz", hash = "sha256:51e9ff09fe218f7cbb7118d936bf329340b187f6cf3821098624e32a738257c1"},
+]
+
+[[package]]
 name = "platformdirs"
 version = "4.3.6"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a `user data dir`."
@@ -2855,4 +2867,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10"
-content-hash = "ebf023105ecb57b84d0717f448cb06958e183f153077f2ffe1e61d556274064a"
+content-hash = "c3d139fa9373ec67417a812e139706c6c0f996012c744184dcbf39b119b2e9f1"
