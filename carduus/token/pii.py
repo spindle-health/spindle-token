@@ -21,9 +21,24 @@ from pyspark.sql.functions import (
     when,
     year,
 )
-from pyspark.sql.types import DataType, DateType, IntegerType, LongType, StringType, TimestampNTZType, TimestampType
+from pyspark.sql.types import (
+    DataType,
+    DateType,
+    IntegerType,
+    LongType,
+    StringType,
+    TimestampNTZType,
+    TimestampType,
+)
 
-from carduus.token._impl import empty_to_null, first_char, metaphone, normalize_text, null_safe, remap
+from carduus.token._impl import (
+    empty_to_null,
+    first_char,
+    metaphone,
+    normalize_text,
+    null_safe,
+    remap,
+)
 
 
 class PiiTransform(ABC):
@@ -140,8 +155,7 @@ class EmailTransform(PiiTransform):
 def _to_e164(phone: str, default_region: str) -> str | None:
     try:
         return phonenumbers.format_number(
-            phonenumbers.parse(phone, default_region),
-            phonenumbers.PhoneNumberFormat.E164
+            phonenumbers.parse(phone, default_region), phonenumbers.PhoneNumberFormat.E164
         )
     except phonenumbers.NumberParseException:
         return None
@@ -160,11 +174,11 @@ class PhoneTransform(PiiTransform):
 
 def _is_valid_ssn(ssn: Column) -> Column:
     return ~(
-        (length(ssn) != lit(9)) |
-        (first_char(ssn) == "9") |
-        (substring(ssn, 1, 3).isin("000", "666")) |
-        (substring(ssn, 4, 2) == "00") |
-        (substring(ssn, 6, 4) == "0000")
+        (length(ssn) != lit(9))
+        | (first_char(ssn) == "9")
+        | (substring(ssn, 1, 3).isin("000", "666"))
+        | (substring(ssn, 4, 2) == "00")
+        | (substring(ssn, 6, 4) == "0000")
     )
 
 

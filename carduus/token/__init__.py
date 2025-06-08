@@ -155,17 +155,21 @@ class OpprlToken(Enum):
     token7: TokenSpec = TokenSpec("opprl_token_7", (OpprlPii.email.name,))
     token8: TokenSpec = TokenSpec("opprl_token_8", (OpprlPii.phone.name,))
     token9: TokenSpec = TokenSpec("opprl_token_9", (OpprlPii.ssn.name,))
-    token10: TokenSpec = TokenSpec("opprl_token_10", (OpprlPii.group_number.name, OpprlPii.member_id.name))
+    token10: TokenSpec = TokenSpec(
+        "opprl_token_10", (OpprlPii.group_number.name, OpprlPii.member_id.name)
+    )
 
 
-def _all_pii_attrs(df: DataFrame, pii_transforms: dict[str, PiiTransform], tokens: list[TokenSpec]):
+def _all_pii_attrs(
+    df: DataFrame, pii_transforms: dict[str, PiiTransform], tokens: list[TokenSpec]
+):
     exprs = {}
     for column, tr in pii_transforms.items():
         if column in df.columns:
             exprs[column] = tr.normalize(df[column], df.schema[column].dataType)
             for enhancement_name, enhancement_col in tr.enhancements(exprs[column]).items():
                 exprs[enhancement_name] = enhancement_col
-    return exprs   
+    return exprs
 
 
 def tokenize(
@@ -220,21 +224,19 @@ def tokenize(
     for token in tokens_:
         for field in token.fields:
             if field not in pii:
-                raise ValueError(f"PII field {field} not found on the input data. Found {list(pii.keys())}")
-        token_pii_str = join_pii(*[pii[field] for field in sorted(token.fields)]).alias(token.name)
+                raise ValueError(
+                    f"PII field {field} not found on the input data. Found {list(pii.keys())}"
+                )
+        token_pii_str = join_pii(*[pii[field] for field in sorted(token.fields)]).alias(
+            token.name
+        )
         token_pii_strings.append(token_pii_str)
 
-    return (
-        df
-        .select(col("*"), *token_pii_strings)
-        .withColumns(
-            {
-                column: base64_no_newline(
-                    encrypt(to_binary(sha2(col(column), 512), lit("hex")))
-                )
-                for column in token_columns
-            }
-        )
+    return df.select(col("*"), *token_pii_strings).withColumns(
+        {
+            column: base64_no_newline(encrypt(to_binary(sha2(col(column), 512), lit("hex"))))
+            for column in token_columns
+        }
     )
 
 

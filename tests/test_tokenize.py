@@ -133,7 +133,8 @@ def test_tokenize_and_transcrypt_opprl(
                         StructField("ssn", StringType()),
                         StructField("group_number", StringType()),
                         StructField("member_id", StringType()),
-                    ] + TOKEN_FIELDS
+                    ]
+                    + TOKEN_FIELDS
                 ),
             )
         ),
@@ -207,8 +208,9 @@ def test_tokenize_and_transcrypt_opprl(
                         opprl_token_9=None,
                         opprl_token_10="dkOfFGx41B9nfO6z1i7WZFxZXRW2En6Nxyfsam1e5TgAgAUa46p/kGvYJSX0y6IfpzQuAgxYwzYeTLcpHmfQjkzCtRvc7B6LmNT1CIBUBak=",
                     ),
-                ] * 2,
-                schema=StructType(TOKEN_FIELDS)
+                ]
+                * 2,
+                schema=StructType(TOKEN_FIELDS),
             )
         ),
     )
