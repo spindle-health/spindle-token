@@ -42,7 +42,8 @@ def make_asymmetric_encrypter(public_key: bytes):
         from cryptography.hazmat.primitives.serialization import load_pem_public_key
 
         key = load_pem_public_key(public_key)
-        assert isinstance(key, rsa.RSAPublicKey)
+        if not isinstance(key, rsa.RSAPublicKey):
+            raise TypeError(f"Incorrect key type. Expected RSA public key, got {type(key)}.")
         return key.encrypt(
             bytes(message),
             padding.OAEP(
@@ -62,7 +63,8 @@ def make_asymmetric_decrypter(private_key: bytes):
         from cryptography.hazmat.primitives.serialization import load_pem_private_key
 
         key = load_pem_private_key(private_key, None)
-        assert isinstance(key, rsa.RSAPrivateKey)
+        if not isinstance(key, rsa.RSAPrivateKey):
+            raise TypeError(f"Incorrect key type. Expected RSA private key, got {type(key)}.")
         return key.decrypt(
             bytes(message),
             padding.OAEP(
