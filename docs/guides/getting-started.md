@@ -82,7 +82,7 @@ pii.show()
 # +-----+----------+---------+------+----------+
 ```
 
-To perform tokenization, call the `tokenize` function and pass it the PII `DataFrame`, a column mapping, and a collection of specifications for token you want to generate. You may optionally pass an instance of `EncryptionKeyProvider`, but all code snippets shown in this guide assume the default key service is used (unless otherwise specified) and therefore encryption keys will be read from the spark session properties.
+To perform tokenization, call the `tokenize` function and pass it the PII `DataFrame`, a column mapping, a collection of specifications for token you want to generate, and the private key.
 
 ```python
 from carduus.token import tokenize, OpprlPii, OpprlToken

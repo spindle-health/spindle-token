@@ -67,4 +67,4 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
 
 repo_url: https://github.com/Spindle-Health/carduus
-copyright: Copyright &copy; 2024 Spindle Health, Inc
+copyright: Copyright &copy; 2025 Spindle Health, Inc

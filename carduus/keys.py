@@ -44,7 +44,7 @@ def derive_aes_key(rsa_key: bytes) -> bytes:
             A RSA private key.
 
     Returns:
-        An 32 bit AES key.
+        An 32 byte AES key.
 
     """
     digest = Hash(SHAKE256(32))

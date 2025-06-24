@@ -11,14 +11,15 @@ def spark() -> SparkSession:
     return SparkSession.Builder().appName("Carduus Tests").master("local[2]").getOrCreate()
 
 
-# These encryption keys are left hardcoded so that we can use tests to ensure stability
-# of tokens across versions of the carduus project.
-# They should NEVER be used in production or any environment aside from the test suite
-# of the Carduus project or another OPPRL implementation.
-
-
 @pytest.fixture(scope="session")
 def private_key() -> bytes:
+    """
+    WARNING:
+        This encryption key is hardcoded so that we can use tests to ensure stability
+        of tokens across versions of the carduus project.
+        It should NEVER be used in production or any environment aside from the test suite
+        of the Carduus project or another OPPRL implementation.
+    """
     return b"""-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDln+C4HlLMOLru
 7888bbHIf7iG6d+uF7icTLsC7w4UD9dmDJpTwkdfy9LBaDzrSoLmclTfHjN6GIqe
@@ -52,6 +53,13 @@ dccych5YFsjF+0vDJ1hul5+ZiAA+yFQWUj07/jR+CVKUJMWb5j11jjtmpiTPhmkt
 
 @pytest.fixture(scope="session")
 def acme_public_key() -> bytes:
+    """
+    WARNING:
+        This encryption key is hardcoded so that we can use tests to ensure stability
+        of tokens across versions of the carduus project.
+        It should NEVER be used in production or any environment aside from the test suite
+        of the Carduus project or another OPPRL implementation.
+    """
     return b"""-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnIST0H9sM2y0PUyMf5+F
 eCKn86xJzSkmjkP0Pe/N5tJfXl7ouRouwSqnOJGIFgEZfnU0pbIsT74hXvKnL8rL
@@ -66,6 +74,13 @@ fQIDAQAB
 
 @pytest.fixture(scope="session")
 def acme_private_key() -> bytes:
+    """
+    WARNING:
+        This encryption key is hardcoded so that we can use tests to ensure stability
+        of tokens across versions of the carduus project.
+        It should NEVER be used in production or any environment aside from the test suite
+        of the Carduus project or another OPPRL implementation.
+    """
     return b"""-----BEGIN PRIVATE KEY-----
 MIIEugIBADANBgkqhkiG9w0BAQEFAASCBKQwggSgAgEAAoIBAQCchJPQf2wzbLQ9
 TIx/n4V4IqfzrEnNKSaOQ/Q9783m0l9eXui5Gi7BKqc4kYgWARl+dTSlsixPviFe
