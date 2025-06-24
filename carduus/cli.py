@@ -5,6 +5,7 @@ from io import BytesIO
 import click
 from pyspark.sql import SparkSession, DataFrameWriter
 import carduus.token as t
+from carduus.keys import _PRIVATE_KEY_ENV_VAR, _RECIPIENT_PUBLIC_KEY_ENV_VAR
 
 
 # All OPPRL token specifications in a dictionary for easy lookup by the token name.
@@ -93,9 +94,8 @@ def common_options(func):
     func = click.option(
         "-k",
         "--key",
-        envvar="SPINDLE_TOKEN_PRIVATE_KEY",
+        envvar=_PRIVATE_KEY_ENV_VAR + "_FILE",
         type=click.File(mode="rb"),
-        required=True,
         help="The PEM file containing your private key.",
     )(func)
     return func
@@ -122,7 +122,7 @@ def cli():
 def tokenize(
     input: str,
     output: str,
-    key: BytesIO,
+    key: BytesIO | None,
     token: list[str],
     format: str,
     parallelism: int | None,
@@ -153,7 +153,7 @@ def tokenize(
         df,
         pii_transforms=pii_transforms,
         tokens=tokens,
-        private_key=key.read(),
+        private_key=key.read() if key else None,
     )
 
     if input_path.is_file():
@@ -184,9 +184,8 @@ def transcrypt():
 @click.option(
     "-r",
     "--recipient",
-    envvar="SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY",
+    envvar=_RECIPIENT_PUBLIC_KEY_ENV_VAR + "_FILE",
     type=click.File(mode="rb"),
-    required=True,
     help="The PEM file containing the recipients public key.",
 )
 @common_options
@@ -195,8 +194,8 @@ def transcrypt():
 def out(
     input: str,
     output: str,
-    key: BytesIO,
-    recipient: BytesIO,
+    key: BytesIO | None,
+    recipient: BytesIO | None,
     token: list[str],
     format: str,
     parallelism: int | None,
@@ -219,8 +218,8 @@ def out(
     df = t.transcrypt_out(
         df,
         token_columns=token,
-        recipient_public_key=recipient.read(),
-        private_key=key.read(),
+        recipient_public_key=recipient.read() if recipient else None,
+        private_key=key.read() if key else None,
     )
 
     if input_path.is_file():
@@ -248,7 +247,7 @@ def out(
 def in_(
     input: str,
     output: str,
-    key: BytesIO,
+    key: BytesIO | None,
     token: list[str],
     format: str,
     parallelism: int | None,
@@ -272,7 +271,7 @@ def in_(
     df = t.transcrypt_in(
         df,
         token_columns=token,
-        private_key=key.read(),
+        private_key=key.read() if key else None,
     )
 
     if input_path.is_file():

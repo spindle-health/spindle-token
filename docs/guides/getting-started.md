@@ -26,8 +26,21 @@ Carduus's tokenization capabilities require the use of private and public encryp
 There are 3 kinds of encryption keys that play different roles:
 
   1. Your private RSA key - Used to transcrypt incoming data and derive a symmetric encryption key used to tokenize PII. **This key must never be shared or accessed by untrusted parties.**
-  2. Your public RSA key - The public key counterpart to your private key. Will be shared with trusted parties that will be sending you tokenized data.
+  2. Your public RSA key - The public key counterpart to your private key. This key will be shared with trusted parties that will be sending you tokenized data.
   3. Trusted partner public keys - A collection of public keys from the various trusted parties that you will be sending tokenized to.
+
+### Configuring Encryption Keys
+
+Organization's often manage encryption keys using a secrets manager, such as [AWS Secrets Manger](https://aws.amazon.com/secrets-manager/), [HashiCorp Vault](https://www.hashicorp.com/en/products/vault), [Databricks Secrets Manger](https://docs.databricks.com/aws/en/security/secrets/), and [EnvKey](https://www.envkey.com/). It is recommended that Carduus users adopt a secrets manager in order to control which principals have access to encryption keys.
+
+To help encourage users to not hard-code encryption keys in their source code, Carduus will default to reading encryption keys from environment variables. Most secrets managers support the pattern of injecting secrets as ephemeral environment variables and the use of an `.env` file on developer workstations allow for easy local development. You can set the `SPINDLE_TOKEN_PRIVATE_KEY` environment variable with a private RSA keys in the PEM format.
+
+In some cases, it may be appropriate to explicitly pass the private keys as arguments to the relevant Carduus functions. For example, if your organization's secret manager encourages programmatic access at runtime or if you are overriding the encryption key within a test suite. Carduus function support the explicit passing of encryption keys as `bytes` but it is highly recommended that user do not hardcode their encryption keys into source code or check PEM files with production encryption keys into version control.
+
+This guide assumes that your private key is set via the `SPINDLE_TOKEN_PRIVATE_KEY` environment variable. For information about passing the private key as an explicit argument, see the Carduus [API](../api.md) documentation. 
+
+Public keys don't need to be managed as secrets. It is possible to specify the public key (in PEM format) for your intended data recipient with the `SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY` environment variable or pass the public key to Carduus functions as an explicit argument. Users can pick whichever method is more convenient. 
+
 
 ### Generating New Keys
 
@@ -95,7 +108,6 @@ tokens = tokenize(
         birth_date=OpprlPii.birth_date,
     ),
     tokens=[OpprlToken.token1, OpprlToken.token2, OpprlToken.token3],
-    private_key=b"""-----BEGIN PRIVATE KEY----- ...""",
 ).drop("first_name", "last_name", "gender", "birth_date")
 # +-----+--------------------+--------------------+--------------------+
 # |label|       opprl_token_1|       opprl_token_2|       opprl_token_3|
@@ -143,9 +155,6 @@ tokens_to_send = transcrypt_out(
     tokens, 
     token_columns=("opprl_token_1", "opprl_token_2", "opprl_token_3"), 
     recipient_public_key=b"""-----BEGIN PUBLIC KEY----- ...""",
-    # This is the private key of the sender
-    # It is NOT the private key associated with the recipient_public_key.
-    private_key=b"""-----BEGIN PRIVATE KEY----- ...""",
 )
 tokens.to_send.show()
 # +-----+--------------------+--------------------+--------------------+
@@ -161,7 +170,7 @@ tokens.to_send.show()
 
 The `token_columns` argument is a iterable collection containing the column names of the `tokens` DataFrame that correspond to tokens that need to be transcrypted.
 
-The `recipient` argument denotes the name given to the public key associated with the intended recipient. If using the default encryption key provider (via Spark session properties) the above code snippet will grab the public key from `carduus.token.publicKey.AcmeCorp` spark session property.
+The `recipient_public_key` argument is the public key provided by the intended recipient. 
 
 ### Recipient
 
@@ -175,9 +184,6 @@ from carduus.token import transcrypt_in
 tokens_received = transcrypt_in(
     tokens_to_send, 
     token_columns=("opprl_token_1", "opprl_token_2", "opprl_token_3"),
-    # This is the private key corresponding to the public key used to the prepare the data.
-    # It is NOT the private key used to tokenize the PII.
-    private_key=b"""-----BEGIN PRIVATE KEY----- ...""",
 )
 tokens_received.show()
 # +-----+--------------------+--------------------+--------------------+

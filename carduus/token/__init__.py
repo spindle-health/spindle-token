@@ -1,3 +1,4 @@
+import os
 from collections.abc import Iterable, Sequence, Mapping
 from dataclasses import dataclass
 from enum import Enum
@@ -25,7 +26,7 @@ from carduus.token.pii import (
 )
 import carduus.token.crypto as crypto
 from carduus.token._impl import base64_no_newline
-from carduus.keys import derive_aes_key
+from carduus.keys import derive_aes_key, private_key_from_env, public_key_from_env
 
 
 __all__ = [
@@ -131,7 +132,7 @@ def tokenize(
     df: DataFrame,
     pii_transforms: Mapping[str, PiiTransform | OpprlPii],
     tokens: Sequence[TokenSpec | OpprlToken],
-    private_key: bytes,
+    private_key: bytes | None = None,
 ) -> DataFrame:
     """Adds encrypted token columns based on PII.
 
@@ -153,12 +154,16 @@ def tokenize(
             are encrypted into each token. Elements can also be a member of the [OpprlToken][carduus.token.OpprlToken]
             enum if using the standard OPPRL tokens.
         private_key:
-            Your private RSA key.
+            Your private RSA key. This argument should only be set when reading from a secrets manager or testing, otherwise it is
+            recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your private key.
 
     Returns:
         The `DataFrame` with PII columns replaced by encrypted tokens.
 
     """
+    if not private_key:
+        private_key = private_key_from_env()
+
     # Raise clear error message if key is invalid.
     load_pem_private_key(private_key, None)
     pii_transforms_ = {
@@ -195,8 +200,8 @@ def tokenize(
 def transcrypt_out(
     df: DataFrame,
     token_columns: Iterable[str],
-    recipient_public_key: bytes,
-    private_key: bytes,
+    recipient_public_key: bytes | None = None,
+    private_key: bytes | None = None,
 ) -> DataFrame:
     """Prepares a `DataFrame` containing encrypted tokens to be sent to a specific trusted party by re-encrypting
     the tokens using the recipient's public key without exposing the original PII.
@@ -210,11 +215,20 @@ def transcrypt_out(
         token_columns:
             The collection of column names that correspond to tokens.
         recipient_public_key:
-            The public RSA key of the recipient who will be receiving the dataset with ephemeral tokens.
+            The public RSA key of the recipient who will be receiving the dataset with ephemeral tokens. Can also be supplied
+            the SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY environment variable.
+        private_key:
+            Your private RSA key. This argument should only be set when reading from a secrets manager or testing, otherwise it is
+            recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your private key.
 
     Returns:
         The `DataFrame` with the original encrypted tokens re-encrypted for sending to the recipient.
     """
+    if not recipient_public_key:
+        recipient_public_key = public_key_from_env()
+    if not private_key:
+        private_key = private_key_from_env()
+
     # Raise clear error message if key is invalid.
     load_pem_private_key(private_key, None)
     load_pem_public_key(recipient_public_key)
@@ -237,7 +251,7 @@ def transcrypt_out(
 def transcrypt_in(
     df: DataFrame,
     token_columns: Iterable[str],
-    private_key: bytes,
+    private_key: bytes | None = None,
 ) -> DataFrame:
     """Used by the recipient of a `DataFrame` containing tokens in the intermediate representation produced by
     [`transcrypt_out`][carduus.token.transcrypt_out] to re-encrypt the tokens such that they will match with
@@ -249,11 +263,16 @@ def transcrypt_in(
         token_columns:
             The collection of column names that correspond to tokens.
         private_key:
-            Your private RSA key. The ephemeral tokens must have been created with the corresponding public key by the sender.
+            Your private RSA key. This argument should only be set when reading from a secrets manager or testing, otherwise it is
+            recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your private key.
+
     Returns:
         The `DataFrame` with the original encrypted tokens re-encrypted for sending to the destination.
 
     """
+    if not private_key:
+        private_key = private_key_from_env()
+
     # Raise clear error message if key is invalid.
     load_pem_private_key(private_key, None)
     decrypt = udf(crypto.make_asymmetric_decrypter(private_key), returnType=BinaryType())
