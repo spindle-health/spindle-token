@@ -1,3 +1,4 @@
+import pytest
 from datetime import date
 from pyspark.sql import Column, SparkSession, Row
 from pyspark.sql.types import DataType, StructType, StructField, LongType, StringType, DateType
@@ -12,6 +13,7 @@ from carduus.token import (
     transcrypt_in,
 )
 from carduus.token.pii import PiiTransform
+from carduus.keys import _PRIVATE_KEY_ENV_VAR, _RECIPIENT_PUBLIC_KEY_ENV_VAR
 
 
 def test_tokenize_and_transcrypt_opprl(
@@ -341,3 +343,94 @@ def test_null_safe_transcypt(
     assertDataFrameEqual(tokens, ephemeral)
     tokens2 = transcrypt_in(ephemeral, ["opprl_token_1"], acme_private_key)
     assertDataFrameEqual(ephemeral, tokens2)
+
+
+def test_keys_from_env(
+    spark: SparkSession,
+    private_key: bytes,
+    acme_public_key: bytes,
+    acme_private_key: bytes,
+    monkeypatch,
+):
+    monkeypatch.setenv(_PRIVATE_KEY_ENV_VAR, private_key.decode())
+    monkeypatch.setenv(_RECIPIENT_PUBLIC_KEY_ENV_VAR, acme_public_key.decode())
+
+    tokens = tokenize(
+        (
+            spark.createDataFrame(
+                [
+                    Row(
+                        first_name="LOUIS",
+                        last_name="PASTEUR",
+                        gender="M",
+                        birth_date=date(1822, 12, 27),
+                    ),
+                ]
+            )
+        ),
+        pii_transforms={
+            "first_name": OpprlPii.first_name,
+            "last_name": OpprlPii.last_name,
+            "gender": OpprlPii.gender,
+            "birth_date": OpprlPii.birth_date,
+        },
+        tokens=[OpprlToken.token1],
+    )
+    assertDataFrameEqual(
+        tokens,
+        spark.createDataFrame(
+            [
+                Row(
+                    first_name="LOUIS",
+                    last_name="PASTEUR",
+                    gender="M",
+                    birth_date=date(1822, 12, 27),
+                    opprl_token_1="NJQZ0hNk40pt5aFitlwdx6k2Te7hMSMw1UHzNdgP1aUYbqaFbGSe3tRn4kL/OxsFJit9VhRDYRawUDYzKivYlLm2EzKCO0+nC9rJXfIFwdo=",
+                ),
+            ],
+        ),
+    )
+    ephemeral_tokens = transcrypt_out(tokens, ("opprl_token_1",))
+
+    # Simulate the environment of the recipient.
+    monkeypatch.setenv(_PRIVATE_KEY_ENV_VAR, acme_private_key.decode())
+    acme_tokens = transcrypt_in(ephemeral_tokens, ("opprl_token_1",))
+    assertDataFrameEqual(
+        acme_tokens,
+        spark.createDataFrame(
+            [
+                Row(
+                    first_name="LOUIS",
+                    last_name="PASTEUR",
+                    gender="M",
+                    birth_date=date(1822, 12, 27),
+                    opprl_token_1="U/JYKVLQWSUrpvJ1D03pvKmnhlgUTFjHaPtS0pZBLSqrDCOkBOR/mDf9xFt/Cr3AB8hI00oEkuunCTvNV3zbgdz9Y0jcwiI16zn51jSkhhM=",
+                ),
+            ],
+        ),
+    )
+
+
+def test_missing_key(spark: SparkSession):
+    with pytest.raises(ValueError, match="No private RSA key found"):
+        tokenize(
+            (
+                spark.createDataFrame(
+                    [
+                        Row(
+                            first_name="LOUIS",
+                            last_name="PASTEUR",
+                            gender="M",
+                            birth_date=date(1822, 12, 27),
+                        ),
+                    ]
+                )
+            ),
+            pii_transforms={
+                "first_name": OpprlPii.first_name,
+                "last_name": OpprlPii.last_name,
+                "gender": OpprlPii.gender,
+                "birth_date": OpprlPii.birth_date,
+            },
+            tokens=[OpprlToken.token1],
+        )

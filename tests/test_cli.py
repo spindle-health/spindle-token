@@ -88,7 +88,7 @@ class TestTokenizeCommand:
         actual = pd.read_csv(tmp_path / "tokens.csv", sep="|", header=0)
         pd.testing.assert_frame_equal(actual, self.expected)
 
-    def test_env_vars(self, tmp_path: Path, private_key: bytes):
+    def test_key_file_from_env_var(self, tmp_path: Path, private_key: bytes):
         runner = CliRunner()
         with open(tmp_path / "test_key.pem", "wb") as f:
             f.write(private_key)
@@ -105,13 +105,38 @@ class TestTokenizeCommand:
                 str(tmp_path / "tokens.csv"),
             ],
             env=dict(
-                SPINDLE_TOKEN_PRIVATE_KEY=str(tmp_path / "test_key.pem"),
+                SPINDLE_TOKEN_PRIVATE_KEY_FILE=str(tmp_path / "test_key.pem"),
                 SPINDLE_TOKEN_FORMAT="csv",
                 SPINDLE_TOKEN_PARALLELISM="1",
             ),
         )
         assert result.exit_code == 0
         assert sorted(os.listdir(tmp_path)) == ["pii.csv", "test_key.pem", "tokens.csv"]
+        actual = pd.read_csv(tmp_path / "tokens.csv", sep="|", header=0)
+        pd.testing.assert_frame_equal(actual, self.expected)
+
+    def test_key_from_env_var(self, tmp_path: Path, private_key: bytes):
+        runner = CliRunner()
+        self.pii.to_csv(tmp_path / "pii.csv", sep="|", header=True, index=False)
+        result = runner.invoke(
+            cli,
+            [
+                "tokenize",
+                "-t",
+                "opprl_token_1",
+                "-t",
+                "opprl_token_3",
+                "-f",
+                "csv",
+                str(tmp_path / "pii.csv"),
+                str(tmp_path / "tokens.csv"),
+            ],
+            env=dict(
+                SPINDLE_TOKEN_PRIVATE_KEY=private_key.decode(),
+            ),
+        )
+        assert result.exit_code == 0
+        assert sorted(os.listdir(tmp_path)) == ["pii.csv", "tokens.csv"]
         actual = pd.read_csv(tmp_path / "tokens.csv", sep="|", header=0)
         pd.testing.assert_frame_equal(actual, self.expected)
 
@@ -376,7 +401,67 @@ class TestTranscryptCommands:
         actual = pd.read_csv(tmp_path / "acme_tokens.csv", sep="|", header=0)
         pd.testing.assert_frame_equal(actual, self.expected)
 
-    def test_env_vars(
+    def test_keys_from_env_vars(
+        self,
+        tmp_path: Path,
+        private_key: bytes,
+        acme_public_key: bytes,
+        acme_private_key: bytes,
+    ):
+        runner = CliRunner()
+        self.tokens.to_csv(tmp_path / "tokens.csv", sep="|", header=True, index=False)
+        result1 = runner.invoke(
+            cli,
+            [
+                "transcrypt",
+                "out",
+                "--token",
+                "opprl_token_1",
+                "--token",
+                "opprl_token_3",
+                str(tmp_path / "tokens.csv"),
+                str(tmp_path / "ephemeral_tokens.csv"),
+            ],
+            env=dict(
+                SPINDLE_TOKEN_PRIVATE_KEY=private_key.decode(),
+                SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY=acme_public_key.decode(),
+                SPINDLE_TOKEN_FORMAT="csv",
+            ),
+        )
+        assert result1.exit_code == 0
+        assert sorted(os.listdir(tmp_path)) == [
+            "ephemeral_tokens.csv",
+            "tokens.csv",
+        ]
+
+        result2 = runner.invoke(
+            cli,
+            [
+                "transcrypt",
+                "in",
+                "--token",
+                "opprl_token_1",
+                "--token",
+                "opprl_token_3",
+                str(tmp_path / "ephemeral_tokens.csv"),
+                str(tmp_path / "acme_tokens.csv"),
+            ],
+            env=dict(
+                SPINDLE_TOKEN_PRIVATE_KEY=acme_private_key.decode(),
+                SPINDLE_TOKEN_FORMAT="csv",
+            ),
+        )
+        assert result2.exit_code == 0
+        assert sorted(os.listdir(tmp_path)) == [
+            "acme_tokens.csv",
+            "ephemeral_tokens.csv",
+            "tokens.csv",
+        ]
+
+        actual = pd.read_csv(tmp_path / "acme_tokens.csv", sep="|", header=0)
+        pd.testing.assert_frame_equal(actual, self.expected)
+
+    def test_key_files_from_env_vars(
         self,
         tmp_path: Path,
         private_key: bytes,
@@ -406,8 +491,8 @@ class TestTranscryptCommands:
                 str(tmp_path / "ephemeral_tokens.csv"),
             ],
             env=dict(
-                SPINDLE_TOKEN_PRIVATE_KEY=str(tmp_path / "test_key.pem"),
-                SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY=str(tmp_path / "acme_pubkey.pem"),
+                SPINDLE_TOKEN_PRIVATE_KEY_FILE=str(tmp_path / "test_key.pem"),
+                SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY_FILE=str(tmp_path / "acme_pubkey.pem"),
                 SPINDLE_TOKEN_FORMAT="csv",
             ),
         )
@@ -433,7 +518,7 @@ class TestTranscryptCommands:
                 str(tmp_path / "acme_tokens.csv"),
             ],
             env=dict(
-                SPINDLE_TOKEN_PRIVATE_KEY=str(tmp_path / "acme_key.pem"),
+                SPINDLE_TOKEN_PRIVATE_KEY_FILE=str(tmp_path / "acme_key.pem"),
                 SPINDLE_TOKEN_FORMAT="csv",
             ),
         )

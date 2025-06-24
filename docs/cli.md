@@ -29,10 +29,21 @@ spindle-token tokenize \
 
 The OPPRL protocol leaves the responsibility of encryption key management to the user. The spindle-token CLI assumes the public and private keys are stored in files on the local filesystem. The location of the PEM file can be passed using the corresponding option or an environment variable. This table describes the option names and environment variables that can be use to supply private and public keys respectively.
 
-| Encryption Key | Option | Environment Variable |
-|---|---|---|
-| Private Key | `-k`, `--key` | `SPINDLE_TOKEN_PRIVATE_KEY` |
-| Recipient Public Key | `-r` `--recipient` | `SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY` |
+**Private Key**
+
+The private RSA key can be set using one of the following methods:
+
+- Use the `--key` option (or `-k` alias) to specify a path to a PEM file.
+- Set the `SPINDLE_TOKEN_PRIVATE_KEY_FILE` environment variable to specify a path the PEM file.
+- Set the `SPINDLE_TOKEN_PRIVATE_KEY` environment variable to specify the key as a UTF-8 string. If both environment variables are set, the `_FILE` variant takes precedence.
+
+**Public Keys**
+
+The public keys of data recipients (used in transcryption) can be set using one of the following methods:
+
+- Use the `--recipient` option (or `-r` alias) to specify a path to a PEM file.
+- Set the `SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY_FILE` environment variable to specify a path the PEM file.
+- Set the `SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY` environment variable to specify the key as a UTF-8 string. If both environment variables are set, the `_FILE` variant takes precedence.
 
 ### File Formats
 
