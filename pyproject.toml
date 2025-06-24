@@ -20,7 +20,10 @@ packages = [{ include = "carduus" }]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2"
-pyspark = { version = "^3.5", extras = ["connect"] }
+# pyspark.testing.utils requires pandas
+pandas = ">=1.0.5"
+# pyspark.testing.utils requires pyarrow
+pyarrow = ">=4.0.0"
 # pyspark.testing.utils breaks on numpy 2. 
 numpy = "<2.0"
 black = "*"
