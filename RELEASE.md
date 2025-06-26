@@ -38,3 +38,5 @@ This is a guide for how to publish a new release of `carduus` including all step
     ```
     poetry run mkdocs gh-deploy
     ```
+
+1. Create a new release on Github.
