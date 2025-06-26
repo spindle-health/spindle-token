@@ -18,6 +18,16 @@ a.md-logo {
     color: var(--md-accent-fg-color)
 }
 
+table.table-result {
+    font-size: 0.7em;
+}
+
 th {
     background-color: var(--spindle-pink);
+    border-color: #D0D0D0A0 !important;
+    color: white;
+}
+
+td {
+    border-color: #D0D0D0A0 !important;
 }

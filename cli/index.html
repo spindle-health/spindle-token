@@ -9,23 +9,25 @@
       
       
       
+        <link rel="prev" href="../api/">
       
-        <link rel="next" href="guides/getting-started/">
+      
+        <link rel="next" href="../opprl/">
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
     
     
       
-        <title>Carduus</title>
+        <title>Command Line Interface - Carduus</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -44,11 +46,11 @@
       
     
     
-      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="stylesheets/extra.css">
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -84,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#carduus" class="md-skip">
+        <a href="#command-line-interface" class="md-skip">
           Skip to content
         </a>
       
@@ -100,7 +102,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Carduus" class="md-header__button md-logo" aria-label="Carduus" data-md-component="logo">
+    <a href=".." title="Carduus" class="md-header__button md-logo" aria-label="Carduus" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -120,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Command Line Interface
             
           </span>
         </div>
@@ -246,7 +248,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Carduus" class="md-nav__button md-logo" aria-label="Carduus" data-md-component="logo">
+    <a href=".." title="Carduus" class="md-nav__button md-logo" aria-label="Carduus" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -273,32 +275,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Home
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -309,68 +289,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#rationale" class="md-nav__link">
-    <span class="md-ellipsis">
-      Rationale
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-started" class="md-nav__link">
-    <span class="md-ellipsis">
-      Getting Started
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contributing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Contributing
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Contributing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#organizations-that-have-contributed-to-carduus" class="md-nav__link">
-    <span class="md-ellipsis">
-      Organizations that have contributed to Carduus
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -382,7 +300,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/getting-started/" class="md-nav__link">
+      <a href="../guides/getting-started/" class="md-nav__link">
         
   
   
@@ -442,7 +360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/databricks/" class="md-nav__link">
+      <a href="../guides/databricks/" class="md-nav__link">
         
   
   
@@ -465,7 +383,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/custom-tokens/" class="md-nav__link">
+      <a href="../guides/custom-tokens/" class="md-nav__link">
         
   
   
@@ -488,7 +406,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/custom-pii/" class="md-nav__link">
+      <a href="../guides/custom-pii/" class="md-nav__link">
         
   
   
@@ -518,7 +436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/" class="md-nav__link">
+      <a href="../api/" class="md-nav__link">
         
   
   
@@ -537,10 +455,19 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="cli/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -551,6 +478,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -600,7 +528,7 @@
   
   
     <li class="md-nav__item">
-      <a href="opprl/" class="md-nav__link">
+      <a href="../opprl/" class="md-nav__link">
         
   
   
@@ -623,7 +551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="opprl/PROTOCOL/" class="md-nav__link">
+      <a href="../opprl/PROTOCOL/" class="md-nav__link">
         
   
   
@@ -646,7 +574,7 @@
   
   
     <li class="md-nav__item">
-      <a href="opprl/contrib/" class="md-nav__link">
+      <a href="../opprl/contrib/" class="md-nav__link">
         
   
   
@@ -714,7 +642,7 @@
   
   
     <li class="md-nav__item">
-      <a href="CONTRIBUTING/" class="md-nav__link">
+      <a href="../CONTRIBUTING/" class="md-nav__link">
         
   
   
@@ -737,7 +665,7 @@
   
   
     <li class="md-nav__item">
-      <a href="CODE_OF_CONDUCT/" class="md-nav__link">
+      <a href="../CODE_OF_CONDUCT/" class="md-nav__link">
         
   
   
@@ -760,7 +688,7 @@
   
   
     <li class="md-nav__item">
-      <a href="LICENSE/" class="md-nav__link">
+      <a href="../LICENSE/" class="md-nav__link">
         
   
   
@@ -803,56 +731,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#rationale" class="md-nav__link">
-    <span class="md-ellipsis">
-      Rationale
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-started" class="md-nav__link">
-    <span class="md-ellipsis">
-      Getting Started
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contributing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Contributing
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Contributing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#organizations-that-have-contributed-to-carduus" class="md-nav__link">
-    <span class="md-ellipsis">
-      Organizations that have contributed to Carduus
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -870,30 +748,162 @@
   
 
 
-<h1 id="carduus">Carduus</h1>
-<p><a href="https://badge.fury.io/py/carduus"><img alt="PyPI version" src="https://badge.fury.io/py/carduus.svg" /></a></p>
-<p>The open source implementation of the Open Privacy Preserving Record Linkage (OPPRL) protocol build on Spark.</p>
-<blockquote>
-<p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /> Carduus has not reached a v1.0 release yet and therefore the API and behaviors are subject to change. See the <a href="CONTRIBUTING/">contributing</a> guide if you would like to help the project.</p>
-</blockquote>
-<h2 id="rationale">Rationale</h2>
-<p>Privacy Preserving Record Linkage (PPRL) is crucial component to data de-identification systems. PPRL obfuscate identifying attributes or other sensitive information about the subjects described in the records of a dataset while still preserving the ability to link records pertaining to the same subject through the use of an encrypted token. This practice is sometimes referred to as "tokenization" and is one of the components of data de-identification.</p>
-<p>The task of PPRL is to replace the attributes of a every record denoting Personally Identifiable Information (PII) with a token produced by a one-way cryptographic function. This prevents observers of the tokenized data from obtaining the PII. The tokens are produced deterministically such that input records with the same, or similar, PII attributes will produce an identical token. This allows practitioners to associate records across datasets that are highly likely to belong to the same data subject without having access to PII.</p>
-<p>Tokenization is also used when data is shared between organizations to limit, or in some cases fully mitigate, the risk of subject re-identification in the event that an untrusted third party gains access to a dataset containing sensitive data. Each party produced encrypted tokens using a different secret key so that any compromised data asset is, at worst, only matchable to other datasets maintained by the same party. During data sharing transactions, a specific "transcryption" data flow is used to first re-encrypt the sender's tokens into ephemeral tokens that do not match tokens in any other dataset and can only be ingested using the recipients secret key. At no point in the "transcryption" data flow is the original PII used.</p>
-<p>Carduus is the first (and canonical) implementation of the <a href="https://spindle-health.github.io/carduus/opprl/">Open Privacy Preserving Record Linkage</a> (OPPRL) protocol. This protocol presents a standardized methodology for tokenization that can be implemented in any data system to increase interoperability. The carduus implementation is a python library that distributes the tokenization workload using apache <a href="https://spark.apache.org/">Spark</a> across multiple cores or multiple machines in a high performance computing cluster for efficient tokenization of any scale datasets.</p>
-<p><strong>Why the name "Carduus"?</strong> The <a href="https://en.wikipedia.org/wiki/Carduus">carduus</a> is a genus of thistle plants that was used to brush fibrous materials so that individual fibres align in preparation for spinning the material into thread or yarn. Today this process is known as "carding" and is done by specialized machines.</p>
-<h2 id="getting-started">Getting Started</h2>
-<p>See the <a href="https://spindle-health.github.io/carduus/guides/getting-started/">getting started guide</a> on the project's web page for an detailed explanation of how carduus is used including example code snippets.</p>
-<p>The full <a href="https://spindle-health.github.io/carduus/api/">API</a> and an <a href="https://spindle-health.github.io/carduus/guides/databricks/">example usage on Databricks</a> are also provided on the project's web page.</p>
-<h2 id="contributing">Contributing</h2>
-<p>Please refer to the carduus <a href="https://spindle-health.github.io/carduus/CONTRIBUTING/">contributing guide</a> for information on how to get started contributing to the project.</p>
-<h3 id="organizations-that-have-contributed-to-carduus">Organizations that have contributed to Carduus</h3>
-<p><a href="https://spindlehealth.com/">
-    <img src="https://spindlehealth.com/wordmark_color_dark.png"
-        alt="Spindle Health"
-        style="padding: 10px; height: 64px"
-    />
-</a></p>
+<h1 id="command-line-interface">Command Line Interface</h1>
+<p>The spindle-token command line interface (CLI) offers tokenization and transcription capabilities of data files from the local file system.</p>
+<h1 id="usage-guide">Usage Guide</h1>
+<p>The spindle-token CLI is included with every installation of the spindle-token library. Install spindle-token to your python (virtual) environment using <code>pip</code>. See our <a href="http://token.spindlehealth.com/guides/getting-started/">getting started guide</a> for more information. Make sure the python interpreter directory is on your PATH.</p>
+<p>You can test your installation and environment setup by running the <code>--help</code> command. You should see documentation about the spindle-token CLI.</p>
+<div class="highlight"><pre><span></span><code>spindle-token --help
+</code></pre></div>
+<p>Once installed, you can run the commands for <code>tokenize</code> and <code>transcrypt</code> with the relevant options and arguments. All commands and sub-commands follow the same general design. Positional arguments and paths the the input data and desired location to write output data. Options configure how the input data is transformed. For example, options dictate which tokens should be generated, which file format to use, and the encryption key.</p>
+<p>This example invocation of the <code>tokenize</code> command illustrates the general pattern.</p>
+<div class="highlight"><pre><span></span><code>spindle-token tokenize \
+    --token opprl_token_1 --token opprl_token_2 --token opprl_token_3 \
+    --key private_key.pem \
+    --format csv \
+    --parallelism 1 \
+    pii.csv tokens.csv
+</code></pre></div>
+<h3 id="encryption-keys">Encryption Keys</h3>
+<p>The OPPRL protocol leaves the responsibility of encryption key management to the user. The spindle-token CLI assumes the public and private keys are stored in files on the local filesystem. The location of the PEM file can be passed using the corresponding option or an environment variable. This table describes the option names and environment variables that can be use to supply private and public keys respectively.</p>
+<p><strong>Private Key</strong></p>
+<p>The private RSA key can be set using one of the following methods:</p>
+<ul>
+<li>Use the <code>--key</code> option (or <code>-k</code> alias) to specify a path to a PEM file.</li>
+<li>Set the <code>SPINDLE_TOKEN_PRIVATE_KEY_FILE</code> environment variable to specify a path the PEM file.</li>
+<li>Set the <code>SPINDLE_TOKEN_PRIVATE_KEY</code> environment variable to specify the key as a UTF-8 string. If both environment variables are set, the <code>_FILE</code> variant takes precedence.</li>
+</ul>
+<p><strong>Public Keys</strong></p>
+<p>The public keys of data recipients (used in transcryption) can be set using one of the following methods:</p>
+<ul>
+<li>Use the <code>--recipient</code> option (or <code>-r</code> alias) to specify a path to a PEM file.</li>
+<li>Set the <code>SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY_FILE</code> environment variable to specify a path the PEM file.</li>
+<li>Set the <code>SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY</code> environment variable to specify the key as a UTF-8 string. If both environment variables are set, the <code>_FILE</code> variant takes precedence.</li>
+</ul>
+<h3 id="file-formats">File Formats</h3>
+<p>The spindle-token CLI supports multiple data file formats. The recommended file format is <a href="https://parquet.apache.org/">parquet</a> because parquet files are efficient, compressed, and have unambiguous schemas. The spindle-token CLI also supports CSV files. The file format must be specified using the <code>--format</code> option or <code>SPINDLE_TOKEN_FORMAT</code> environment variable.</p>
+<p>When using CSV files there are a few assumptions that the data file(s) must meet. </p>
+<ol>
+<li>
+<p>The first row of each CSV file must be column headers. See the <a href="#column-names">next section</a> for expectation on the column names.</p>
+</li>
+<li>
+<p>The field separate (aka delimiter) should be a pipe <code>|</code> character.</p>
+</li>
+</ol>
+<p>Input datasets can either be a single data file or partitioned into a directory of multiple data files. Splitting larger datasets into multiple data files can help the CLI <a href="#parallelism">parallelize</a> over larger datasets. If the input dataset is a single data file the output dataset will be single data file. Similarly, if the input dataset is a directory the argument for the output location will be a directory that will include a partitioned output dataset.</p>
+<h3 id="column-names">Column Names</h3>
+<p><a name="column-names"></a></p>
+<p>THe OPPRL tokenization protocol requires specific PII attributes to be normalized, transformed, concatenated, hashed, and then encrypted together. Thus, the spindle-token CLI must know which columns of the input dataset correspond to each logical PII attribute (first name, last name, birth date, etc).</p>
+<p>The spindle-token CLI requires specific column naming for PII columns so that the proper normalization rules are applied to each attribute and the final tokens are created from the correct subset of inputs. The following list contains the exact column names the CLI will look for.</p>
+<ul>
+<li><code>first_name</code></li>
+<li><code>last_name</code></li>
+<li><code>gender</code></li>
+<li><code>birth_date</code></li>
+</ul>
+<p>If you are only adding tokens that require a subset of these PII fields, the input dataset may omit columns for the other PII attributes that are not required. For information on which PII attributes are required for each token in the OPPRL protocol, see the official <a href="http://token.spindlehealth.com/opprl/PROTOCOL/">specification</a>.</p>
+<h3 id="parallelism">Parallelism</h3>
+<p><a name="parallelism"></a></p>
+<p>The spindle-token CLI supports multi-threaded parallelism. This helps work with larger datasets that are partitioned into multiple part files within a directory. If <code>--parallelism</code> is set to a number &gt;1 then that number of partition files will be processed at once. This option can also be set with the <code>SPINDLE_TOKEN_PARALLELISM</code> environment variable. If parallelism is not provided, the spindle-token will default to using the same number of threads as the host machine has logical cores.</p>
+<h1 id="commands">Commands</h1>
+<p>The help text, options, and arguments of every command and sub-command of the spindle-token CLI. You can get this documentation for the specific version of the CLI installed in your python environment using the <code>--help</code> option on any command or sub-command.</p>
+<h2 id="spindle-token-tokenize">spindle-token tokenize</h2>
+<p>Add tokens to a dataset of PII.</p>
+<p>Creates a dataset at the OUTPUT location that adds encrypted OPPRL tokens to the INPUT dataset.
+Does not modify the INPUT dataset.</p>
+<p>INPUT is the path to the dataset to tokenize. If INPUT is a file, it must be of the format provided to
+the <code>--format</code> option. If INPUT is a directory, all files within the directory that match the given
+format will be considered a partition of the dataset.</p>
+<p>OUTPUT is the file or directory in which the tokenized dataset will be written. If INPUT is a
+file, the OUTPUT will be written to as a file. If INPUT is a directory, the OUTPUT will be a directory
+containing a dataset partitioned into files.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight"><pre><span></span><code>spindle-token tokenize [OPTIONS] INPUT OUTPUT
+</code></pre></div>
+<p><strong>Options:</strong></p>
+<div class="highlight"><pre><span></span><code>  -t, --token [opprl_token_1|opprl_token_2|opprl_token_3]
+                                  An OPPRL token to add to the dataset. Can be
+                                  passed multiple times.  [required]
+  -k, --key FILENAME              The PEM file containing your private key.
+  -f, --format [parquet|csv]      The file format of input and output data
+                                  files.  [required]
+  -p, --parallelism INTEGER       The number of worker threads to parallelize
+                                  over. Useful when the input dataset is
+                                  partitioned into multiple part files. If not
+                                  supplied, defaults to the number of logical
+                                  cores.
+  --help                          Show this message and exit.
+</code></pre></div>
+<h2 id="spindle-token-transcrypt">spindle-token transcrypt</h2>
+<p>Prepare tokenized datasets to be sent or received.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight"><pre><span></span><code>spindle-token transcrypt [OPTIONS] COMMAND [ARGS]...
+</code></pre></div>
+<p><strong>Options:</strong></p>
+<div class="highlight"><pre><span></span><code>  --help  Show this message and exit.
+</code></pre></div>
+<h3 id="in">in</h3>
+<p>Convert a dataset of ephemeral tokens into tokens.</p>
+<p>INPUT is the path to the dataset of ephemeral tokens to create tokens from. If INPUT is a file, it must
+be of the format provided to the <code>--format</code> option. If INPUT is a directory, all files within the
+directory that match the given format will be run.</p>
+<p>OUTPUT is the file or directory in which the tokenized dataset will be written. If INPUT is a
+file, the OUTPUT will be written to as a file. If INPUT is a directory, the OUTPUT will be a directory
+containing a dataset partitioned into files.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight"><pre><span></span><code>spindle-token transcrypt in [OPTIONS] INPUT OUTPUT
+</code></pre></div>
+<p><strong>Options:</strong></p>
+<div class="highlight"><pre><span></span><code>  -t, --token [opprl_token_1|opprl_token_2|opprl_token_3]
+                                  The column name of an OPPRL token on the
+                                  input data to transcrypt.  [required]
+  -k, --key FILENAME              The PEM file containing your private key.
+  -f, --format [parquet|csv]      The file format of input and output data
+                                  files.  [required]
+  -p, --parallelism INTEGER       The number of worker threads to parallelize
+                                  over. Useful when the input dataset is
+                                  partitioned into multiple part files. If not
+                                  supplied, defaults to the number of logical
+                                  cores.
+  --help                          Show this message and exit.
+</code></pre></div>
+<h3 id="out">out</h3>
+<p>Prepare ephemeral tokens for a specific recipient.</p>
+<p>INPUT is the path to the dataset of tokens to create ephemeral tokens from. If INPUT is a file, it must
+be of the format provided to the <code>--format</code> option. If INPUT is a directory, all files within the
+directory that match the given format will be considered a partition of the dataset.</p>
+<p>OUTPUT is the file or directory in which the tokenized dataset will be written. If INPUT is a
+file, the OUTPUT will be written to as a file. If INPUT is a directory, the OUTPUT will be a directory
+containing a dataset partitioned into files.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight"><pre><span></span><code>spindle-token transcrypt out [OPTIONS] INPUT OUTPUT
+</code></pre></div>
+<p><strong>Options:</strong></p>
+<div class="highlight"><pre><span></span><code>  -t, --token [opprl_token_1|opprl_token_2|opprl_token_3]
+                                  The column name of an OPPRL token on the
+                                  input data to transcrypt.  [required]
+  -r, --recipient FILENAME        The PEM file containing the recipients
+                                  public key.
+  -k, --key FILENAME              The PEM file containing your private key.
+  -f, --format [parquet|csv]      The file format of input and output data
+                                  files.  [required]
+  -p, --parallelism INTEGER       The number of worker threads to parallelize
+                                  over. Useful when the input dataset is
+                                  partitioned into multiple part files. If not
+                                  supplied, defaults to the number of logical
+                                  cores.
+  --help                          Show this message and exit.
+</code></pre></div>
+<h1 id="limitations">Limitations</h1>
+<p>The following limitations of the spindle-token CLI are. For a superior experience, consider using spindle-token as a Python library. If your use case requires addressing some of these limitations, please open an <a href="https://github.com/spindle-health/carduus/issues">issue</a> with additional details. </p>
+<h3 id="no-horizontal-scaling">No Horizontal Scaling</h3>
+<p>The spindle-token CLI is built with <a href="https://spark.apache.org/">Apache Spark</a> to allow for data parallelism. Spark is designed to distribute workloads horizontally across a cluster of multiple machines connected to the same network. The spindle-token CLI runs spark in "local" mode that switches execution to a multi-threaded design on a single host machine.</p>
+<p>The spindle-token CLI cannot be passed to <code>spark-submit</code>, nor is there currently a way to pass <a href="https://spark.apache.org/docs/latest/spark-connect-overview.html">spark connect</a> information to a remote spark cluster. If you would like to use spindle-token on a Spark cluster, it is recommended that you use the spindle-token Python library.</p>
+<h3 id="no-remote-file-systems">No Remote File Systems</h3>
+<p>The spindle-token CLI reads and writes files using the local file system. This means there is no native support for files stored on remote filesystems, like S3. </p>
+<p>You may be able to work with remote file systems if you have a method of mounting the remote file system to the local file system.</p>
+<p>If you require working with datasets on remote filesystems like S3, it is recommended that you use the spindle-token Python library and configure pyspark to read from S3.</p>
 
 
 
@@ -948,10 +958,10 @@
     
     
       
-      <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.13a4f30d.min.js"></script>
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
       
     
   </body>
