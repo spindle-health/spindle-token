@@ -16,7 +16,10 @@ dependencies = [
 spindle-token = "carduus.cli:cli"
 
 [tool.poetry]
-packages = [{ include = "carduus" }]
+packages = [
+    { include = "carduus" },
+    { include = "spindle_token", from = "src" },
+]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2"

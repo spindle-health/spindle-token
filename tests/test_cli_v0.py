@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 from click.testing import CliRunner
 from pyspark.errors import AnalysisException
-from spindle_token._cli import cli
+from carduus.cli import cli
 
 
 class TestTokenizeCommand:
@@ -17,17 +17,17 @@ class TestTokenizeCommand:
     )
     expected = pd.DataFrame(
         {
-            "first_name": pd.Series(["Louis", "louis"]),
-            "last_name": pd.Series(["Pasteur", "pasteur"]),
-            "gender": pd.Series(["male", "M"]),
+            "first_name": pd.Series(["LOUIS", "LOUIS"]),
+            "last_name": pd.Series(["PASTEUR", "PASTEUR"]),
+            "gender": pd.Series(["M", "M"]),
             "birth_date": pd.Series(["1822-12-27", "1822-12-27"]),
-            "opprl_token_1v0": pd.Series(
+            "opprl_token_1": pd.Series(
                 [
                     "NJQZ0hNk40pt5aFitlwdx6k2Te7hMSMw1UHzNdgP1aUYbqaFbGSe3tRn4kL/OxsFJit9VhRDYRawUDYzKivYlLm2EzKCO0+nC9rJXfIFwdo=",
                     "NJQZ0hNk40pt5aFitlwdx6k2Te7hMSMw1UHzNdgP1aUYbqaFbGSe3tRn4kL/OxsFJit9VhRDYRawUDYzKivYlLm2EzKCO0+nC9rJXfIFwdo=",
                 ]
             ),
-            "opprl_token_3v0": pd.Series(
+            "opprl_token_3": pd.Series(
                 [
                     "op48PUlod5WC7PMQHJp1wEtAApfgu/1G2WuGoVDMQ6V5EZPI7X5BfpZzrdoOrA90CFVw3X79t0ygazbSFrRKx+SupOvBYFRr8ZRZmT5oz8k=",
                     "op48PUlod5WC7PMQHJp1wEtAApfgu/1G2WuGoVDMQ6V5EZPI7X5BfpZzrdoOrA90CFVw3X79t0ygazbSFrRKx+SupOvBYFRr8ZRZmT5oz8k=",
@@ -46,9 +46,9 @@ class TestTokenizeCommand:
             [
                 "tokenize",
                 "--token",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "--token",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "--key",
                 str(tmp_path / "test_key.pem"),
                 "--format",
@@ -57,7 +57,6 @@ class TestTokenizeCommand:
                 str(tmp_path / "tokens.csv"),
             ],
         )
-        # raise result.exception
         assert result.exit_code == 0
         assert sorted(os.listdir(tmp_path)) == ["pii.csv", "test_key.pem", "tokens.csv"]
         actual = pd.read_csv(tmp_path / "tokens.csv", sep="|", header=0)
@@ -73,9 +72,9 @@ class TestTokenizeCommand:
             [
                 "tokenize",
                 "-t",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "-t",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "-k",
                 str(tmp_path / "test_key.pem"),
                 "-f",
@@ -99,9 +98,9 @@ class TestTokenizeCommand:
             [
                 "tokenize",
                 "-t",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "-t",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 str(tmp_path / "pii.csv"),
                 str(tmp_path / "tokens.csv"),
             ],
@@ -124,9 +123,9 @@ class TestTokenizeCommand:
             [
                 "tokenize",
                 "-t",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "-t",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "-f",
                 "csv",
                 str(tmp_path / "pii.csv"),
@@ -151,9 +150,9 @@ class TestTokenizeCommand:
             [
                 "tokenize",
                 "-t",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "-t",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "-k",
                 str(tmp_path / "test_key.pem"),
                 "-f",
@@ -178,9 +177,9 @@ class TestTokenizeCommand:
             [
                 "tokenize",
                 "-t",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "-t",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "-k",
                 str(tmp_path / "test_key.pem"),
                 "-f",
@@ -190,7 +189,7 @@ class TestTokenizeCommand:
             ],
         )
         assert result.exit_code == 1
-        assert isinstance(result.exception, (AnalysisException, KeyError))
+        assert isinstance(result.exception, AnalysisException)
         assert sorted(os.listdir(tmp_path)) == ["pii.csv", "test_key.pem"]
 
     def test_multipart_files_and_no_parallelism(self, tmp_path: Path, private_key: bytes):
@@ -205,9 +204,9 @@ class TestTokenizeCommand:
             [
                 "tokenize",
                 "-t",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "-t",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "-k",
                 str(tmp_path / "test_key.pem"),
                 "-f",
@@ -225,12 +224,12 @@ class TestTokenizeCommand:
 class TestTranscryptCommands:
     tokens = pd.DataFrame(
         {
-            "opprl_token_1v0": pd.Series(
+            "opprl_token_1": pd.Series(
                 [
                     "NJQZ0hNk40pt5aFitlwdx6k2Te7hMSMw1UHzNdgP1aUYbqaFbGSe3tRn4kL/OxsFJit9VhRDYRawUDYzKivYlLm2EzKCO0+nC9rJXfIFwdo=",
                 ]
             ),
-            "opprl_token_3v0": pd.Series(
+            "opprl_token_3": pd.Series(
                 [
                     "op48PUlod5WC7PMQHJp1wEtAApfgu/1G2WuGoVDMQ6V5EZPI7X5BfpZzrdoOrA90CFVw3X79t0ygazbSFrRKx+SupOvBYFRr8ZRZmT5oz8k=",
                 ]
@@ -239,12 +238,12 @@ class TestTranscryptCommands:
     )
     expected = pd.DataFrame(
         {
-            "opprl_token_1v0": pd.Series(
+            "opprl_token_1": pd.Series(
                 [
                     "U/JYKVLQWSUrpvJ1D03pvKmnhlgUTFjHaPtS0pZBLSqrDCOkBOR/mDf9xFt/Cr3AB8hI00oEkuunCTvNV3zbgdz9Y0jcwiI16zn51jSkhhM=",
                 ]
             ),
-            "opprl_token_3v0": pd.Series(
+            "opprl_token_3": pd.Series(
                 [
                     "cOrhMGV6oO3Vt8w3vV1K4TzvNYlkZZ9JOj9/53IGkD7vgce0I13uOrDFCcJEXD1qEa4Mm1Nimq4sprd8tFrdDHRDCOeZBE2Gs4DEEt7LhL0=",
                 ]
@@ -275,9 +274,9 @@ class TestTranscryptCommands:
                 "transcrypt",
                 "out",
                 "--token",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "--token",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "--key",
                 str(tmp_path / "test_key.pem"),
                 "--recipient",
@@ -303,9 +302,9 @@ class TestTranscryptCommands:
                 "transcrypt",
                 "in",
                 "--token",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "--token",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "--key",
                 str(tmp_path / "acme_key.pem"),
                 "--format",
@@ -350,9 +349,9 @@ class TestTranscryptCommands:
                 "transcrypt",
                 "out",
                 "-t",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "-t",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "-k",
                 str(tmp_path / "test_key.pem"),
                 "-r",
@@ -378,9 +377,9 @@ class TestTranscryptCommands:
                 "transcrypt",
                 "in",
                 "-t",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "-t",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "-k",
                 str(tmp_path / "acme_key.pem"),
                 "-f",
@@ -417,9 +416,9 @@ class TestTranscryptCommands:
                 "transcrypt",
                 "out",
                 "--token",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "--token",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 str(tmp_path / "tokens.csv"),
                 str(tmp_path / "ephemeral_tokens.csv"),
             ],
@@ -441,9 +440,9 @@ class TestTranscryptCommands:
                 "transcrypt",
                 "in",
                 "--token",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "--token",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 str(tmp_path / "ephemeral_tokens.csv"),
                 str(tmp_path / "acme_tokens.csv"),
             ],
@@ -485,9 +484,9 @@ class TestTranscryptCommands:
                 "transcrypt",
                 "out",
                 "--token",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "--token",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 str(tmp_path / "tokens.csv"),
                 str(tmp_path / "ephemeral_tokens.csv"),
             ],
@@ -512,9 +511,9 @@ class TestTranscryptCommands:
                 "transcrypt",
                 "in",
                 "--token",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "--token",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 str(tmp_path / "ephemeral_tokens.csv"),
                 str(tmp_path / "acme_tokens.csv"),
             ],
@@ -540,6 +539,8 @@ class TestTranscryptCommands:
         self,
         tmp_path: Path,
         private_key: bytes,
+        acme_public_key: bytes,
+        acme_private_key: bytes,
     ):
         runner = CliRunner()
 
@@ -553,9 +554,9 @@ class TestTranscryptCommands:
                 "transcrypt",
                 "out",
                 "--token",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "--token",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "--key",
                 str(tmp_path / "test_key.pem"),
                 "--recipient",
@@ -585,7 +586,7 @@ class TestTranscryptCommands:
             f.write(acme_public_key)
         with open(tmp_path / "acme_key.pem", "wb") as f:
             f.write(acme_private_key)
-        self.tokens.drop(columns=["opprl_token_3v0"]).to_csv(
+        self.tokens.drop(columns=["opprl_token_3"]).to_csv(
             tmp_path / "tokens.csv", sep="|", header=True, index=False
         )
 
@@ -595,9 +596,9 @@ class TestTranscryptCommands:
                 "transcrypt",
                 "out",
                 "--token",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "--token",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "--key",
                 str(tmp_path / "test_key.pem"),
                 "--recipient",
@@ -625,9 +626,9 @@ class TestTranscryptCommands:
                 "transcrypt",
                 "out",
                 "--token",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "--token",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "--key",
                 str(tmp_path / "test_key.pem"),
                 "--recipient",
@@ -642,7 +643,7 @@ class TestTranscryptCommands:
         # Remove one of the ephemeral token columns.
         (
             pd.read_csv(tmp_path / "ephemeral_tokens.csv", sep="|", header=0)
-            .drop(columns=["opprl_token_3v0"])
+            .drop(columns=["opprl_token_3"])
             .to_csv(tmp_path / "ephemeral_tokens.csv", sep="|", header=True, index=False)
         )
 
@@ -652,9 +653,9 @@ class TestTranscryptCommands:
                 "transcrypt",
                 "in",
                 "--token",
-                "opprl_token_1v0",
+                "opprl_token_1",
                 "--token",
-                "opprl_token_3v0",
+                "opprl_token_3",
                 "--key",
                 str(tmp_path / "acme_key.pem"),
                 "--format",
