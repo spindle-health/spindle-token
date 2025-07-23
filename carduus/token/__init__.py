@@ -92,7 +92,7 @@ class OpprlToken(Enum):
             Token #1 from the OPPRL specification. Creates tokens based on `first_initial`, `last_name`, `gender`, and `birth_date`.
         opprl_token_2:
             Token #2 from the OPPRL specification. Creates tokens based on `first_soundex`, `last_soundex`, `gender`, and `birth_date`.
-        orrpl_token_3:
+        opprl_token_3:
             Token #3 from the OPPRL specification. Creates tokens based on the `first_metaphone`, `last_metaphone`, `gender`, and `birth_date`.
 
     """
