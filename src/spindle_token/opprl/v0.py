@@ -1,3 +1,4 @@
+from copy import copy
 from typing import ClassVar
 from collections.abc import Callable, Iterable, Mapping
 from pyspark.sql import DataFrame, Column
@@ -20,20 +21,14 @@ from spindle_token._crypto import (
     make_asymmetric_encrypter,
     make_asymmetric_decrypter,
 )
-from spindle_token._utils import FrozenClass, null_propagating, base64_no_newline
+from spindle_token._utils import null_propagating, base64_no_newline
 from spindle_token.opprl._common import NameAttribute, GenderAttribute, DateAttribute
 
 
 def _derive_aes_key(rsa_key: bytes) -> bytes:
-    """Derives the corresponding AES key from the given RSA private key.
+    """Derives an AES key from the given RSA private key using SHAKE
 
-    Arguments:
-        rsa_key:
-            A RSA private key.
-
-    Returns:
-        An 32 byte AES key.
-
+    This choice of key derivation function was replaced in OPPRL v1 by HKDF.
     """
     digest = Hash(SHAKE256(32))
     digest.update(rsa_key)
@@ -49,7 +44,9 @@ def _tokenize_impl(
     """The implementation logic for `tokenize` introduced by OPPRL v0."""
     all_attr_input_columns: dict[str, str] = {}
     for attr, column_name in col_mapping.items():
-        for attr_id, _ in attr.derivatives().items():
+        attr_and_derivatives = copy(attr.derivatives())
+        attr_and_derivatives[attr.attr_id] = attr
+        for attr_id, _ in attr_and_derivatives.items():
             all_attr_input_columns[attr_id] = column_name
 
     attributes = sorted(attributes, key=lambda f: f.attr_id)
@@ -115,16 +112,16 @@ class _ProtocolV0(TokenProtocol):
         return _transcrypt_in_impl(ephemeral_token, self.decrypt_rsa, self.encrypt_aes)
 
 
-class _ProtocolFactoryV0(TokenProtocolFactory):
+class _ProtocolFactoryV0(TokenProtocolFactory[_ProtocolV0]):
 
     def __init__(self, id: str):
         super().__init__(id)
 
-    def bind(self, private_key: bytes, recipient_public_key: bytes | None) -> TokenProtocol:
+    def bind(self, private_key: bytes, recipient_public_key: bytes | None) -> _ProtocolV0:
         return _ProtocolV0(private_key, recipient_public_key)
 
 
-class OpprlV0(metaclass=FrozenClass):
+class OpprlV0():
 
     first_name: ClassVar[NameAttribute] = NameAttribute("opprl.v0.first")
 

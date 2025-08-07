@@ -119,7 +119,7 @@ def common_options(func):
 
 @click.group()
 def cli():
-    """A command line tool for tokenizing and transcrypting data files using the Open Privacy Preserving Record Linkage (OPPRL) protocol."""
+    """A command line tool for tokenizing and transcoding data files using the Open Privacy Preserving Record Linkage (OPPRL) protocol."""
     pass
 
 
@@ -183,19 +183,19 @@ def tokenize(
 
 
 @cli.group()
-def transcrypt():
+def transcode():
     """Prepare tokenized datasets to be sent or received."""
     pass
 
 
-@transcrypt.command()
+@transcode.command()
 @click.option(
     "-t",
     "--token",
     type=click.Choice(list(TOKEN_SPECS.keys())),
     multiple=True,
     required=True,
-    help="The column name of an OPPRL token on the input data to transcrypt.",
+    help="The column name of an OPPRL token on the input data to transcode.",
 )
 @click.option(
     "-r",
@@ -232,7 +232,7 @@ def out(
     spark = get_spark(parallelism)
     df = spark.read.format(format).option("delimiter", "|").option("header", True).load(input)
 
-    df = lib.transcrypt_out(
+    df = lib.transcode_out(
         df,
         tokens,
         recipient_public_key=recipient.read() if recipient else None,
@@ -249,14 +249,14 @@ def out(
         dfw.save(str(output_path))
 
 
-@transcrypt.command("in")
+@transcode.command("in")
 @click.option(
     "-t",
     "--token",
     type=click.Choice(list(TOKEN_SPECS.keys())),
     multiple=True,
     required=True,
-    help="The column name of an OPPRL token on the input data to transcrypt.",
+    help="The column name of an OPPRL token on the input data to transcode.",
 )
 @common_options
 @click.argument("input", type=click.Path(exists=True))
@@ -286,7 +286,7 @@ def in_(
     spark = get_spark(parallelism)
     df = spark.read.format(format).option("delimiter", "|").option("header", True).load(input)
 
-    df = lib.transcrypt_in(
+    df = lib.transcode_in(
         df,
         tokens,
         private_key=key.read() if key else None,

@@ -17,12 +17,8 @@ from pyspark.sql.functions import (
 from pyspark.sql.types import StringType
 
 
-class FrozenClass(type):
-    def __setattr__(cls, attr, value):
-        raise AttributeError(f"Cannot change attribute of frozen class {cls}")
-
-
 def remap(mapping: dict[Any, Any], col: Column, default: Any | None = None) -> Column:
+    """Creates a column expression that remaps the contents of `col` according to `mapping` or falls back to `default`."""
     result = None
     for k, v in mapping.items():
         if result is None:
@@ -35,6 +31,7 @@ def remap(mapping: dict[Any, Any], col: Column, default: Any | None = None) -> C
 
 
 def null_if(pred: Callable[[Column], Column], col: Column) -> Column:
+    """Replaces values of `col` with null if `pred` is satisfied."""
     return when(~pred(col), col).otherwise(lit(None))
 
 
@@ -50,6 +47,7 @@ metaphone = udf(_metaphone_udf_impl, returnType=StringType(), useArrow=False)
 
 
 def normalize_text(raw: Column) -> Column:
+    """Some common text normalization used throughout OPPRL."""
     return null_if(lambda c: length(c) == 0, trim(regexp_replace(upper(raw), "\\s+", " ")))
 
 
