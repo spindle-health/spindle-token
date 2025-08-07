@@ -24,6 +24,12 @@ See the [getting started guide](https://spindle-health.github.io/carduus/guides/
 
 The full [API](https://spindle-health.github.io/carduus/api/) and an [example usage on Databricks](https://spindle-health.github.io/carduus/guides/databricks/) are also provided on the project's web page.
 
+## Security Audit
+
+This project has received a security audit from [Echelon Risk + Cyber](https://echeloncyber.com/) who provided the following statement. More details on this security audit can be obtained from Echelon Risk + Cyber at [this link](https://echeloncyber.com/spindle-health-security-certification-report).
+
+ > Echelon Risk + Cyber certifies that as of May 30, 2025, The Spindle Token implementation and Open Privacy Preserving Record Linkage (OPPRL) Protocol exhibit a high degree of alignment with secure cryptographic standards and secure development practices. The use of FIPS -compliant algorithms (AES-G CM-SIV, RSA-OAEP, SHA2 family), layered encryption, and privacy preserving design patterns indicate strong foundational security. Note: This certification is issued in good faith, based on the materials available to the Echelon team at the time of the review.
+
 ## Contributing
 
 Please refer to the carduus [contributing guide](https://spindle-health.github.io/carduus/CONTRIBUTING/) for information on how to get started contributing to the project.
@@ -31,8 +37,17 @@ Please refer to the carduus [contributing guide](https://spindle-health.github.i
 ### Organizations that have contributed to Carduus
 
 <a href="https://spindlehealth.com/">
-    <img src="https://spindlehealth.com/wordmark_color_dark.png"
+    <img
+        src="assets/spindle_health.png"
         alt="Spindle Health"
-        style="padding: 10px; height: 64px"
+        style="height: 4rem"
+    />
+</a>
+<br/>
+<a href="https://spindlehealth.com/">
+    <img
+        src="assets/echelon_risk_cyber.png"
+        alt="Echelon Risk + Cyber"
+        style="height: 4rem"
     />
 </a>
