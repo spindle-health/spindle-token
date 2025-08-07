@@ -3,11 +3,18 @@ nav:
   - Home: README.md
   - Getting Started: guides/getting-started.md
   - Guides:
-    - Carduus on Databricks: guides/databricks.ipynb
-    - Defining Token Specs: guides/custom-tokens.md
-    - Using Custom PII: guides/custom-pii.md
+    - Spindle Token on Databricks: guides/databricks.ipynb
+    - Custom Tokens: guides/custom-tokens.md
   - API: api.md
   - Command Line Interface: cli.md
+  - carduus (legacy):
+    - Getting Started: carduus/guides/getting-started.md
+    - Guides:
+      - Carduus on Databricks: carduus/guides/databricks.ipynb
+      - Defining Token Specs: carduus/guides/custom-tokens.md
+      - Using Custom PII: carduus/guides/custom-pii.md
+    - API v0: carduus/api.md
+    - Command Line Interface: carduus/cli.md
   - OPPRL:
     - About: opprl.md
     - Specification: opprl/PROTOCOL.md

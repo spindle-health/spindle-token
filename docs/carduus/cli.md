@@ -1,10 +1,10 @@
 # Command Line Interface
 
-The spindle-token command line interface (CLI) offers tokenization and token transcoding capabilities of data files from the local file system.
+The spindle-token command line interface (CLI) offers tokenization and transcription capabilities of data files from the local file system.
 
 # Usage Guide
 
-The spindle-token CLI is included with every installation of the spindle-token library. Install spindle-token to your python (virtual) environment using `pip`. See our [getting started guide](./getting-started.md) for more information. Make sure the python interpreter directory is on your PATH.
+The spindle-token CLI is included with every installation of the spindle-token library. Install spindle-token to your python (virtual) environment using `pip`. See our [getting started guide](http://token.spindlehealth.com/guides/getting-started/) for more information. Make sure the python interpreter directory is on your PATH.
 
 You can test your installation and environment setup by running the `--help` command. You should see documentation about the spindle-token CLI.
 
@@ -12,13 +12,13 @@ You can test your installation and environment setup by running the `--help` com
 spindle-token --help
 ```
 
-Once installed, you can run the commands for `tokenize` and `transcode` with the relevant options and arguments. All commands and sub-commands follow the same general design. Positional arguments and paths the the input data and desired location to write output data. Options configure how the input data is transformed. For example, options dictate which tokens should be generated, which file format to use, and the encryption key.
+Once installed, you can run the commands for `tokenize` and `transcrypt` with the relevant options and arguments. All commands and sub-commands follow the same general design. Positional arguments and paths the the input data and desired location to write output data. Options configure how the input data is transformed. For example, options dictate which tokens should be generated, which file format to use, and the encryption key.
 
 This example invocation of the `tokenize` command illustrates the general pattern.
 
 ```
 spindle-token tokenize \
-    --token opprl_token_1v1 --token opprl_token_2v1 --token opprl_token_3v1 \
+    --token opprl_token_1 --token opprl_token_2 --token opprl_token_3 \
     --key private_key.pem \
     --format csv \
     --parallelism 1 \
@@ -57,7 +57,8 @@ When using CSV files there are a few assumptions that the data file(s) must meet
 
 Input datasets can either be a single data file or partitioned into a directory of multiple data files. Splitting larger datasets into multiple data files can help the CLI [parallelize](#parallelism) over larger datasets. If the input dataset is a single data file the output dataset will be single data file. Similarly, if the input dataset is a directory the argument for the output location will be a directory that will include a partitioned output dataset.
 
-### <a name="column-names"></a> Column Names
+### Column Names
+<a name="column-names"></a>
 
 THe OPPRL tokenization protocol requires specific PII attributes to be normalized, transformed, concatenated, hashed, and then encrypted together. Thus, the spindle-token CLI must know which columns of the input dataset correspond to each logical PII attribute (first name, last name, birth date, etc).
 
@@ -68,9 +69,10 @@ The spindle-token CLI requires specific column naming for PII columns so that th
 - `gender`
 - `birth_date`
 
-If you are only adding tokens that require a subset of these PII fields, the input dataset may omit columns for the other PII attributes that are not required. For information on which PII attributes are required for each token in the OPPRL protocol, see the official [specification](./opprl/PROTOCOL.md).
+If you are only adding tokens that require a subset of these PII fields, the input dataset may omit columns for the other PII attributes that are not required. For information on which PII attributes are required for each token in the OPPRL protocol, see the official [specification](http://token.spindlehealth.com/opprl/PROTOCOL/).
 
-### <a name="parallelism"></a> Parallelism
+### Parallelism
+<a name="parallelism"></a>
 
 The spindle-token CLI supports multi-threaded parallelism. This helps work with larger datasets that are partitioned into multiple part files within a directory. If `--parallelism` is set to a number >1 then that number of partition files will be processed at once. This option can also be set with the `SPINDLE_TOKEN_PARALLELISM` environment variable. If parallelism is not provided, the spindle-token will default to using the same number of threads as the host machine has logical cores.
 
@@ -79,15 +81,15 @@ The spindle-token CLI supports multi-threaded parallelism. This helps work with 
 The help text, options, and arguments of every command and sub-command of the spindle-token CLI. You can get this documentation for the specific version of the CLI installed in your python environment using the `--help` option on any command or sub-command.
 
 ::: mkdocs-click
-    :module: spindle_token._cli
+    :module: carduus.cli
     :command: tokenize
     :prog_name: spindle-token tokenize
     :depth: 1
 
 ::: mkdocs-click
-    :module: spindle_token._cli
-    :command: transcode
-    :prog_name: spindle-token transcode
+    :module: carduus.cli
+    :command: transcrypt
+    :prog_name: spindle-token transcrypt
     :depth: 1
 
 # Limitations

@@ -11,7 +11,6 @@ from spindle_token._crypto import (
     make_asymmetric_encrypter,
     make_asymmetric_decrypter,
 )
-from spindle_token._utils import FrozenClass
 from spindle_token.opprl._common import NameAttribute, GenderAttribute, DateAttribute
 import spindle_token.opprl.v0 as v0
 
@@ -47,16 +46,16 @@ class _ProtocolV1(TokenProtocol):
         return v0._transcrypt_in_impl(ephemeral_token, self.decrypt_rsa, self.encrypt_aes)
 
 
-class _ProtocolFactoryV1(TokenProtocolFactory):
+class _ProtocolFactoryV1(TokenProtocolFactory[_ProtocolV1]):
 
     def __init__(self, id: str):
         super().__init__(id)
 
-    def bind(self, private_key: bytes, recipient_public_key: bytes | None) -> TokenProtocol:
+    def bind(self, private_key: bytes, recipient_public_key: bytes | None) -> _ProtocolV1:
         return _ProtocolV1(private_key, recipient_public_key)
 
 
-class OpprlV1(metaclass=FrozenClass):
+class OpprlV1():
 
     first_name: ClassVar[NameAttribute] = NameAttribute("opprl.v1.first")
 
