@@ -1,9 +1,14 @@
 from collections.abc import Mapping, Iterable
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import col
+from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.serialization import (
     load_pem_private_key,
     load_pem_public_key,
+    Encoding,
+    PrivateFormat,
+    PublicFormat,
+    NoEncryption,
 )
 from spindle_token._crypto import private_key_from_env, public_key_from_env
 from spindle_token.core import PiiAttribute, Token, TokenProtocol
@@ -40,7 +45,7 @@ def tokenize(
     return df.select(col("*"), *token_columns)
 
 
-def transcrypt_out(
+def transcode_out(
     df: DataFrame,
     tokens: Iterable[Token],
     recipient_public_key: bytes | None = None,
@@ -64,7 +69,7 @@ def transcrypt_out(
     )
 
 
-def transcrypt_in(
+def transcode_in(
     df: DataFrame,
     tokens: Iterable[Token],
     private_key: bytes | None = None,
@@ -81,3 +86,30 @@ def transcrypt_in(
             for token in tokens
         }
     )
+
+
+def generate_pem_keys(key_size: int = 2048) -> tuple[bytes, bytes]:
+    """Generates a fresh RSA key pair.
+
+    Arguments:
+        key_size:
+            The size (in bits) of the key.
+
+    Returns:
+        A tuple containing the private key and public key bytes. Both in the PEM encoding.
+
+    """
+    key = rsa.generate_private_key(
+        public_exponent=65537,
+        key_size=key_size,
+    )
+    private = key.private_bytes(
+        encoding=Encoding.PEM,
+        format=PrivateFormat.PKCS8,
+        encryption_algorithm=NoEncryption(),
+    )
+    public = key.public_key().public_bytes(
+        encoding=Encoding.PEM,
+        format=PublicFormat.SubjectPublicKeyInfo,
+    )
+    return private, public

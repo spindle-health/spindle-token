@@ -4,14 +4,14 @@ from pyspark.sql import SparkSession, Row
 from pyspark.sql.types import StructType, StructField, LongType, StringType, DateType
 from pyspark.sql.functions import regexp_replace, substring
 from pyspark.testing.utils import assertDataFrameEqual, assertSchemaEqual
-from spindle_token import tokenize, transcrypt_out, transcrypt_in
+from spindle_token import tokenize, transcode_out, transcode_in
 from spindle_token._crypto import _PRIVATE_KEY_ENV_VAR, _RECIPIENT_PUBLIC_KEY_ENV_VAR
 from spindle_token.core import PiiAttribute, Token
 from spindle_token.opprl.v0 import OpprlV0 as v0
 from spindle_token.opprl.v1 import OpprlV1 as v1
 
 
-def test_tokenize_and_transcrypt_opprl(
+def test_tokenize_and_transcode_opprl(
     spark: SparkSession, private_key: bytes, acme_public_key: bytes, acme_private_key: bytes
 ):
     all_tokens = [v0.token1, v0.token2, v0.token3, v1.token1, v1.token2, v1.token3]
@@ -85,7 +85,7 @@ def test_tokenize_and_transcrypt_opprl(
             )
         ),
     )
-    sent_tokens = transcrypt_out(
+    sent_tokens = transcode_out(
         tokens.select("id", *all_token_names),
         tokens=all_tokens,
         recipient_public_key=acme_public_key,
@@ -105,7 +105,7 @@ def test_tokenize_and_transcrypt_opprl(
     # When transferring between parties, tokens from the same PII should _not_ be equal.
     assert sent_tokens.distinct().count() == 2
 
-    result = transcrypt_in(
+    result = transcode_in(
         sent_tokens.select("id", *all_token_names),
         tokens=all_tokens,
         private_key=acme_private_key,
@@ -376,7 +376,7 @@ def test_null_safe_tokenize(spark: SparkSession, private_key: bytes):
     assertDataFrameEqual(actual, expected)
 
 
-def test_null_safe_transcypt(
+def test_null_safe_transcode(
     spark: SparkSession, private_key: bytes, acme_public_key: bytes, acme_private_key: bytes
 ):
     tokens = spark.createDataFrame(
@@ -388,9 +388,9 @@ def test_null_safe_transcypt(
             ]
         ),
     )
-    ephemeral = transcrypt_out(tokens, (v0.token1, v1.token1), acme_public_key, private_key)
+    ephemeral = transcode_out(tokens, (v0.token1, v1.token1), acme_public_key, private_key)
     assertDataFrameEqual(tokens, ephemeral)
-    tokens2 = transcrypt_in(ephemeral, (v0.token1, v1.token1), acme_private_key)
+    tokens2 = transcode_in(ephemeral, (v0.token1, v1.token1), acme_private_key)
     assertDataFrameEqual(ephemeral, tokens2)
 
 
@@ -439,11 +439,11 @@ def test_keys_from_env(
             ],
         ),
     )
-    ephemeral_tokens = transcrypt_out(tokens, (v1.token1,))
+    ephemeral_tokens = transcode_out(tokens, (v1.token1,))
 
     # Simulate the environment of the recipient.
     monkeypatch.setenv(_PRIVATE_KEY_ENV_VAR, acme_private_key.decode())
-    acme_tokens = transcrypt_in(ephemeral_tokens, (v1.token1,))
+    acme_tokens = transcode_in(ephemeral_tokens, (v1.token1,))
     assertDataFrameEqual(
         acme_tokens,
         spark.createDataFrame(
