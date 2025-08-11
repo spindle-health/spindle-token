@@ -31,6 +31,28 @@ def tokenize(
     tokens: Iterable[Token],
     private_key: bytes | None = None,
 ) -> DataFrame:
+    """Adds encrypted token columns based on PII.
+
+    All PII columns found in the `DataFrame` are normalized according and transformed as needed according to the `col_mapping`.
+    The PII attributes that make up of each [`Token`][spindle_token.core.Token] objects in `tokens` are then hashed and
+    encrypted together according to their respective protocol versions.
+
+    Arguments:
+        df:
+            The pyspark `DataFrame` containing all PII attributes.
+        col_mapping:
+            A dictionary that maps instances of [`PiiAttribute`][spindle_token.core.PiiAttribute] to the corresponding
+            column name of `df`.
+        tokens:
+            A collection of [`Token`][spindle_token.core.Token] objects that denotes which tokens (from which PII attributes)
+            should be added to the dataframe.
+        private_key:
+            Your private RSA key. This argument should only be set when reading from a secrets manager or testing, otherwise it is
+            recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your private key.
+
+    Returns:
+        The input `DataFrame` with by encrypted tokens added.
+    """
     if not private_key:
         private_key = private_key_from_env()
 
@@ -54,6 +76,23 @@ def transcode_out(
     recipient_public_key: bytes | None = None,
     private_key: bytes | None = None,
 ) -> DataFrame:
+    """Transcodes token columns of a dataframe into ephemeral tokens.
+
+    Arguments:
+        df:
+            The pyspark `DataFrame` containing token columns.
+        tokens:
+            A collection of [`Token`][spindle_token.core.Token] objects that denote which columns of the input dataframe
+            will be transcoded into ephemeral tokens.
+        recipient_public_key:
+            The public RSA key of the recipient who will be receiving the dataset with ephemeral tokens. Can also be supplied
+            the SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY environment variable.
+        private_key:
+            Your private RSA key. This argument should only be set when reading from a secrets manager or testing, otherwise it is
+            recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your private key.
+    Returns:
+        The `DataFrame` with the tokens replaced by ephemeral tokens for sending to the recipient.
+    """
     if not recipient_public_key:
         recipient_public_key = public_key_from_env()
     if not private_key:
@@ -77,6 +116,25 @@ def transcode_in(
     tokens: Iterable[Token],
     private_key: bytes | None = None,
 ) -> DataFrame:
+    """Transcodes ephemeral token columns into normal tokens.
+
+    Used by the data recipient of a dataset containing ephemeral tokens produced by [`transcode_out`][spindle_token.transcode_out]
+    to transcode the ephemeral tokens such that they will match other datasets tokenized with the same private key.
+
+    Arguments:
+        df:
+            Spark `DataFrame` with ephemeral token columns to transcode.
+        tokens:
+            A collection of [`Token`][spindle_token.core.Token] objects that denote which columns of the input dataframe
+            will be transcoded from ephemeral tokens into normal tokens.
+        private_key:
+            Your private RSA key. Must be the corresponding private key for the public key given to the sender when calling
+            `transcode_out`. This argument should only be set when reading from a secrets manager or testing, otherwise it is
+            recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your private key.
+
+    Returns:
+        The `DataFrame` with the ephemeral tokens replaced with normal tokens.
+    """
     if not private_key:
         private_key = private_key_from_env()
 
