@@ -55,7 +55,7 @@ class _ProtocolFactoryV1(TokenProtocolFactory[_ProtocolV1]):
         return _ProtocolV1(private_key, recipient_public_key)
 
 
-class OpprlV1():
+class OpprlV1:
 
     first_name: ClassVar[NameAttribute] = NameAttribute("opprl.v1.first")
 
