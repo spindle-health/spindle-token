@@ -272,7 +272,7 @@ class TestTranscryptCommands:
         result1 = runner.invoke(
             cli,
             [
-                "transcrypt",
+                "transcode",
                 "out",
                 "--token",
                 "opprl_token_1v0",
@@ -300,7 +300,7 @@ class TestTranscryptCommands:
         result2 = runner.invoke(
             cli,
             [
-                "transcrypt",
+                "transcode",
                 "in",
                 "--token",
                 "opprl_token_1v0",
@@ -347,7 +347,7 @@ class TestTranscryptCommands:
         result1 = runner.invoke(
             cli,
             [
-                "transcrypt",
+                "transcode",
                 "out",
                 "-t",
                 "opprl_token_1v0",
@@ -375,7 +375,7 @@ class TestTranscryptCommands:
         result2 = runner.invoke(
             cli,
             [
-                "transcrypt",
+                "transcode",
                 "in",
                 "-t",
                 "opprl_token_1v0",
@@ -414,7 +414,7 @@ class TestTranscryptCommands:
         result1 = runner.invoke(
             cli,
             [
-                "transcrypt",
+                "transcode",
                 "out",
                 "--token",
                 "opprl_token_1v0",
@@ -438,7 +438,7 @@ class TestTranscryptCommands:
         result2 = runner.invoke(
             cli,
             [
-                "transcrypt",
+                "transcode",
                 "in",
                 "--token",
                 "opprl_token_1v0",
@@ -482,7 +482,7 @@ class TestTranscryptCommands:
         result1 = runner.invoke(
             cli,
             [
-                "transcrypt",
+                "transcode",
                 "out",
                 "--token",
                 "opprl_token_1v0",
@@ -509,7 +509,7 @@ class TestTranscryptCommands:
         result2 = runner.invoke(
             cli,
             [
-                "transcrypt",
+                "transcode",
                 "in",
                 "--token",
                 "opprl_token_1v0",
@@ -550,7 +550,7 @@ class TestTranscryptCommands:
         result = runner.invoke(
             cli,
             [
-                "transcrypt",
+                "transcode",
                 "out",
                 "--token",
                 "opprl_token_1v0",
@@ -592,7 +592,7 @@ class TestTranscryptCommands:
         result1 = runner.invoke(
             cli,
             [
-                "transcrypt",
+                "transcode",
                 "out",
                 "--token",
                 "opprl_token_1v0",
@@ -617,12 +617,12 @@ class TestTranscryptCommands:
             "tokens.csv",
         ]
 
-        # Create ephemeral tokens correctly to test `transcrypt in`
+        # Create ephemeral tokens correctly to test `transcode in`
         self.tokens.to_csv(tmp_path / "tokens.csv", sep="|", header=True, index=False)
         runner.invoke(
             cli,
             [
-                "transcrypt",
+                "transcode",
                 "out",
                 "--token",
                 "opprl_token_1v0",
@@ -649,7 +649,7 @@ class TestTranscryptCommands:
         result2 = runner.invoke(
             cli,
             [
-                "transcrypt",
+                "transcode",
                 "in",
                 "--token",
                 "opprl_token_1v0",

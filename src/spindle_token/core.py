@@ -44,13 +44,13 @@ class PiiAttribute(ABC):
         pass
 
     def derivatives(self) -> dict[str, "PiiAttribute"]:
-        """A collection of PII attributes that can be derived from this PII attribute.
+        """A collection of PII attributes that can be derived from this PII attribute, including this PiiAttribute.
 
         Returns:
-            A `dict` with globally unique (typically namespaced) attribute IDs as the key. Values are instances of 
+            A `dict` with globally unique (typically namespaced) attribute IDs as the key. Values are instances of
             [PiiAttribute][spindle_token.core.PiiAttribute] that produce normalized values for each derivative attribute.
         """
-        return {}
+        return {self.attr_id: self}
 
     def __repr__(self):
         return f"{type(self).__qualname__}({self.attr_id})"
@@ -61,7 +61,7 @@ class PiiAttribute(ABC):
 
 class TokenProtocol(ABC):
     """An abstract base class for a specific version of the OPPRL tokenization protocol.
-    
+
     This abstract base class is intended to be extended by users who want to implement custom tokenization protocols.
 
     It is assumed that instances of the `TokenProtocol` will provide any configuration or other inputs
@@ -77,6 +77,7 @@ class TokenProtocol(ABC):
         col_mapping: Mapping[PiiAttribute, str],
         attributes: Iterable[PiiAttribute],
     ) -> Column: ...
+
     """Creates a Column expression for a single token.
 
     Arguments:
@@ -94,9 +95,9 @@ class TokenProtocol(ABC):
     """
 
     @abstractmethod
-    def transcode_out(self, token: Column) -> Column: 
+    def transcode_out(self, token: Column) -> Column:
         """Transcodes the given token into an ephemeral token.
-        
+
         Arguments:
             token:
                 A pyspark `Column` of tokens.
@@ -107,9 +108,9 @@ class TokenProtocol(ABC):
         ...
 
     @abstractmethod
-    def transcode_in(self, ephemeral_token: Column) -> Column: 
+    def transcode_in(self, ephemeral_token: Column) -> Column:
         """Transcodes the given ephemeral token into a normal token.
-        
+
         Arguments:
             ephemeral_token:
                 A pyspark `Column` of ephemeral tokens.
@@ -137,16 +138,16 @@ class TokenProtocolFactory(ABC, Generic[P]):
         self.id = id
 
     @abstractmethod
-    def bind(self, private_key: bytes, recipient_public_key: bytes | None) -> P: 
+    def bind(self, private_key: bytes, recipient_public_key: bytes | None) -> P:
         """Creates an instance of the [TokenProtocol][spindle_token.core.TokenProtocol] with the user provided encryption keys.
 
         Arguments:
             private_key:
                 The private RSA key to use when tokenizing PII and transcoding tokens.
             recipient_public_key:
-                The public RSA key of the intended data recipient to use when transcoding tokens into ephemeral tokens. 
+                The public RSA key of the intended data recipient to use when transcoding tokens into ephemeral tokens.
                 Can be `None` if the instance of `TokenProtocol` will not be transcoding tokens into ephemeral tokens.
-        
+
         Returns:
             An instance of a `TokenProtocol` implementation.
         """
@@ -156,9 +157,9 @@ class TokenProtocolFactory(ABC, Generic[P]):
 @dataclass(frozen=True)
 class Token:
     """A specification of a token.
-    
+
     Attributes:
-        name: 
+        name:
             An identifier safe name for the attribute. Will be used as the column name on dataframes. Must be unique
             across other `Token` specifications.
         protocol:
