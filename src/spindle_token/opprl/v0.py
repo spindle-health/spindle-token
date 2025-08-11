@@ -24,6 +24,9 @@ from spindle_token._utils import null_propagating, base64_no_newline
 from spindle_token.opprl._common import NameAttribute, GenderAttribute, DateAttribute
 
 
+__all__ = ["OpprlV0"]
+
+
 def _derive_aes_key(rsa_key: bytes) -> bytes:
     """Derives an AES key from the given RSA private key using SHAKE
 

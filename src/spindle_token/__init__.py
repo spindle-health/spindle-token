@@ -14,6 +14,9 @@ from spindle_token._crypto import private_key_from_env, public_key_from_env
 from spindle_token.core import PiiAttribute, Token, TokenProtocol
 
 
+__all__ = ["tokenize", "transcode_out", "transcode_in", "generate_pem_keys"]
+
+
 def _bound_protocols(tokens: Iterable[Token], private_key: bytes, public_key: bytes | None):
     protocols: dict[str, TokenProtocol] = {}
     for token in tokens:

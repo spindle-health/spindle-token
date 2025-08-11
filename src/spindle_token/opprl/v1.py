@@ -15,6 +15,9 @@ from spindle_token.opprl._common import NameAttribute, GenderAttribute, DateAttr
 import spindle_token.opprl.v0 as v0
 
 
+__all__ = ["OpprlV1"]
+
+
 class _ProtocolV1(TokenProtocol):
 
     def __init__(self, private_key: bytes, recipient_public_key: bytes | None):
