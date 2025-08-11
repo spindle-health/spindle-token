@@ -59,6 +59,11 @@ class _ProtocolFactoryV1(TokenProtocolFactory[_ProtocolV1]):
 
 
 class OpprlV1:
+    """All instances of [PiiAttribute][spindle_token.core.PiiAttribute], [Token][spindle_token.core.Token], and 
+    [TokenProtocolFactory][spindle_token.core.TokenProtocolFactory] for v1 of the OPPRL protocol.
+
+    All members are class variables, and therefore this class does not need to be instantiated.
+    """
 
     first_name: ClassVar[NameAttribute] = NameAttribute("opprl.v1.first")
 

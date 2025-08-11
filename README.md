@@ -55,9 +55,7 @@ Please refer to the carduus [contributing guide](https://spindle-health.github.i
 
 # spindle-token v1.0 Roadmap
 
-- Add docstrings
 - Rewrite readme and documentation guides
 - Write migration guide
-- Write __all__ for each public module.
 - Write full OPPRL protocol doc
 - Add new tokens
