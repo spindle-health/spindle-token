@@ -1,4 +1,3 @@
-from copy import copy
 from typing import ClassVar
 from collections.abc import Callable, Iterable, Mapping
 from pyspark.sql import DataFrame, Column
@@ -40,17 +39,14 @@ def _tokenize_impl(
     col_mapping: Mapping[PiiAttribute, str],
     attributes: Iterable[PiiAttribute],
     encrypt_aes: Callable[[Column], Column],
-):
+) -> Column:
     """The implementation logic for `tokenize` introduced by OPPRL v0."""
     all_attr_input_columns: dict[str, str] = {}
     for attr, column_name in col_mapping.items():
-        attr_and_derivatives = copy(attr.derivatives())
-        attr_and_derivatives[attr.attr_id] = attr
-        for attr_id, _ in attr_and_derivatives.items():
+        for attr_id, _ in attr.derivatives().items():
             all_attr_input_columns[attr_id] = column_name
 
     attributes = sorted(attributes, key=lambda f: f.attr_id)
-
     attr_columns = []
     for attr in attributes:
         input_column = all_attr_input_columns[attr.attr_id]
@@ -121,7 +117,7 @@ class _ProtocolFactoryV0(TokenProtocolFactory[_ProtocolV0]):
         return _ProtocolV0(private_key, recipient_public_key)
 
 
-class OpprlV0():
+class OpprlV0:
 
     first_name: ClassVar[NameAttribute] = NameAttribute("opprl.v0.first")
 
