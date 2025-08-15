@@ -133,12 +133,15 @@ class TokenProtocolFactory(ABC, Generic[P]):
     This abstract base class is intended to be extended by users who want to implement custom tokenization protocols.
 
     Attributes:
-        id: An identifier for the `TokenProtocolFactory`. Should be globally unique across all logically different `TokenProtocolFactory`.
+        factory_id: An identifier for the `TokenProtocolFactory`. Should be globally unique across all logically different `TokenProtocolFactory`.
     """
 
-    def __init__(self, id: str):
+    def __init__(self, factory_id: str):
         """Initializes the `TokenProtocolFactory` with the given globally unique factory ID."""
-        self.id = id
+        self.factory_id = factory_id
+
+    def __repr__(self):
+        return f"{type(self).__qualname__}({self.factory_id})"
 
     @abstractmethod
     def bind(self, private_key: bytes, recipient_public_key: bytes | None) -> P:
