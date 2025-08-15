@@ -215,4 +215,3 @@ For more information about different modes of deployment, see the official Spark
 - Learn more about using Carduus and extending it's functionality from the advanced user guides:
     - [Using Carduus on Databricks](./databricks.ipynb)
     - [Defining custom token specifications](./custom-tokens.md)
-    - [Adding support for custom PII attributes](./custom-pii.md)

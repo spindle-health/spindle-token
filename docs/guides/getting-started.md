@@ -96,7 +96,7 @@ To perform tokenization, call the `tokenize` function and pass it the PII `DataF
 
 ```python
 from spindle_token import tokenize
-from spindle_token.opprl.v1 import OpprlV1
+from spindle_token.opprl import OpprlV1
 
 tokens = tokenize(
     pii,
@@ -151,7 +151,7 @@ Spindle-token provides the `transcode_out` function in for the sender to call on
 
 ```python
 from spindle_token import transcode_out
-from spindle_token.opprl.v1 import OpprlV1
+from spindle_token.opprl import OpprlV1
 
 tokens_to_send = transcode_out(
     tokens, 
@@ -182,7 +182,7 @@ Notice that the first 2 records pertaining to the same subject (label = 1) have 
 
 ```python
 from spindle_token import transcode_in
-from spindle_token.opprl.v1 import OpprlV1
+from spindle_token.opprl import OpprlV1
 
 tokens_received = transcrypt_in(
     tokens_to_send, 
