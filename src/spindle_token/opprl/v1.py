@@ -51,15 +51,15 @@ class _ProtocolV1(TokenProtocol):
 
 class _ProtocolFactoryV1(TokenProtocolFactory[_ProtocolV1]):
 
-    def __init__(self, id: str):
-        super().__init__(id)
+    def __init__(self, factory_id: str):
+        super().__init__(factory_id)
 
     def bind(self, private_key: bytes, recipient_public_key: bytes | None) -> _ProtocolV1:
         return _ProtocolV1(private_key, recipient_public_key)
 
 
 class OpprlV1:
-    """All instances of [PiiAttribute][spindle_token.core.PiiAttribute], [Token][spindle_token.core.Token], and 
+    """All instances of [PiiAttribute][spindle_token.core.PiiAttribute], [Token][spindle_token.core.Token], and
     [TokenProtocolFactory][spindle_token.core.TokenProtocolFactory] for v1 of the OPPRL protocol.
 
     All members are class variables, and therefore this class does not need to be instantiated.
