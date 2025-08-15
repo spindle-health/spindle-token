@@ -20,8 +20,8 @@ __all__ = ["tokenize", "transcode_out", "transcode_in", "generate_pem_keys"]
 def _bound_protocols(tokens: Iterable[Token], private_key: bytes, public_key: bytes | None):
     protocols: dict[str, TokenProtocol] = {}
     for token in tokens:
-        if token.protocol.id not in protocols:
-            protocols[token.protocol.id] = token.protocol.bind(private_key, public_key)
+        if token.protocol.factory_id not in protocols:
+            protocols[token.protocol.factory_id] = token.protocol.bind(private_key, public_key)
     return protocols
 
 
@@ -63,7 +63,7 @@ def tokenize(
 
     token_columns = []
     for token in tokens:
-        protocol = protocols[token.protocol.id]
+        protocol = protocols[token.protocol.factory_id]
         token_column = protocol.tokenize(df, col_mapping, token.attributes).alias(token.name)
         token_columns.append(token_column)
 
@@ -105,7 +105,7 @@ def transcode_out(
     protocols = _bound_protocols(tokens, private_key, recipient_public_key)
     return df.withColumns(
         {
-            token.name: protocols[token.protocol.id].transcode_out(col(token.name))
+            token.name: protocols[token.protocol.factory_id].transcode_out(col(token.name))
             for token in tokens
         }
     )
@@ -143,7 +143,7 @@ def transcode_in(
     protocols = _bound_protocols(tokens, private_key, public_key=None)
     return df.withColumns(
         {
-            token.name: protocols[token.protocol.id].transcode_in(col(token.name))
+            token.name: protocols[token.protocol.factory_id].transcode_in(col(token.name))
             for token in tokens
         }
     )
