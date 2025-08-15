@@ -14,6 +14,10 @@ a:not(.md-nav__link, .md-source, .md-header__button):hover {
     color: var(--md-accent-fg-color) !important;
 }
 
+a.md-nav__link--active {
+    color: var(--md-accent-fg-color) !important;
+}
+
 a.md-logo {
     color: var(--md-accent-fg-color)
 }
