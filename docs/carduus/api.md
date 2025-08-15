@@ -72,7 +72,7 @@ See the [encryption key section](./guides/getting-started.md#encryption-keys) of
 
 Carduus offers interfaces that can be extended by the user to add additional behaviors to the tokenization and transcryption processes.
 
-The `PiiTransform` abstract base class can be extended to add support for custom PII attributes, normalizations, and enhancements. See the [custom PII guide](./guides/custom-pii.md) for more details.
+The `PiiTransform` abstract base class can be extended to add support for custom PII attributes, normalizations, and enhancements.
 
 ## ::: carduus.token.PiiTransform
     handler: python

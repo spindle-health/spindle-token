@@ -25,7 +25,7 @@ The following code example creates a new `Token` definition called `"my_custom_t
 
 ```python
 from spindle_token.core import Token
-from spindle_token.opprl.v1 import OpprlV1
+from spindle_token.opprl import OpprlV1
 
 my_token = Token(
     "my_custom_token",
@@ -78,4 +78,4 @@ All built-in `PiiAttribute` classes for the OPPRL standard use the prefix `opprl
 
 # <a name="custom-protocol"></a> Custom Protocols
 
-The core of the OPPRL protocol is a set of specific data flows that produce tokens from sets of PII attributes using various cryptographic functions. In the spindle-token library, these data flows are provided by implementations of the `TokenProtocol` interface.
+The core of the OPPRL protocol is a set of specific data flows that produce tokens from sets of PII attributes using various cryptographic functions. In the spindle-token library, these data flows are provided by implementations of the `TokenProtocol` and `TokenProtocolFactory` interfaces.
