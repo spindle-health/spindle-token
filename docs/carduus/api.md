@@ -1,6 +1,6 @@
 # Functions
 
-THe core functionality of carduus is provided by a the following functions that operate over pyspark `DataFrame`.
+The core functionality of carduus is provided by a the following functions that operate over pyspark `DataFrame`.
 
 ## ::: carduus.token.tokenize
     handler: python
