@@ -18,9 +18,9 @@ def private_key() -> bytes:
     """
     WARNING:
         This encryption key is hardcoded so that we can use tests to ensure stability
-        of tokens across versions of the carduus project.
+        of tokens across versions of the spindle-token project.
         It should NEVER be used in production or any environment aside from the test suite
-        of the Carduus project or another OPPRL implementation.
+        of the spindle-token project or another OPPRL implementation.
     """
     return b"""-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDln+C4HlLMOLru
@@ -58,9 +58,9 @@ def acme_public_key() -> bytes:
     """
     WARNING:
         This encryption key is hardcoded so that we can use tests to ensure stability
-        of tokens across versions of the carduus project.
+        of tokens across versions of the spindle-token project.
         It should NEVER be used in production or any environment aside from the test suite
-        of the Carduus project or another OPPRL implementation.
+        of the spindle-token project or another OPPRL implementation.
     """
     return b"""-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnIST0H9sM2y0PUyMf5+F
@@ -79,9 +79,9 @@ def acme_private_key() -> bytes:
     """
     WARNING:
         This encryption key is hardcoded so that we can use tests to ensure stability
-        of tokens across versions of the carduus project.
+        of tokens across versions of the spindle-token project.
         It should NEVER be used in production or any environment aside from the test suite
-        of the Carduus project or another OPPRL implementation.
+        of the spindle-token project or another OPPRL implementation.
     """
     return b"""-----BEGIN PRIVATE KEY-----
 MIIEugIBADANBgkqhkiG9w0BAQEFAASCBKQwggSgAgEAAoIBAQCchJPQf2wzbLQ9
