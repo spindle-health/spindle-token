@@ -125,6 +125,24 @@ class OpprlV0:
     [TokenProtocolFactory][spindle_token.core.TokenProtocolFactory] for v0 of the OPPRL protocol.
 
     All members are class variables, and therefore this class does not need to be instantiated.
+
+    Attributes:
+        first_name:
+            The PII attribute for a subject's first name.
+        last_name:
+            The PII attribute for a subject's last (aka family) name.
+        gender:
+            The PII attribute for a subject's gender.
+        birth_date:
+            The PII attribute for a subject's date of birth.
+        protocol:
+            The tokenization protocol for producing OPPRL version 0 tokens.
+        token1:
+            A token generated from first initial, last name, gender, and birth date.
+        token2:
+            A token generated from first soundex, last soundex, gender, and birth date.
+        token3:
+            A token generated from first metaphone, last metaphone, gender, and birth date.
     """
 
     first_name: ClassVar[NameAttribute] = NameAttribute("opprl.v0.first")

@@ -8,7 +8,9 @@ def spark() -> SparkSession:
     # For PyArrow 2.0.0 and above, PYARROW_IGNORE_TIMEZONE environment variable must be set
     # to 1 (on the driver and executors).
     os.environ["PYARROW_IGNORE_TIMEZONE"] = "1"
-    return SparkSession.Builder().appName("Carduus Tests").master("local[2]").getOrCreate()
+    return (
+        SparkSession.Builder().appName("spindle-token tests").master("local[2]").getOrCreate()
+    )
 
 
 @pytest.fixture(scope="session")
