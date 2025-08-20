@@ -1,6 +1,6 @@
 [project]
-name = "carduus"
-version = "0.4.0"
+name = "spindle-token"
+version = "1.0.0"
 description = "PySpark implementation of the Open Privacy Preserving Record Linkage protocol."
 authors = [{ name = "Eddie Pantridge", email = "eddie@spindlehealth.com" }]
 readme = "README.md"
@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.scripts]
-spindle-token = "carduus.cli:cli"
+spindle-token = "spindle_token._cli:cli"
 
 [tool.poetry]
 packages = [
