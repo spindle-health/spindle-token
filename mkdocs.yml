@@ -1,4 +1,4 @@
-site_name: Carduus
+site_name: Spindle Token
 nav:
   - Home: README.md
   - Getting Started: guides/getting-started.md
@@ -64,14 +64,10 @@ plugins:
 markdown_extensions:
   - mkdocs-click
   - attr_list
+  - pymdownx.superfences
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
 
 repo_url: https://github.com/Spindle-Health/carduus
 copyright: Copyright &copy; 2025 Spindle Health, Inc

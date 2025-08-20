@@ -1,3 +1,15 @@
+"""A module containing the main API of spindle-token.
+
+Most users will only need to use the 3 main functions in this top-level module along with the provided
+configuration objects corresponding to OPPRL tokenization.
+
+The 3 main functions provide tokenization and transcoding capabilities for data senders and recipients 
+respectively.
+
+"""
+
+__version__ = "1.0.0"
+
 from collections.abc import Mapping, Iterable
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import col
