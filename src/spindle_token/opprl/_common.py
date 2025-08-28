@@ -1,3 +1,12 @@
+"""An private (internal) module containing common implementations of [PiiAttribute][spindle_token.core.PiiAttribute] for attributes used to construct tokens across OPPRL versions.
+
+This module is private to allow for implementations to be changed without creating breaking changes. 
+If breaking behavior changes are introduced to any PiiAttribute implementation a copy of the old 
+behavior should be added to the corresponding module of the lowest dependant OPPRL version and all
+references across all dependant OPPRL versions should use updated to use that "frozen" class instead.
+"""
+
+import phonenumbers
 from pyspark.sql import Column
 from pyspark.sql.functions import (
     when,
@@ -5,6 +14,12 @@ from pyspark.sql.functions import (
     soundex,
     regexp_replace,
     to_date,
+    lower,
+    udf,
+    lit,
+    length,
+    substring,
+    upper,
 )
 from pyspark.sql.types import (
     DataType,
@@ -14,7 +29,7 @@ from pyspark.sql.types import (
     TimestampNTZType,
 )
 from spindle_token.core import PiiAttribute
-from spindle_token._utils import normalize_text, first_char, metaphone, remap
+from spindle_token._utils import empty_to_null, normalize_text, first_char, metaphone, remap
 
 
 class _InitialAttribute(PiiAttribute):
@@ -103,3 +118,61 @@ class DateAttribute(PiiAttribute):
         raise Exception(
             f"Cannot normalize column of type {dtype} into a DateType column. Column: {column}."
         )
+
+
+class EmailAttribute(PiiAttribute):
+
+    def transform(self, column: Column, _: DataType) -> Column:
+        return empty_to_null(regexp_replace(lower(column), "\\s", ""))
+
+
+@udf(returnType=StringType())
+def _to_e164(phone: str, default_region: str) -> str | None:
+    try:
+        return phonenumbers.format_number(
+            phonenumbers.parse(phone, default_region), phonenumbers.PhoneNumberFormat.E164
+        )
+    except phonenumbers.NumberParseException:
+        return None
+
+
+class PhoneNumberAttribute(PiiAttribute):
+
+    def __init__(self, attr_id: str, default_region: str = "US"):
+        super().__init__(attr_id)
+        self.default_region = default_region
+
+    def transform(self, column: Column, _: DataType):
+        return _to_e164(column.cast(StringType()), lit(self.default_region))
+
+
+def _is_valid_ssn(ssn: Column) -> Column:
+    return ~(
+        (length(ssn) != lit(9))
+        | (first_char(ssn) == "9")
+        | (substring(ssn, 1, 3).isin("000", "666"))
+        | (substring(ssn, 4, 2) == "00")
+        | (substring(ssn, 6, 4) == "0000")
+    )
+
+
+class SsnAttribute(PiiAttribute):
+    """An implementation of PiiAttribute for US social security numbers."""
+
+    def transform(self, column: Column, _: DataType):
+        column = regexp_replace(column.cast(StringType()), "[^\\D]", "")
+        return when(_is_valid_ssn(column), column)
+
+
+class GroupNumberAttribute(PiiAttribute):
+    """An implementation of PiiAttribute for health insurance "group number" associated with an employer or group plan."""
+
+    def transform(self, column: Column, _: DataType):
+        return empty_to_null(regexp_replace(upper(column), "\\s", ""))
+
+
+class MemberIdAttribute(PiiAttribute):
+    """An implementation of PiiAttribute for health insurance "member ID" (aka subscriber ID) that uniquely identifies a covered member of a specific health plan."""
+
+    def transform(self, column: Column, _: DataType):
+        return empty_to_null(regexp_replace(upper(column), "\\s", ""))
