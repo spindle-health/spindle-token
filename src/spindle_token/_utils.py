@@ -35,6 +35,10 @@ def null_if(pred: Callable[[Column], Column], col: Column) -> Column:
     return when(~pred(col), col).otherwise(lit(None))
 
 
+def empty_to_null(col: Column) -> Column:
+    return null_if(lambda c: length(c) == 0, col)
+
+
 def first_char(col: Column) -> Column:
     return substring(col, 1, 1)
 
@@ -48,7 +52,7 @@ metaphone = udf(_metaphone_udf_impl, returnType=StringType(), useArrow=False)
 
 def normalize_text(raw: Column) -> Column:
     """Some common text normalization used throughout OPPRL."""
-    return null_if(lambda c: length(c) == 0, trim(regexp_replace(upper(raw), "\\s+", " ")))
+    return empty_to_null(trim(regexp_replace(upper(raw), "\\s+", " ")))
 
 
 def null_propagating(func):
