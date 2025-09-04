@@ -20,6 +20,7 @@ from pyspark.sql.functions import (
     length,
     substring,
     upper,
+    sha2,
 )
 from pyspark.sql.types import (
     DataType,
@@ -30,6 +31,51 @@ from pyspark.sql.types import (
 )
 from spindle_token.core import PiiAttribute
 from spindle_token._utils import empty_to_null, normalize_text, first_char, metaphone, remap
+
+
+class IdentityAttribute(PiiAttribute):
+    """An implementation of [PiiAttribute][spindle_token.core.PiiAttribute] with no transformation (normalization) logic.
+
+    This class is useful when your data contains columns that can be used as attributes
+    as-is with no normalization. In particular, if your data has columns that correspond
+    to PII attributes that would typically be derived from other PII attributes, such as
+    the initial of the first name.
+
+    Examples:
+        Create an identity attribute that uses the first initial directly
+        as opposed to deriving from the first name.
+
+        >>> attribute = IdentityAttribute("opprl.v1.first.initial")
+
+        The transform method returns the input column unchanged.
+
+        >>> attribute.transform(col("first_initial"), StringType())
+        Column<'first_initial'>
+
+        There are no derivatives of identity attributes aside from the attribute itself.
+
+        >>> attribute.derivatives()
+        {'opprl.v1.first.initial': IdentityAttribute(opprl.v1.first.initial)}
+
+        Identity attributes can be passed to the tokenize function.
+
+        >>> from spindle_token.opprl import OpprlV1 as v1
+        >>> tokenize(
+        >>>     df,
+        >>>     {
+        >>>         IdentityAttribute("opprl.v1.first.initial"): "first_initial",
+        >>>         v1.last_name: "last_name",
+        >>>         v1.gender: "gender",
+        >>>         v1.birth_date: "birth_date",
+        >>>     },
+        >>>     [v1.token1],
+        >>> )
+        DataFrame[first_initial: string, last_name: string, ..., opprl_token_1v1: string]
+
+    """
+
+    def transform(self, column: Column, _: DataType) -> Column:
+        return column
 
 
 class _InitialAttribute(PiiAttribute):
@@ -122,8 +168,35 @@ class DateAttribute(PiiAttribute):
 
 class EmailAttribute(PiiAttribute):
 
+    @property
+    def sha2(self) -> "HashedEmail":
+        return HashedEmail(self.attr_id + ".sha2", _parent=self)
+
     def transform(self, column: Column, _: DataType) -> Column:
         return empty_to_null(regexp_replace(lower(column), "\\s", ""))
+
+    def derivatives(self):
+        attrs = super().derivatives()
+        attrs.update(self.sha2.derivatives())
+        return attrs
+
+
+class HashedEmail(PiiAttribute):
+    """An implementation of PiiAttribute for SHA2 hashed email addresses.
+
+    This class can be used directly if the data has a hashed email column or it can be
+    instantiated as a derivative of an [EmailAttribute][spindle_token.opprl._common.EmailAttribute].
+
+    """
+
+    def __init__(self, attr_id: str, *, _parent: EmailAttribute | None = None):
+        super().__init__(attr_id)
+        self._parent = _parent
+
+    def transform(self, column: Column, dtype: DataType):
+        if self._parent:
+            column = sha2(self._parent.transform(column, dtype), 256)
+        return lower(column)
 
 
 @udf(returnType=StringType())
@@ -137,6 +210,10 @@ def _to_e164(phone: str, default_region: str) -> str | None:
 
 
 class PhoneNumberAttribute(PiiAttribute):
+    """An implementation of PiiAttribute for US phone numbers.
+
+    Normalizes phone numbers to E.164 format. See: https://www.itu.int/rec/T-REC-E.164/
+    """
 
     def __init__(self, attr_id: str, default_region: str = "US"):
         super().__init__(attr_id)

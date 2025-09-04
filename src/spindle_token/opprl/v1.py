@@ -1,5 +1,5 @@
 from typing import ClassVar
-from collections.abc import Iterable, Mapping
+from collections.abc import Mapping
 from pyspark.sql import DataFrame, Column
 from pyspark.sql.functions import udf
 from pyspark.sql.types import BinaryType
@@ -11,7 +11,17 @@ from spindle_token._crypto import (
     make_asymmetric_encrypter,
     make_asymmetric_decrypter,
 )
-from spindle_token.opprl._common import NameAttribute, GenderAttribute, DateAttribute
+from spindle_token.opprl._common import (
+    EmailAttribute,
+    GroupNumberAttribute,
+    HashedEmail,
+    MemberIdAttribute,
+    NameAttribute,
+    GenderAttribute,
+    DateAttribute,
+    PhoneNumberAttribute,
+    SsnAttribute,
+)
 import spindle_token.opprl.v0 as v0
 
 
@@ -36,9 +46,8 @@ class _ProtocolV1(TokenProtocol):
         self,
         df: DataFrame,
         col_mapping: Mapping[PiiAttribute, str],
-        attributes: Iterable[PiiAttribute],
     ) -> Column:
-        return v0._tokenize_impl(df, col_mapping, attributes, self.encrypt_aes)
+        return v0._tokenize_impl(df, col_mapping, self.encrypt_aes)
 
     def transcode_out(self, token: Column) -> Column:
         if not self.encrypt_rsa:
@@ -81,6 +90,27 @@ class OpprlV1:
             A token generated from first soundex, last soundex, gender, and birth date.
         token3:
             A token generated from first metaphone, last metaphone, gender, and birth date.
+        token4:
+            A token generated from first initial, last name, and birth date.
+        token5:
+            A token generated from first soundex, last soundex, and birth date.
+        token6:
+            A token generated from first metaphone, last metaphone, and birth date.
+        token7:
+            A token generated from first name and phone number.
+        token8:
+            A token generated from birth date and phone number.
+        token9:
+            A token generated from first name and SSN.
+        token10:
+            A token generated from birth date and SSN.
+        token11:
+            A token generated from an email address.
+        token12:
+            A token generated from a SHA2 hashed email address.
+        token13:
+            A token generated from health plan group number and member ID.
+
     """
 
     first_name: ClassVar[NameAttribute] = NameAttribute("opprl.v1.first")
@@ -91,16 +121,29 @@ class OpprlV1:
 
     birth_date: ClassVar[DateAttribute] = DateAttribute("opprl.v1.birth_date", "yyyy-MM-dd")
 
+    email: ClassVar[EmailAttribute] = EmailAttribute("opprl.v1.email")
+
+    # This class var should be used when the user's data has a HEM column and therefore we don't specify _parent.
+    hem: ClassVar[HashedEmail] = HashedEmail(email.sha2.attr_id)
+
+    phone: ClassVar[PhoneNumberAttribute] = PhoneNumberAttribute("opprl.v1.phone")
+
+    ssn: ClassVar[SsnAttribute] = SsnAttribute("opprl.v1.ssn")
+
+    group_number: ClassVar[GroupNumberAttribute] = GroupNumberAttribute("opprl.v1.group_number")
+
+    member_id: ClassVar[MemberIdAttribute] = MemberIdAttribute("opprl.v1.member_id")
+
     protocol: ClassVar[TokenProtocolFactory] = _ProtocolFactoryV1("opprl.v1")
 
     token1: ClassVar[Token] = Token(
         "opprl_token_1v1",
         protocol,
         (
-            first_name.initial,
-            last_name,
-            gender,
-            birth_date,
+            first_name.initial.attr_id,
+            last_name.attr_id,
+            gender.attr_id,
+            birth_date.attr_id,
         ),
     )
 
@@ -108,10 +151,10 @@ class OpprlV1:
         "opprl_token_2v1",
         protocol,
         (
-            first_name.soundex,
-            last_name.soundex,
-            gender,
-            birth_date,
+            first_name.soundex.attr_id,
+            last_name.soundex.attr_id,
+            gender.attr_id,
+            birth_date.attr_id,
         ),
     )
 
@@ -119,9 +162,96 @@ class OpprlV1:
         "opprl_token_3v1",
         protocol,
         (
-            first_name.metaphone,
-            last_name.metaphone,
-            gender,
-            birth_date,
+            first_name.metaphone.attr_id,
+            last_name.metaphone.attr_id,
+            gender.attr_id,
+            birth_date.attr_id,
+        ),
+    )
+
+    token4: ClassVar[Token] = Token(
+        "opprl_token_4v1",
+        protocol,
+        (
+            first_name.initial.attr_id,
+            last_name.attr_id,
+            birth_date.attr_id,
+        ),
+    )
+
+    token5: ClassVar[Token] = Token(
+        "opprl_token_5v1",
+        protocol,
+        (
+            first_name.soundex.attr_id,
+            last_name.soundex.attr_id,
+            birth_date.attr_id,
+        ),
+    )
+
+    token6: ClassVar[Token] = Token(
+        "opprl_token_6v1",
+        protocol,
+        (
+            first_name.metaphone.attr_id,
+            last_name.metaphone.attr_id,
+            birth_date.attr_id,
+        ),
+    )
+
+    token7: ClassVar[Token] = Token(
+        "opprl_token_7v1",
+        protocol,
+        (
+            first_name.attr_id,
+            phone.attr_id,
+        ),
+    )
+
+    token8: ClassVar[Token] = Token(
+        "opprl_token_8v1",
+        protocol,
+        (
+            birth_date.attr_id,
+            phone.attr_id,
+        ),
+    )
+
+    token9: ClassVar[Token] = Token(
+        "opprl_token_9v1",
+        protocol,
+        (
+            first_name.attr_id,
+            ssn.attr_id,
+        ),
+    )
+
+    token10: ClassVar[Token] = Token(
+        "opprl_token_10v1",
+        protocol,
+        (
+            birth_date.attr_id,
+            ssn.attr_id,
+        ),
+    )
+
+    token11: ClassVar[Token] = Token(
+        "opprl_token_11v1",
+        protocol,
+        (email.attr_id,),
+    )
+
+    token12: ClassVar[Token] = Token(
+        "opprl_token_12v1",
+        protocol,
+        (hem.attr_id,),
+    )
+
+    token13: ClassVar[Token] = Token(
+        "opprl_token_13v1",
+        protocol,
+        (
+            group_number.attr_id,
+            member_id.attr_id,
         ),
     )

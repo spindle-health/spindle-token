@@ -91,7 +91,6 @@ class TokenProtocol(ABC):
         self,
         df: DataFrame,
         col_mapping: Mapping[PiiAttribute, str],
-        attributes: Iterable[PiiAttribute],
     ) -> Column: ...
 
     """Creates a Column expression for a single token.
@@ -184,11 +183,11 @@ class Token:
         protocol:
             An instance of `TokenProtocolFactory` that, when provided encryption keys, produced an instance of the
             `TokenProtocol` that generates this kind of token.
-        attributes:
-            A collection of `PiiAttribute` objects that denote the PII fields used to create the tokens.
+        attribute_ids:
+            A collection of attribute IDs used to lookup instances of `PiiAttribute` corresponding to the fields used to create the token.
 
     """
 
     name: str
     protocol: TokenProtocolFactory
-    attributes: Iterable[PiiAttribute]
+    attribute_ids: Iterable[str]
