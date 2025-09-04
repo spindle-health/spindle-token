@@ -39,24 +39,17 @@ def _derive_aes_key(rsa_key: bytes) -> bytes:
 
 def _tokenize_impl(
     df: DataFrame,
-    col_mapping: Mapping[PiiAttribute, str],
-    attributes: Iterable[PiiAttribute],
+    attribute_columns: Mapping[PiiAttribute, str],
     encrypt_aes: Callable[[Column], Column],
 ) -> Column:
-    """The implementation logic for `tokenize` introduced by OPPRL v0."""
-    all_attr_input_columns: dict[str, str] = {}
-    for attr, column_name in col_mapping.items():
-        for attr_id, _ in attr.derivatives().items():
-            all_attr_input_columns[attr_id] = column_name
-
-    attributes = sorted(attributes, key=lambda f: f.attr_id)
-    attr_columns = []
+    attributes = sorted(attribute_columns.keys(), key=lambda f: f.attr_id)
+    transformed_attrs = []
     for attr in attributes:
-        input_column = all_attr_input_columns[attr.attr_id]
+        input_column = attribute_columns[attr]
         attr_column = attr.transform(col(input_column), df.schema[input_column].dataType)
-        attr_columns.append(attr_column)
+        transformed_attrs.append(attr_column)
 
-    plaintext_str = array_join(null_propagating(array)(*attr_columns), delimiter=":")
+    plaintext_str = array_join(null_propagating(array)(*transformed_attrs), delimiter=":")
     return base64_no_newline(encrypt_aes(to_binary(sha2(plaintext_str, 512), lit("hex"))))
 
 
@@ -98,9 +91,8 @@ class _ProtocolV0(TokenProtocol):
         self,
         df: DataFrame,
         col_mapping: Mapping[PiiAttribute, str],
-        attributes: Iterable[PiiAttribute],
     ) -> Column:
-        return _tokenize_impl(df, col_mapping, attributes, self.encrypt_aes)
+        return _tokenize_impl(df, col_mapping, self.encrypt_aes)
 
     def transcode_out(self, token: Column) -> Column:
         if not self.encrypt_rsa:
@@ -159,10 +151,10 @@ class OpprlV0:
         "opprl_token_1v0",
         protocol,
         (
-            first_name.initial,
-            last_name,
-            gender,
-            birth_date,
+            first_name.initial.attr_id,
+            last_name.attr_id,
+            gender.attr_id,
+            birth_date.attr_id,
         ),
     )
 
@@ -170,10 +162,10 @@ class OpprlV0:
         "opprl_token_2v0",
         protocol,
         (
-            first_name.soundex,
-            last_name.soundex,
-            gender,
-            birth_date,
+            first_name.soundex.attr_id,
+            last_name.soundex.attr_id,
+            gender.attr_id,
+            birth_date.attr_id,
         ),
     )
 
@@ -181,9 +173,9 @@ class OpprlV0:
         "opprl_token_3v0",
         protocol,
         (
-            first_name.metaphone,
-            last_name.metaphone,
-            gender,
-            birth_date,
+            first_name.metaphone.attr_id,
+            last_name.metaphone.attr_id,
+            gender.attr_id,
+            birth_date.attr_id,
         ),
     )

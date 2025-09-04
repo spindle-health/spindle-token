@@ -67,6 +67,12 @@ The spindle-token CLI requires specific column naming for PII columns so that th
 - `last_name`
 - `gender`
 - `birth_date`
+- `email`
+- `hem`
+- `phone`
+- `ssn`
+- `group_number`
+- `member_id`
 
 If you are only adding tokens that require a subset of these PII fields, the input dataset may omit columns for the other PII attributes that are not required. For information on which PII attributes are required for each token in the OPPRL protocol, see the official [specification](./opprl/PROTOCOL.md).
 

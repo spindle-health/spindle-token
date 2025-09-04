@@ -73,10 +73,20 @@ def tokenize(
 
     protocols = _bound_protocols(tokens, private_key, public_key=None)
 
+    all_attrs_and_columns: dict[str, tuple[str, PiiAttribute]] = {}
+    for attr, column_name in col_mapping.items():
+        for derivate_id, derivate in attr.derivatives().items():
+            all_attrs_and_columns[derivate_id] = (column_name, derivate)
+
     token_columns = []
     for token in tokens:
+        attribute_columns = {}
+        for attr_id in token.attribute_ids:
+            col_name, attr = all_attrs_and_columns[attr_id]
+            attribute_columns[attr] = col_name
+
         protocol = protocols[token.protocol.factory_id]
-        token_column = protocol.tokenize(df, col_mapping, token.attributes).alias(token.name)
+        token_column = protocol.tokenize(df, attribute_columns).alias(token.name)
         token_columns.append(token_column)
 
     return df.select(col("*"), *token_columns)
