@@ -19,48 +19,52 @@ TOKEN_SPECS: dict[str, Token] = {
     v1.token1.name: v1.token1,
     v1.token2.name: v1.token2,
     v1.token3.name: v1.token3,
+    v1.token4.name: v1.token4,
+    v1.token5.name: v1.token5,
+    v1.token6.name: v1.token6,
+    v1.token7.name: v1.token7,
+    v1.token8.name: v1.token8,
+    v1.token9.name: v1.token9,
+    v1.token10.name: v1.token10,
+    v1.token11.name: v1.token11,
+    v1.token12.name: v1.token12,
+    v1.token13.name: v1.token13,
 }
 
 
-# The column names that the CLI will expect when generating each OPPRL token.
-_ALL_V0_ATTR_MAPPINGS = {
-    v0.first_name: "first_name",
-    v0.last_name: "last_name",
-    v0.gender: "gender",
-    v0.birth_date: "birth_date",
-}
-_ALL_V1_ATTR_MAPPINGS = {
-    v1.first_name: "first_name",
-    v1.last_name: "last_name",
-    v1.gender: "gender",
-    v1.birth_date: "birth_date",
-}
-
-
-TOKEN_ATTR_MAPPINGS: dict[Token, dict[PiiAttribute, str]] = {
-    v0.token1: _ALL_V0_ATTR_MAPPINGS,
-    v0.token2: _ALL_V0_ATTR_MAPPINGS,
-    v0.token3: _ALL_V0_ATTR_MAPPINGS,
-    v1.token1: {
-        a: _ALL_V1_ATTR_MAPPINGS[a]
-        for a in (v1.first_name, v1.last_name, v1.gender, v1.birth_date)
-    },
-    v1.token2: {
-        a: _ALL_V1_ATTR_MAPPINGS[a]
-        for a in (v1.first_name, v1.last_name, v1.gender, v1.birth_date)
-    },
-    v1.token3: {
-        a: _ALL_V1_ATTR_MAPPINGS[a]
-        for a in (v1.first_name, v1.last_name, v1.gender, v1.birth_date)
-    },
+# Keys are the column names that the CLI will expect.
+_COLUMN_TO_ATTRIBUTES: dict[str, list[PiiAttribute]] = {
+    "first_name": [v0.first_name, v1.first_name],
+    "last_name": [v0.last_name, v1.last_name],
+    "gender": [v0.gender, v1.gender],
+    "birth_date": [v0.birth_date, v1.birth_date],
+    "email": [
+        v1.email,
+    ],
+    "hem": [
+        v1.hem,
+    ],
+    "phone": [
+        v1.phone,
+    ],
+    "ssn": [
+        v1.ssn,
+    ],
+    "group_number": [
+        v1.group_number,
+    ],
+    "member_id": [
+        v1.member_id,
+    ],
 }
 
 
-def column_mapping_for_tokens(tokens: list[Token]) -> dict[PiiAttribute, str]:
-    mapping: dict[PiiAttribute, str] = {}
-    for token in tokens:
-        mapping.update(TOKEN_ATTR_MAPPINGS[token])
-    return mapping
+def infer_column_mapping(columns: list[str]) -> dict[PiiAttribute, str]:
+    col_mapping = {}
+    for column in columns:
+        for attribute in _COLUMN_TO_ATTRIBUTES.get(column, []):
+            col_mapping[attribute] = column
+    return col_mapping
 
 
 def get_spark(num_threads: int | None) -> SparkSession:
@@ -160,10 +164,10 @@ def tokenize(
     output_path = Path(output)
     tokens = [TOKEN_SPECS[t] for t in token]
     tokens.sort(key=lambda t: t.name)
-    col_mapping = column_mapping_for_tokens(tokens)
 
     spark = get_spark(parallelism)
     df = spark.read.format(format).option("delimiter", "|").option("header", True).load(input)
+    col_mapping = infer_column_mapping(df.columns)
 
     df = lib.tokenize(
         df,

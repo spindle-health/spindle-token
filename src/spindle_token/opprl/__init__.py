@@ -8,5 +8,6 @@ the complete spec of the corresponding OPPRL version.
 
 from spindle_token.opprl.v0 import OpprlV0
 from spindle_token.opprl.v1 import OpprlV1
+from spindle_token.opprl._common import IdentityAttribute
 
-__all__ = ["OpprlV0", "OpprlV1"]
+__all__ = ["OpprlV0", "OpprlV1", "IdentityAttribute"]
