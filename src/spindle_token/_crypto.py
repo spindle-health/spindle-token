@@ -90,7 +90,7 @@ def derive_aes_key(rsa_key: bytes) -> bytes:
         An 32 byte AES key.
 
     """
-    hkdf = HKDF(algorithm=hashes.SHA256(), length=32, salt=None, info=b"opprl.v1")
+    hkdf = HKDF(algorithm=hashes.SHA256(), length=32, salt=None, info=b"opprl.v1.aes")
     return hkdf.derive(rsa_key)
 
 
