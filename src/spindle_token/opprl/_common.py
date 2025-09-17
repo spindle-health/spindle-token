@@ -158,7 +158,7 @@ class DateAttribute(PiiAttribute):
 
     def transform(self, column: Column, dtype: DataType) -> Column:
         if isinstance(dtype, (DateType, TimestampType, TimestampNTZType)):
-            return column
+            return column.cast(DateType())
         if isinstance(dtype, StringType):
             return to_date(column, self.date_format)
         raise Exception(
@@ -213,6 +213,7 @@ class PhoneNumberAttribute(PiiAttribute):
     """An implementation of PiiAttribute for US phone numbers.
 
     Normalizes phone numbers to E.164 format. See: https://www.itu.int/rec/T-REC-E.164/
+
     """
 
     def __init__(self, attr_id: str, default_region: str = "US"):
