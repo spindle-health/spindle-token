@@ -2,7 +2,7 @@
 
 This guide provides a quick tour of the main features of Carduus, including instructions for how most users will be interacting with the library.
 
-> :warning: Carduus has not reached a v1.0 release yet and therefore the API and behaviors are subject to change. **Use at your own risk!** See the [contributing](../../CONTRIBUTING.md) guide if you would like to help the project.
+> :warning: The `carduus` package has been superseded by `spindle-token`, a newer Python package for generating and transcoding OPPRL tokens that supports a wider set of OPPRL protocol versions. It is recommended that all users migrate to `spindle-token`, however `carduus` remains a viable tool for generating token for OPPRL version 0.
 
 ## Installation
 
