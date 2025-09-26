@@ -50,3 +50,7 @@ Please refer to the spindle-token [contributing guide](https://spindle-health.gi
         style="height: 3rem"
     />
 </a>
+
+### Individuals that have contributed to spindle-token
+
+[Brian Fallik](https://github.com/bfallik) - @bfallik
