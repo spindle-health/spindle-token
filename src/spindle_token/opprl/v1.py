@@ -82,6 +82,18 @@ class OpprlV1:
             The PII attribute for a subject's gender.
         birth_date:
             The PII attribute for a subject's date of birth.
+        email:
+            The PII attribute for a subject's email address.
+        hem:
+            The PII attribute for a subject's SHA2 hashed email address.
+        phone:
+            The PII attribute for a subject's phone number.
+        ssn:
+            The PII attribute for a subject's social security number.
+        group_number:
+            The PII attribute for a subject's health plan group number.
+        member_id:
+            The PII attribute for a subject's health plan member ID.
         protocol:
             The tokenization protocol for producing OPPRL version 0 tokens.
         token1:
