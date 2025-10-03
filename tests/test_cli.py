@@ -190,7 +190,7 @@ class TestTokenizeCommand:
             ],
         )
         assert result.exit_code == 1
-        assert isinstance(result.exception, (AnalysisException, KeyError))
+        assert isinstance(result.exception, (ValueError, AnalysisException))
         assert sorted(os.listdir(tmp_path)) == ["pii.csv", "test_key.pem"]
 
     def test_multipart_files_and_no_parallelism(self, tmp_path: Path, private_key: bytes):

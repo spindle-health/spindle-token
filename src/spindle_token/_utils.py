@@ -17,6 +17,11 @@ from pyspark.sql.functions import (
 from pyspark.sql.types import StringType
 
 
+def attr_id_to_col_name(attr_id: str) -> str:
+    """A string of an PiiAttribute ID that is safe to be used as an intermediate column name."""
+    return "_" + attr_id.lower().replace(".", "_")
+
+
 def remap(mapping: dict[Any, Any], col: Column, default: Any | None = None) -> Column:
     """Creates a column expression that remaps the contents of `col` according to `mapping` or falls back to `default`."""
     result = None
