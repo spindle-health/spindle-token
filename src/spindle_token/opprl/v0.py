@@ -5,10 +5,13 @@ from pyspark.sql.functions import (
     array,
     array_join,
     col,
+    exists,
+    isnull,
     lit,
     sha2,
-    udf,
     to_binary,
+    udf,
+    when,
 )
 from pyspark.sql.types import BinaryType
 from cryptography.hazmat.primitives.hashes import Hash, SHAKE256
@@ -48,8 +51,9 @@ def _tokenize_impl(
     # but we defend against it nonetheless.
     attribute_order = sorted(attribute_ids)
     attribute_cols = [col(attr_id_to_col_name(attr_id)) for attr_id in attribute_order]
-    plaintext_str = array_join(null_propagating(array)(*attribute_cols), delimiter=":")
-    return base64_no_newline(encrypt_aes(to_binary(sha2(plaintext_str, 512), lit("hex"))))
+    plaintext_str = array_join(array(*attribute_cols), delimiter=":")
+    token = base64_no_newline(encrypt_aes(to_binary(sha2(plaintext_str, 512), lit("hex"))))
+    return when(exists(array(*attribute_cols), isnull), lit(None)).otherwise(token)
 
 
 def _transcrypt_out_impl(
