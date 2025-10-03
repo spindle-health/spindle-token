@@ -20,7 +20,7 @@ from spindle_token._crypto import (
     make_asymmetric_encrypter,
     make_asymmetric_decrypter,
 )
-from spindle_token._utils import null_propagating, base64_no_newline
+from spindle_token._utils import null_propagating, base64_no_newline, attr_id_to_col_name
 from spindle_token.opprl._common import NameAttribute, GenderAttribute, DateAttribute
 
 
@@ -38,18 +38,17 @@ def _derive_aes_key(rsa_key: bytes) -> bytes:
 
 
 def _tokenize_impl(
-    df: DataFrame,
-    attribute_columns: Mapping[PiiAttribute, str],
+    attribute_ids: list[str],
     encrypt_aes: Callable[[Column], Column],
 ) -> Column:
-    attributes = sorted(attribute_columns.keys(), key=lambda f: f.attr_id)
-    transformed_attrs = []
-    for attr in attributes:
-        input_column = attribute_columns[attr]
-        attr_column = attr.transform(col(input_column), df.schema[input_column].dataType)
-        transformed_attrs.append(attr_column)
-
-    plaintext_str = array_join(null_propagating(array)(*transformed_attrs), delimiter=":")
+    # Attribute IDs sort lexicographically based on the attributes logical names (ie. first, last, email) as long
+    # the token is being constructed from attributes from the same OPPRL version.
+    # Otherwise the version number will sort first, which is deterministic even in the event that the same logical
+    # attribute is used from multiple OPPRL versions for the same token. This is unlikely to be done in practice,
+    # but we defend against it nonetheless.
+    attribute_order = sorted(attribute_ids)
+    attribute_cols = [col(attr_id_to_col_name(attr_id)) for attr_id in attribute_order]
+    plaintext_str = array_join(null_propagating(array)(*attribute_cols), delimiter=":")
     return base64_no_newline(encrypt_aes(to_binary(sha2(plaintext_str, 512), lit("hex"))))
 
 
@@ -87,12 +86,8 @@ class _ProtocolV0(TokenProtocol):
             )
         self.decrypt_rsa = udf(make_asymmetric_decrypter(private_key), returnType=BinaryType())
 
-    def tokenize(
-        self,
-        df: DataFrame,
-        col_mapping: Mapping[PiiAttribute, str],
-    ) -> Column:
-        return _tokenize_impl(df, col_mapping, self.encrypt_aes)
+    def tokenize(self, attribute_ids: list[str]) -> Column:
+        return _tokenize_impl(attribute_ids, self.encrypt_aes)
 
     def transcode_out(self, token: Column) -> Column:
         if not self.encrypt_rsa:

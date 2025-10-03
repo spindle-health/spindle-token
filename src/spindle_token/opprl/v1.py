@@ -42,12 +42,8 @@ class _ProtocolV1(TokenProtocol):
             )
         self.decrypt_rsa = udf(make_asymmetric_decrypter(private_key), returnType=BinaryType())
 
-    def tokenize(
-        self,
-        df: DataFrame,
-        col_mapping: Mapping[PiiAttribute, str],
-    ) -> Column:
-        return v0._tokenize_impl(df, col_mapping, self.encrypt_aes)
+    def tokenize(self, attribute_ids: list[str]) -> Column:
+        return v0._tokenize_impl(attribute_ids, self.encrypt_aes)
 
     def transcode_out(self, token: Column) -> Column:
         if not self.encrypt_rsa:

@@ -11,7 +11,7 @@ respectively.
 __version__ = "1.0.0"
 
 from collections.abc import Mapping, Iterable
-from pyspark.sql import DataFrame
+from pyspark.sql import DataFrame, Column
 from pyspark.sql.functions import col
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.serialization import (
@@ -22,8 +22,9 @@ from cryptography.hazmat.primitives.serialization import (
     PublicFormat,
     NoEncryption,
 )
-from spindle_token._crypto import private_key_from_env, public_key_from_env
 from spindle_token.core import PiiAttribute, Token, TokenProtocol
+from spindle_token._crypto import private_key_from_env, public_key_from_env
+from spindle_token._utils import attr_id_to_col_name
 
 
 __all__ = ["tokenize", "transcode_out", "transcode_in", "generate_pem_keys"]
@@ -73,23 +74,39 @@ def tokenize(
 
     protocols = _bound_protocols(tokens, private_key, public_key=None)
 
-    all_attrs_and_columns: dict[str, tuple[str, PiiAttribute]] = {}
-    for attr, column_name in col_mapping.items():
+    all_attrs_and_input_columns: dict[str, tuple[str, PiiAttribute]] = {}
+    for attr, input_column in col_mapping.items():
         for derivate_id, derivate in attr.derivatives().items():
-            all_attrs_and_columns[derivate_id] = (column_name, derivate)
+            all_attrs_and_input_columns[derivate_id] = (input_column, derivate)
+
+    # We create temporary normalized columns for each attribute used in any token to encourage
+    # Spark to reuse columns in the query plan when attributes are used by multiple tokens.
+    # This is particularly important when using Python UDFs because Spark struggles to detect
+    # reusable expressions and collapse multiple `BatchEvalPython` into a single pass, which
+    # adds to communication overhead. Materializing Python UDF inputs as column on the JVM before
+    # invoking the Python UDFs eliminates this overhead.
+    normalized_columns: dict[str, Column] = {}
+    for token in tokens:
+        for attr_id in token.attribute_ids:
+            if attr_id not in all_attrs_and_input_columns:
+                raise ValueError(
+                    f"Attribute {attr_id} required by token {token.name} is not derivable from the attributes of col_mapping"
+                )
+            input_column, attr = all_attrs_and_input_columns[attr_id]
+            attr_column = attr_id_to_col_name(attr_id)
+            normalized_col = attr.transform(
+                col(input_column), df.schema[input_column].dataType
+            ).alias(attr_column)
+            normalized_columns[attr_column] = normalized_col
+    with_normalized = df.select(col("*"), *normalized_columns.values())
 
     token_columns = []
     for token in tokens:
-        attribute_columns = {}
-        for attr_id in token.attribute_ids:
-            col_name, attr = all_attrs_and_columns[attr_id]
-            attribute_columns[attr] = col_name
-
         protocol = protocols[token.protocol.factory_id]
-        token_column = protocol.tokenize(df, attribute_columns).alias(token.name)
+        token_column = protocol.tokenize(token.attribute_ids).alias(token.name)
         token_columns.append(token_column)
 
-    return df.select(col("*"), *token_columns)
+    return with_normalized.select(col("*"), *token_columns).drop(*normalized_columns.keys())
 
 
 def transcode_out(

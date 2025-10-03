@@ -89,25 +89,20 @@ class TokenProtocol(ABC):
     @abstractmethod
     def tokenize(
         self,
-        df: DataFrame,
-        col_mapping: Mapping[PiiAttribute, str],
-    ) -> Column: ...
+        attribute_ids: list[str],
+    ) -> Column:
+        """Creates a Column expression for a single token.
 
-    """Creates a Column expression for a single token.
+        Arguments:
+            attribute_ids:
+                A collection [`PiiAttribute`][spindle_token.core.PiiAttribute] attribute IDs corresponding to the attributes
+                to combine into the token.
 
-    Arguments:
-        df:
-            The pyspark `DataFrame` containing all PII attributes.
-        col_mapping:
-            A dictionary that maps instances of [`PiiAttribute`][spindle_token.core.PiiAttribute] to the corresponding
-            column name of `df`. 
-        attributes:
-            A collection [`PiiAttribute`][spindle_token.core.PiiAttribute] instances to derive from `df`, normalize, and tokenize.
+        Returns:
+            A pyspark `Column` expression representing token values.
 
-    Returns:
-        A pyspark `Column` expression representing token values. 
-    
-    """
+        """
+        ...
 
     @abstractmethod
     def transcode_out(self, token: Column) -> Column:
