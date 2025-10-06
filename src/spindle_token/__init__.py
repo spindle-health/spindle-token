@@ -125,6 +125,11 @@ def tokenize(
 
     used = {attr_id: col for attr_id, col in all_attrs.items() if attr_id in required_attrs}
     all_pii = normalized.select(col("*"), *used.values())
+
+    for attr_id in required_attrs:
+        if attr_id_to_col_name(attr_id) not in all_pii.columns:
+            raise ValueError(f"Required attribute {attr_id} not found in input data or derived attributes.")
+        
     with_tokens = all_pii.select(col("*"), *token_columns)
     return with_tokens.drop(*to_drop)
 
