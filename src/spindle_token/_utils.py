@@ -2,7 +2,6 @@ from typing import Any, Callable
 import jellyfish as j
 from pyspark.sql import Column
 from pyspark.sql.functions import (
-    array,
     lit,
     when,
     length,

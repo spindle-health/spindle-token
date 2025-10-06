@@ -80,32 +80,29 @@ class IdentityAttribute(PiiAttribute):
 
 class _InitialAttribute(PiiAttribute):
 
-    def __init__(self, parent: "NameAttribute"):
-        super().__init__(f"{parent.attr_id}.initial")
-        self.parent = parent
+    def __init__(self, parent_id: str):
+        super().__init__(f"{parent_id}.initial")
 
     def transform(self, column: Column, dtype: DataType) -> Column:
-        return first_char(self.parent.transform(column, dtype))
+        return first_char(column)
 
 
 class _SoundexAttribute(PiiAttribute):
 
-    def __init__(self, parent: "NameAttribute"):
-        super().__init__(f"{parent.attr_id}.soundex")
-        self.parent = parent
+    def __init__(self, parent_id: str):
+        super().__init__(f"{parent_id}.soundex")
 
     def transform(self, column: Column, dtype: DataType) -> Column:
-        return soundex(self.parent.transform(column, dtype))
+        return soundex(column)
 
 
 class _MetaphoneAttribute(PiiAttribute):
 
-    def __init__(self, parent: "NameAttribute"):
-        super().__init__(f"{parent.attr_id}.metaphone")
-        self.parent = parent
+    def __init__(self, parent_id: str):
+        super().__init__(f"{parent_id}.metaphone")
 
     def transform(self, column: Column, dtype: DataType) -> Column:
-        return metaphone(self.parent.transform(column, dtype))
+        return metaphone(column)
 
 
 class NameAttribute(PiiAttribute):
@@ -115,15 +112,15 @@ class NameAttribute(PiiAttribute):
 
     @property
     def initial(self) -> _InitialAttribute:
-        return _InitialAttribute(self)
+        return _InitialAttribute(self.attr_id)
 
     @property
     def soundex(self) -> _SoundexAttribute:
-        return _SoundexAttribute(self)
+        return _SoundexAttribute(self.attr_id)
 
     @property
     def metaphone(self) -> _MetaphoneAttribute:
-        return _MetaphoneAttribute(self)
+        return _MetaphoneAttribute(self.attr_id)
 
     def derivatives(self) -> dict[str, PiiAttribute]:
         attrs = super().derivatives()
@@ -170,7 +167,7 @@ class EmailAttribute(PiiAttribute):
 
     @property
     def sha2(self) -> "HashedEmail":
-        return HashedEmail(self.attr_id + ".sha2", _parent=self)
+        return HashedEmail(self.attr_id + ".sha2", _already_hashed=False)
 
     def transform(self, column: Column, _: DataType) -> Column:
         return empty_to_null(regexp_replace(lower(column), "\\s", ""))
@@ -189,13 +186,13 @@ class HashedEmail(PiiAttribute):
 
     """
 
-    def __init__(self, attr_id: str, *, _parent: EmailAttribute | None = None):
+    def __init__(self, attr_id: str, _already_hashed: bool = True):
         super().__init__(attr_id)
-        self._parent = _parent
+        self._already_hashed = _already_hashed
 
     def transform(self, column: Column, dtype: DataType):
-        if self._parent:
-            column = sha2(self._parent.transform(column, dtype), 256)
+        if not self._already_hashed:
+            column = sha2(column, 256)
         return lower(column)
 
 

@@ -74,10 +74,8 @@ def tokenize(
 
     protocols = _bound_protocols(tokens, private_key, public_key=None)
 
-    all_attrs_and_input_columns: dict[str, tuple[str, PiiAttribute]] = {}
-    for attr, input_column in col_mapping.items():
-        for derivate_id, derivate in attr.derivatives().items():
-            all_attrs_and_input_columns[derivate_id] = (input_column, derivate)
+    # A collection of intermediate columns to drop before returning.
+    to_drop: set[str] = set()
 
     # We create temporary normalized columns for each attribute used in any token to encourage
     # Spark to reuse columns in the query plan when attributes are used by multiple tokens.
@@ -85,28 +83,50 @@ def tokenize(
     # reusable expressions and collapse multiple `BatchEvalPython` into a single pass, which
     # adds to communication overhead. Materializing Python UDF inputs as column on the JVM before
     # invoking the Python UDFs eliminates this overhead.
-    normalized_columns: dict[str, Column] = {}
-    for token in tokens:
-        for attr_id in token.attribute_ids:
-            if attr_id not in all_attrs_and_input_columns:
-                raise ValueError(
-                    f"Attribute {attr_id} required by token {token.name} is not derivable from the attributes of col_mapping"
-                )
-            input_column, attr = all_attrs_and_input_columns[attr_id]
-            attr_column = attr_id_to_col_name(attr_id)
-            normalized_col = attr.transform(
-                col(input_column), df.schema[input_column].dataType
-            ).alias(attr_column)
-            normalized_columns[attr_column] = normalized_col
-    with_normalized = df.select(col("*"), *normalized_columns.values())
 
+    normalized_cols = []
+    for attr, input_col in col_mapping.items():
+        if input_col not in df.columns:
+            raise ValueError(
+                f"Input dataframe does not contain column {input_col} for attribute {attr}"
+            )
+        norm_name = attr_id_to_col_name(attr.attr_id)
+        normalized_col = attr.transform(col(input_col), df.schema[input_col].dataType).alias(
+            norm_name
+        )
+        normalized_cols.append(normalized_col)
+        to_drop.add(norm_name)
+    normalized = df.select(col("*"), *normalized_cols)
+
+    # All available attributes, including derivatives. Initialized to just the directly provided attributes.
+    all_attrs: dict[str, Column] = {
+        attr.attr_id: col(attr_id_to_col_name(attr.attr_id)) for attr in col_mapping.keys()
+    }
+
+    for attr in col_mapping.keys():
+        attr_name = attr_id_to_col_name(attr.attr_id)
+        for derivative_id, derivate_attr in attr.derivatives().items():
+            if derivative_id in all_attrs:
+                # If the derivative attribute is provided directly, use the user-provided column.
+                continue
+            derivative_name = attr_id_to_col_name(derivative_id)
+            all_attrs[derivative_id] = derivate_attr.transform(
+                col(attr_name), normalized.schema[attr_name].dataType
+            ).alias(derivative_name)
+            to_drop.add(derivative_name)
+
+    required_attrs = set()
     token_columns = []
     for token in tokens:
+        required_attrs |= set(token.attribute_ids)
         protocol = protocols[token.protocol.factory_id]
         token_column = protocol.tokenize(token.attribute_ids).alias(token.name)
         token_columns.append(token_column)
 
-    return with_normalized.select(col("*"), *token_columns).drop(*normalized_columns.keys())
+    used = {attr_id: col for attr_id, col in all_attrs.items() if attr_id in required_attrs}
+    all_pii = normalized.select(col("*"), *used.values())
+    with_tokens = all_pii.select(col("*"), *token_columns)
+    return with_tokens.drop(*to_drop)
 
 
 def transcode_out(
