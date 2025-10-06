@@ -64,7 +64,8 @@ class PiiAttribute(ABC):
 
         Returns:
             A `dict` with globally unique (typically namespaced) attribute IDs as the key. Values are instances of
-            [PiiAttribute][spindle_token.core.PiiAttribute] that produce normalized values for each derivative attribute.
+            [PiiAttribute][spindle_token.core.PiiAttribute] that produce normalized values for each derivative attribute
+            from the normalized values of this PiiAttribute.
         """
         return {self.attr_id: self}
 
