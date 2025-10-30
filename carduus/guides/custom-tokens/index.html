@@ -9,23 +9,25 @@
       
       
       
+        <link rel="prev" href="../databricks/">
       
-        <link rel="next" href="guides/getting-started/">
+      
+        <link rel="next" href="../../api/">
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
     
     
       
-        <title>Spindle Token</title>
+        <title>Defining Token Specs - Spindle Token</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -44,11 +46,11 @@
       
     
     
-      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -84,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#spindle-token" class="md-skip">
+        <a href="#defining-custom-token-specifications" class="md-skip">
           Skip to content
         </a>
       
@@ -100,7 +102,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Spindle Token" class="md-header__button md-logo" aria-label="Spindle Token" data-md-component="logo">
+    <a href="../../.." title="Spindle Token" class="md-header__button md-logo" aria-label="Spindle Token" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -120,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Defining Token Specs
             
           </span>
         </div>
@@ -246,7 +248,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Spindle Token" class="md-nav__button md-logo" aria-label="Spindle Token" data-md-component="logo">
+    <a href="../../.." title="Spindle Token" class="md-nav__button md-logo" aria-label="Spindle Token" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -273,32 +275,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Home
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -309,86 +289,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#rationale" class="md-nav__link">
-    <span class="md-ellipsis">
-      Rationale
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-started" class="md-nav__link">
-    <span class="md-ellipsis">
-      Getting Started
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#security-audit" class="md-nav__link">
-    <span class="md-ellipsis">
-      Security Audit
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contributing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Contributing
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Contributing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#organizations-that-have-contributed-to-spindle-token" class="md-nav__link">
-    <span class="md-ellipsis">
-      Organizations that have contributed to spindle-token
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#individuals-that-have-contributed-to-spindle-token" class="md-nav__link">
-    <span class="md-ellipsis">
-      Individuals that have contributed to spindle-token
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -400,7 +300,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/getting-started/" class="md-nav__link">
+      <a href="../../../guides/getting-started/" class="md-nav__link">
         
   
   
@@ -460,7 +360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/databricks/" class="md-nav__link">
+      <a href="../../../guides/databricks/" class="md-nav__link">
         
   
   
@@ -483,7 +383,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/custom-tokens/" class="md-nav__link">
+      <a href="../../../guides/custom-tokens/" class="md-nav__link">
         
   
   
@@ -506,7 +406,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/migrating-from-carduus/" class="md-nav__link">
+      <a href="../../../guides/migrating-from-carduus/" class="md-nav__link">
         
   
   
@@ -536,7 +436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/" class="md-nav__link">
+      <a href="../../../api/" class="md-nav__link">
         
   
   
@@ -558,7 +458,7 @@
   
   
     <li class="md-nav__item">
-      <a href="cli/" class="md-nav__link">
+      <a href="../../../cli/" class="md-nav__link">
         
   
   
@@ -577,18 +477,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
@@ -604,7 +506,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             carduus (legacy)
@@ -618,7 +520,7 @@
   
   
     <li class="md-nav__item">
-      <a href="carduus/guides/getting-started/" class="md-nav__link">
+      <a href="../getting-started/" class="md-nav__link">
         
   
   
@@ -638,18 +540,20 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" checked>
         
           
           <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
@@ -665,7 +569,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6_2">
             <span class="md-nav__icon md-icon"></span>
             Guides
@@ -679,7 +583,7 @@
   
   
     <li class="md-nav__item">
-      <a href="carduus/guides/databricks/" class="md-nav__link">
+      <a href="../databricks/" class="md-nav__link">
         
   
   
@@ -699,10 +603,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="carduus/guides/custom-tokens/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -713,6 +626,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -733,7 +647,7 @@
   
   
     <li class="md-nav__item">
-      <a href="carduus/api/" class="md-nav__link">
+      <a href="../../api/" class="md-nav__link">
         
   
   
@@ -756,7 +670,7 @@
   
   
     <li class="md-nav__item">
-      <a href="carduus/cli/" class="md-nav__link">
+      <a href="../../cli/" class="md-nav__link">
         
   
   
@@ -824,7 +738,7 @@
   
   
     <li class="md-nav__item">
-      <a href="opprl/" class="md-nav__link">
+      <a href="../../../opprl/" class="md-nav__link">
         
   
   
@@ -847,7 +761,7 @@
   
   
     <li class="md-nav__item">
-      <a href="opprl/PROTOCOL/" class="md-nav__link">
+      <a href="../../../opprl/PROTOCOL/" class="md-nav__link">
         
   
   
@@ -870,7 +784,7 @@
   
   
     <li class="md-nav__item">
-      <a href="opprl/contrib/" class="md-nav__link">
+      <a href="../../../opprl/contrib/" class="md-nav__link">
         
   
   
@@ -938,7 +852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="CONTRIBUTING/" class="md-nav__link">
+      <a href="../../../CONTRIBUTING/" class="md-nav__link">
         
   
   
@@ -961,7 +875,7 @@
   
   
     <li class="md-nav__item">
-      <a href="CODE_OF_CONDUCT/" class="md-nav__link">
+      <a href="../../../CODE_OF_CONDUCT/" class="md-nav__link">
         
   
   
@@ -984,7 +898,7 @@
   
   
     <li class="md-nav__item">
-      <a href="LICENSE/" class="md-nav__link">
+      <a href="../../../LICENSE/" class="md-nav__link">
         
   
   
@@ -1027,74 +941,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#rationale" class="md-nav__link">
-    <span class="md-ellipsis">
-      Rationale
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-started" class="md-nav__link">
-    <span class="md-ellipsis">
-      Getting Started
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#security-audit" class="md-nav__link">
-    <span class="md-ellipsis">
-      Security Audit
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contributing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Contributing
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Contributing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#organizations-that-have-contributed-to-spindle-token" class="md-nav__link">
-    <span class="md-ellipsis">
-      Organizations that have contributed to spindle-token
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#individuals-that-have-contributed-to-spindle-token" class="md-nav__link">
-    <span class="md-ellipsis">
-      Individuals that have contributed to spindle-token
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1112,45 +958,15 @@
   
 
 
-<h1 id="spindle-token">Spindle Token</h1>
-<!-- @TODO Replace with spindle-token badge after publishing. -->
-<!-- [![PyPI version](https://badge.fury.io/py/carduus.svg)](https://badge.fury.io/py/carduus) -->
+<h1 id="defining-custom-token-specifications">Defining Custom Token Specifications</h1>
+<p>In essence, a token is simply the concatenation of multiple PII fields into a single string of text which is passed through a hash and a subsequent cryptographic function. Carduus provides specifications of the tokens proposed in the OPPRL protocol. These tokens are known to have low false positive and false negative match rates for subjects whose PII is close to the distribution found in the United States population, while only relying on a minimal set of PII attributes that are commonly populated in real-world datasets.</p>
+<p>Some users may want to create tokens by concatenating different PII fields than what is proposed by OPPRL. This is often the case when the datasets of a particular user and the parties they share data with have additional PII beyond what OPPRL leverages that will lead to lower match errors for the sample of subjects used their use case.</p>
+<p>To declare a custom token specification, simply instantiate the <code>TokenSpec</code> class provided by Carduus and provide it with a token name and a collection of columns to jointly encrypt.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">carduus.token</span><span class="w"> </span><span class="kn">import</span> <span class="n">TokenSpec</span>
 
-<p>The open source implementation of the Open Privacy Preserving Record Linkage (OPPRL) protocol build on Spark.</p>
-<h2 id="rationale">Rationale</h2>
-<p>Privacy Preserving Record Linkage (PPRL) is crucial component to data de-identification systems. PPRL obfuscates identifying attributes or other sensitive information about the subjects described in the records of a dataset while still preserving the ability to link records pertaining to the same subject through the use of an encrypted token. This practice is sometimes referred to as "tokenization" and is one of the components of data de-identification.</p>
-<p>The task of PPRL is to replace the attributes of a every record denoting Personally Identifiable Information (PII) with a token produced by a one-way cryptographic function. This prevents observers of the tokenized data from obtaining the PII. The tokens are produced deterministically such that input records with the same, or similar, PII attributes will produce an identical token. This allows practitioners to associate records across datasets that are highly likely to belong to the same data subject without having access to PII.</p>
-<p>Tokenization is also used when data is shared between organizations to limit, or in some cases fully mitigate, the risk of subject re-identification in the event that an untrusted third party gains access to a dataset containing sensitive data. Each party produces encrypted tokens using a different secret key so that any compromised data asset is, at worst, only matchable to other datasets maintained by the same party. During data sharing transactions, a specific "transcode" data flow is used to re-encrypt the sender's tokens into ephemeral tokens that do not match tokens in any other dataset and can only be ingested using the recipients secret key. At no point in the "transcode" data flow is the original PII used.</p>
-<p>The spindle-token is the canonical implementation of the <a href="https://spindle-health.github.io/carduus/opprl/">Open Privacy Preserving Record Linkage</a> (OPPRL) protocol. This protocol presents a standardized methodology for tokenization that can be implemented in any data system to increase interoperability. The spindle-token implementation is a python library that distributes tokenization workloads using apache <a href="https://spark.apache.org/">Spark</a> across multiple cores or multiple machines in a high performance computing cluster for efficient tokenization of any scale datasets.</p>
-<p>The pre-v1.0 versions of this library were published under the name "carduus" and the deprecated APIs can be found <a href="https://spindle-health.github.io/carduus/carduus/api/">here</a>.</p>
-<h2 id="getting-started">Getting Started</h2>
-<p>See the <a href="https://spindle-health.github.io/carduus/guides/getting-started/">getting started guide</a> on the project's web page for an detailed explanation of how carduus is used including example code snippets.</p>
-<p>The full <a href="https://spindle-health.github.io/carduus/api/">API</a> and an <a href="https://spindle-health.github.io/carduus/guides/databricks/">example usage on Databricks</a> are also provided on the project's web page.</p>
-<h2 id="security-audit">Security Audit</h2>
-<p>This project has received a security audit from <a href="https://echeloncyber.com/">Echelon Risk + Cyber</a> who provided the following statement. More details on this security audit can be obtained from Echelon Risk + Cyber at <a href="https://echeloncyber.com/spindle-health-security-certification-report">this link</a>.</p>
-<blockquote>
-<p>Echelon Risk + Cyber certifies that as of May 30, 2025, The Spindle Token implementation and Open Privacy Preserving Record Linkage (OPPRL) Protocol exhibit a high degree of alignment with secure cryptographic standards and secure development practices. The use of FIPS -compliant algorithms (AES-GCM-SIV, RSA-OAEP, SHA2 family), layered encryption, and privacy preserving design patterns indicate strong foundational security. Note: This certification is issued in good faith, based on the materials available to the Echelon team at the time of the review.</p>
-</blockquote>
-<h2 id="contributing">Contributing</h2>
-<p>Please refer to the spindle-token <a href="https://spindle-health.github.io/carduus/CONTRIBUTING/">contributing guide</a> for information on how to get started contributing to the project.</p>
-<h3 id="organizations-that-have-contributed-to-spindle-token">Organizations that have contributed to spindle-token</h3>
-<p><a href="https://spindlehealth.com/">
-    <img
-        src="assets/spindle_health.png"
-        alt="Spindle Health"
-        style="height: 3rem"
-    />
-</a>
-<br/>
-<a href="https://echeloncyber.com/">
-    <img
-        src="assets/echelon_risk_cyber.png"
-        alt="Echelon Risk + Cyber"
-        style="height: 3rem"
-    />
-</a></p>
-<h3 id="individuals-that-have-contributed-to-spindle-token">Individuals that have contributed to spindle-token</h3>
-<p><a href="https://github.com/bfallik">Brian Fallik</a> - @bfallik</p>
+<span class="n">my_token</span> <span class="o">=</span> <span class="n">TokenSpec</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;geo_token&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;last_name&quot;</span><span class="p">,</span> <span class="s2">&quot;birth_date&quot;</span><span class="p">,</span> <span class="s2">&quot;zipcode&quot;</span><span class="p">])</span>
+</code></pre></div>
+<p>This <code>my_token</code> object can be passed to the <code>tokenize</code> function to replace the PII columns with a <code>geo_token</code> column. If the PII data does not have one or more of the fields referenced by the token definition (after normalization and enhancement) the <code>tokenize</code> function will throw an exception prior to performing any significant workloads.</p>
 
 
 
@@ -1205,10 +1021,10 @@
     
     
       
-      <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.13a4f30d.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
       
     
   </body>

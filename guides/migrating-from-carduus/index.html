@@ -20,7 +20,7 @@
     
     
       
-        <title>Using Custom PII - Carduus</title>
+        <title>Migrating from Carduus - Spindle Token</title>
       
     
     
@@ -86,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#using-custom-pii" class="md-skip">
+        <a href="#migrating-from-carduus-to-spindle-token" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +102,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Carduus" class="md-header__button md-logo" aria-label="Carduus" data-md-component="logo">
+    <a href="../.." title="Spindle Token" class="md-header__button md-logo" aria-label="Spindle Token" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -116,13 +116,13 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Carduus
+            Spindle Token
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Using Custom PII
+              Migrating from Carduus
             
           </span>
         </div>
@@ -248,13 +248,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Carduus" class="md-nav__button md-logo" aria-label="Carduus" data-md-component="logo">
+    <a href="../.." title="Spindle Token" class="md-nav__button md-logo" aria-label="Spindle Token" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Carduus
+    Spindle Token
   </label>
   
     <div class="md-nav__source">
@@ -367,7 +367,7 @@
   
   
   <span class="md-ellipsis">
-    Carduus on Databricks
+    Spindle Token on Databricks
     
   </span>
   
@@ -390,7 +390,7 @@
   
   
   <span class="md-ellipsis">
-    Defining Token Specs
+    Custom Tokens
     
   </span>
   
@@ -417,17 +417,97 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Migrating from Carduus
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
-    Using Custom PII
+    Migrating from Carduus
     
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tokenization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tokenization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tokenization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-difference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Difference
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transcoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transcoding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transcoding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-difference_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Difference
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -508,7 +588,7 @@
   
   
   <span class="md-ellipsis">
-    OPPRL
+    carduus (legacy)
     
   </span>
   
@@ -518,6 +598,212 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            carduus (legacy)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../carduus/guides/getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../carduus/guides/databricks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Carduus on Databricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../carduus/guides/custom-tokens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Defining Token Specs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../carduus/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Carduus API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../carduus/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Carduus CLI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    OPPRL
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             OPPRL
           </label>
@@ -614,10 +900,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
             
   
   
@@ -630,8 +916,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             Project
           </label>
@@ -733,6 +1019,62 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tokenization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tokenization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tokenization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-difference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Difference
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transcoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transcoding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transcoding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-difference_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Difference
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -750,13 +1092,92 @@
   
 
 
-<h1 id="using-custom-pii">Using Custom PII</h1>
-<p>Carduus applies normalizations to incoming PII to account for representation differences that often don't indicate a different true identity for the subject. After normalizing the PII columns present on the data provided by the user, Carduus derives additional implicit PII attributes and adds them to the Dataset if they aren't already present. The procedure is called "enhancement". For example, a <code>first_initial</code> attributes can be derived from a <code>first_name</code> attribute by taking the first letter.</p>
-<p>Commonly used PII attributes have standard normalization and enhancement rules proposed in the OPPRL protocol. Carduus provides builtin implementations of the normalizations and enhancements via a set of concrete classes that implement the <code>PiiTransform</code> interface.</p>
-<p>Users may extend the <code>PiiTransform</code> abstract base class and provide instances to the column mapping used by the <code>tokenize</code> function.</p>
-<blockquote>
-<p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /> This guide is incomplete.</p>
-</blockquote>
+<h1 id="migrating-from-carduus-to-spindle-token">Migrating from carduus to spindle-token</h1>
+<p>Prior to the v1.0 release of spindle-token, the python library <a href="https://pypi.org/project/carduus/">carduus</a> implemented the early version of the Open Privacy Preserving Record Linkage (OPPRL) protocol.
+Since the release of carduus, new versions of the OPPRL protocol have been published and the spindle-token python package was introduced. 
+See <a href="https://github.com/spindle-health/carduus/pull/26">the pull request</a> for the full story.</p>
+<p>In summary, carduus only supported version 0 of the OPPRL while spindle-token supports all versions (including version 0). The spindle-token library can be parameterized to produce tokens that match tokens produced by carduus.</p>
+<p>This guide is intended to help carduus users migrate their code to spindle-token without breaking their tokenized data assets. At a high level, the abstraction of both libraries is the same. The main differences are in parameterization and naming. </p>
+<h2 id="tokenization">Tokenization</h2>
+<p>The API for tokenizing PII has undergone the largest change in spindle-token, however the parameters are very similar to carduus.</p>
+<p>The following code snippets show the function calls to tokenize PII attributes in both carduus and spindle-token. Both code examples assume the private key is passed via environment variables, although it can be passed explicitly in both libraries.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># carduus</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">carduus.token</span><span class="w"> </span><span class="kn">import</span> <span class="n">tokenize</span><span class="p">,</span> <span class="n">OpprlPii</span><span class="p">,</span> <span class="n">OpprlToken</span>
+
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span>
+    <span class="n">pii</span><span class="p">,</span>
+    <span class="n">pii_transforms</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">first_name</span><span class="o">=</span><span class="n">OpprlPii</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span>
+        <span class="n">last_name</span><span class="o">=</span><span class="n">OpprlPii</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span>
+        <span class="n">gender</span><span class="o">=</span><span class="n">OpprlPii</span><span class="o">.</span><span class="n">gender</span><span class="p">,</span>
+        <span class="n">birth_date</span><span class="o">=</span><span class="n">OpprlPii</span><span class="o">.</span><span class="n">birth_date</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">tokens</span><span class="o">=</span><span class="p">[</span><span class="n">OpprlToken</span><span class="o">.</span><span class="n">token1</span><span class="p">,</span> <span class="n">OpprlToken</span><span class="o">.</span><span class="n">token2</span><span class="p">,</span> <span class="n">OpprlToken</span><span class="o">.</span><span class="n">token3</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
+<span class="c1"># |...  |       opprl_token_1|       opprl_token_2|       opprl_token_3|</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
+<span class="c1"># |     |4YO6eFn0u75yrF+Td...|V6uRRgDgXylFsNM2c...|6N+/voOASNM0ivgA7...|</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># spindle-health</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token</span><span class="w"> </span><span class="kn">import</span> <span class="n">tokenize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token.opprl</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpprlV0</span> <span class="k">as</span> <span class="n">v0</span>  <span class="c1"># OPPRL v0 tokens match carduus</span>
+
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span>
+    <span class="n">pii</span><span class="p">,</span>
+    <span class="n">col_mapping</span><span class="o">=</span><span class="p">{</span>
+        <span class="n">v0</span><span class="o">.</span><span class="n">first_name</span><span class="p">:</span> <span class="s2">&quot;first_name&quot;</span><span class="p">,</span>
+        <span class="n">v0</span><span class="o">.</span><span class="n">last_name</span><span class="p">:</span> <span class="s2">&quot;last_name&quot;</span><span class="p">,</span>
+        <span class="n">v0</span><span class="o">.</span><span class="n">gender</span><span class="p">:</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span>
+        <span class="n">v0</span><span class="o">.</span><span class="n">birth_date</span><span class="p">:</span> <span class="s2">&quot;birth_date&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">tokens</span><span class="o">=</span><span class="p">[</span><span class="n">v0</span><span class="o">.</span><span class="n">token1</span><span class="p">,</span> <span class="n">v0</span><span class="o">.</span><span class="n">token2</span><span class="p">,</span> <span class="n">v0</span><span class="o">.</span><span class="n">token3</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
+<span class="c1"># |...  |     opprl_token_1v1|     opprl_token_2v1|     opprl_token_3v1|</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
+<span class="c1"># |     |4YO6eFn0u75yrF+Td...|V6uRRgDgXylFsNM2c...|6N+/voOASNM0ivgA7...|</span>
+<span class="c1"># +-----+--------------------+--------------------+--------------------+</span>
+</code></pre></div>
+<h3 id="key-difference">Key Difference</h3>
+<p><strong>Protocol Versions -</strong> Spindle-token requires importing the <code>PiiAttribute</code> and <code>Token</code> objects for specific versions of OPPRL. Carduus only supports version 0 of the OPPRL specification.</p>
+<p><strong>Column mapping -</strong> Carduus <code>pii_transforms</code> use column names as keys and values are PII attribute annotations. This limits each column being used once which prevents different tokens from processing the columns in different ways (ie. using multiple versions of OPPRL at the same time). Spindle-token solves remove this limitation in <code>col_mapping</code> by using PII attributes as the keys and column names as the values.</p>
+<p><strong>Token Column Names -</strong> The spindle-token library produced token columns that have versioned names to distinguish which version of the OPPRL specification was used.</p>
+<h2 id="transcoding">Transcoding</h2>
+<p>The API for transcoding between tokens and ephemeral tokens is nearly identical in spindle-token and carduus.</p>
+<p>Carduus used the made-up verb "transcypt" instead of the more straightforward "transcode". The semantics are identical with respect to both projects and this guide will use "transcode".</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># carduus</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">carduus.token</span><span class="w"> </span><span class="kn">import</span> <span class="n">transcrypt_out</span><span class="p">,</span> <span class="n">transcrypt_in</span><span class="p">,</span> <span class="n">OpprlPii</span><span class="p">,</span> <span class="n">OpprlToken</span>
+
+<span class="n">ephemeral_tokens</span> <span class="o">=</span> <span class="n">transcrypt_out</span><span class="p">(</span>
+    <span class="n">tokens</span><span class="p">,</span> 
+    <span class="n">token_columns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;opprl_token_1&quot;</span><span class="p">,</span> <span class="s2">&quot;opprl_token_2&quot;</span><span class="p">,</span> <span class="s2">&quot;opprl_token_3&quot;</span><span class="p">),</span> 
+    <span class="n">recipient_public_key</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;&quot;&quot;-----BEGIN PUBLIC KEY----- ...&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">transcrypt_in</span><span class="p">(</span>
+    <span class="n">ephemeral_tokens</span><span class="p">,</span> 
+    <span class="n">token_columns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;opprl_token_1&quot;</span><span class="p">,</span> <span class="s2">&quot;opprl_token_2&quot;</span><span class="p">,</span> <span class="s2">&quot;opprl_token_3&quot;</span><span class="p">),</span> 
+<span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># spindle-health</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token</span><span class="w"> </span><span class="kn">import</span> <span class="n">transcode_out</span><span class="p">,</span> <span class="n">transcode_in</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token.opprl</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpprlV0</span> <span class="k">as</span> <span class="n">v0</span>
+
+<span class="n">ephemeral_tokens</span> <span class="o">=</span> <span class="n">transcode_out</span><span class="p">(</span>
+    <span class="n">tokens</span><span class="p">,</span> 
+    <span class="n">tokens</span><span class="o">=</span><span class="p">(</span><span class="n">v0</span><span class="o">.</span><span class="n">token1</span><span class="p">,</span> <span class="n">v0</span><span class="o">.</span><span class="n">token2</span><span class="p">,</span> <span class="n">v0</span><span class="o">.</span><span class="n">token3</span><span class="p">),</span> 
+    <span class="n">recipient_public_key</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;&quot;&quot;-----BEGIN PUBLIC KEY----- ...&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">transcode_in</span><span class="p">(</span>
+    <span class="n">ephemeral_tokens</span><span class="p">,</span> 
+    <span class="n">tokens</span><span class="o">=</span><span class="p">(</span><span class="n">v0</span><span class="o">.</span><span class="n">token1</span><span class="p">,</span> <span class="n">v0</span><span class="o">.</span><span class="n">token2</span><span class="p">,</span> <span class="n">v0</span><span class="o">.</span><span class="n">token3</span><span class="p">),</span> 
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="key-difference_1">Key Difference</h3>
+<p><strong>Specifying Tokens -</strong> Carduus only supported one method of transcoding tokens and therefore the API only required the names of columns containing tokens to transcode. Spindle-token allows each token to use its own protocol (ie. different versions of OPPRL) and thus the transcode functions need instances of <code>Token</code>. The column names are expected to match the <code>name</code> attribute of the <code>Token</code> instance.</p>
 
 
 

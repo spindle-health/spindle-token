@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../guides/custom-pii/">
+        <link rel="prev" href="../guides/migrating-from-carduus/">
       
       
         <link rel="next" href="../cli/">
@@ -20,7 +20,7 @@
     
     
       
-        <title>API - Carduus</title>
+        <title>API - Spindle Token</title>
       
     
     
@@ -86,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#functions" class="md-skip">
+        <a href="#spindle_token" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +102,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Carduus" class="md-header__button md-logo" aria-label="Carduus" data-md-component="logo">
+    <a href=".." title="Spindle Token" class="md-header__button md-logo" aria-label="Spindle Token" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -116,7 +116,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Carduus
+            Spindle Token
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -248,13 +248,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Carduus" class="md-nav__button md-logo" aria-label="Carduus" data-md-component="logo">
+    <a href=".." title="Spindle Token" class="md-nav__button md-logo" aria-label="Spindle Token" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Carduus
+    Spindle Token
   </label>
   
     <div class="md-nav__source">
@@ -365,7 +365,7 @@
   
   
   <span class="md-ellipsis">
-    Carduus on Databricks
+    Spindle Token on Databricks
     
   </span>
   
@@ -388,7 +388,7 @@
   
   
   <span class="md-ellipsis">
-    Defining Token Specs
+    Custom Tokens
     
   </span>
   
@@ -406,12 +406,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/custom-pii/" class="md-nav__link">
+      <a href="../guides/migrating-from-carduus/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Using Custom PII
+    Migrating from Carduus
     
   </span>
   
@@ -441,8 +441,6 @@
       
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
-      
-        
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
@@ -476,8 +474,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -486,38 +482,236 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#carduus.token.tokenize" class="md-nav__link">
+  <a href="#spindle_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      spindle_token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="spindle_token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.tokenize" class="md-nav__link">
     <span class="md-ellipsis">
       tokenize
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#carduus.token.transcrypt_out" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.transcode_out" class="md-nav__link">
     <span class="md-ellipsis">
-      transcrypt_out
+      transcode_out
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#carduus.token.transcrypt_in" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.transcode_in" class="md-nav__link">
     <span class="md-ellipsis">
-      transcrypt_in
+      transcode_in
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#carduus.token.TokenSpec" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.generate_pem_keys" class="md-nav__link">
     <span class="md-ellipsis">
-      TokenSpec
+      generate_pem_keys
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindle_token.opprl" class="md-nav__link">
+    <span class="md-ellipsis">
+      opprl
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="opprl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.opprl.OpprlV0" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpprlV0
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.opprl.OpprlV1" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpprlV1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.opprl.IdentityAttribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      IdentityAttribute
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindle_token.core" class="md-nav__link">
+    <span class="md-ellipsis">
+      core
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="core">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.PiiAttribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      PiiAttribute
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PiiAttribute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.PiiAttribute.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.PiiAttribute.transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      transform
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.PiiAttribute.derivatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      derivatives
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      TokenProtocol
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TokenProtocol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocol.tokenize" class="md-nav__link">
+    <span class="md-ellipsis">
+      tokenize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocol.transcode_out" class="md-nav__link">
+    <span class="md-ellipsis">
+      transcode_out
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocol.transcode_in" class="md-nav__link">
+    <span class="md-ellipsis">
+      transcode_in
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocolFactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      TokenProtocolFactory
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TokenProtocolFactory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocolFactory.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocolFactory.bind" class="md-nav__link">
+    <span class="md-ellipsis">
+      bind
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.Token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -574,7 +768,7 @@
   
   
   <span class="md-ellipsis">
-    OPPRL
+    carduus (legacy)
     
   </span>
   
@@ -584,6 +778,212 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            carduus (legacy)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../carduus/guides/getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../carduus/guides/databricks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Carduus on Databricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../carduus/guides/custom-tokens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Defining Token Specs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../carduus/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Carduus API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../carduus/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Carduus CLI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    OPPRL
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             OPPRL
           </label>
@@ -680,10 +1080,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
             
   
   
@@ -696,8 +1096,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             Project
           </label>
@@ -796,8 +1196,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -806,38 +1204,236 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#carduus.token.tokenize" class="md-nav__link">
+  <a href="#spindle_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      spindle_token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="spindle_token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.tokenize" class="md-nav__link">
     <span class="md-ellipsis">
       tokenize
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#carduus.token.transcrypt_out" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.transcode_out" class="md-nav__link">
     <span class="md-ellipsis">
-      transcrypt_out
+      transcode_out
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#carduus.token.transcrypt_in" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.transcode_in" class="md-nav__link">
     <span class="md-ellipsis">
-      transcrypt_in
+      transcode_in
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#carduus.token.TokenSpec" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.generate_pem_keys" class="md-nav__link">
     <span class="md-ellipsis">
-      TokenSpec
+      generate_pem_keys
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindle_token.opprl" class="md-nav__link">
+    <span class="md-ellipsis">
+      opprl
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="opprl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.opprl.OpprlV0" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpprlV0
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.opprl.OpprlV1" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpprlV1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.opprl.IdentityAttribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      IdentityAttribute
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindle_token.core" class="md-nav__link">
+    <span class="md-ellipsis">
+      core
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="core">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.PiiAttribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      PiiAttribute
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PiiAttribute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.PiiAttribute.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.PiiAttribute.transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      transform
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.PiiAttribute.derivatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      derivatives
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      TokenProtocol
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TokenProtocol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocol.tokenize" class="md-nav__link">
+    <span class="md-ellipsis">
+      tokenize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocol.transcode_out" class="md-nav__link">
+    <span class="md-ellipsis">
+      transcode_out
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocol.transcode_in" class="md-nav__link">
+    <span class="md-ellipsis">
+      transcode_in
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocolFactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      TokenProtocolFactory
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TokenProtocolFactory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocolFactory.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.TokenProtocolFactory.bind" class="md-nav__link">
+    <span class="md-ellipsis">
+      bind
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindle_token.core.Token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -860,33 +1456,71 @@
   
 
 
-<h1 id="functions">Functions</h1>
-<p>THe core functionality of carduus is provided by a the following functions that operate over pyspark <code>DataFrame</code>.</p>
+  <h1>API</h1>
+
+<p>The spindle-token API is broken up into 3 namespaces: </p>
+<ol>
+<li>The top-level <code>spindle_token</code> module containing the most commonly used public functions.</li>
+<li>An OPPRL module containing implementations of every OPPRL protocol version, including PII normalization, token specifications, and cryptographic transformations.</li>
+<li>A module of <code>core</code> abstractions than can be extended in advanced use cases to add additional functionality.</li>
+</ol>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="spindle_token" class="doc doc-heading">
+            <code>spindle_token</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>A module containing the main API of spindle-token.</p>
+<p>Most users will only need to use the 3 main functions in this top-level module along with the provided
+configuration objects corresponding to OPPRL tokenization.</p>
+<p>The 3 main functions provide tokenization and transcoding capabilities for data senders and recipients 
+respectively.</p>
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
 
 
 <div class="doc doc-object doc-function">
 
 
-<h2 id="carduus.token.tokenize" class="doc doc-heading">
-            <span class="doc doc-object-name doc-function-name">carduus.token.tokenize</span>
+<h3 id="spindle_token.tokenize" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">tokenize</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">col_mapping</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">private_key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
 
 
-</h2>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">tokenize</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pii_transforms</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">private_key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-</code></pre></div>
-
-    <div class="doc doc-contents first">
+    <div class="doc doc-contents ">
 
         <p>Adds encrypted token columns based on PII.</p>
-<p>All PII columns found in the <code>DataFrame</code> are normalized using the provided <code>pii_transforms</code>.
-All PII attributes provided by the enhancements of the <code>pii_transforms</code> are added if they
-are not already present in the <code>DataFrame</code>. The fields of each <a class="autorefs autorefs-internal" title="carduus.token.TokenSpec
+<p>All PII columns found in the <code>DataFrame</code> are normalized according and transformed as needed according to the <code>col_mapping</code>.
+The PII attributes that make up of each <a class="autorefs autorefs-internal" title="Token
 
 
   
       dataclass
-  " href="#carduus.token.TokenSpec"><code>TokenSpec</code></a>
-from <code>tokens</code> are hashed and encrypted together according to the OPPRL specification.</p>
+  " href="#spindle_token.core.Token"><code>Token</code></a> objects in <code>tokens</code> are then hashed and
+encrypted together according to their respective protocol versions.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -918,17 +1552,15 @@ from <code>tokens</code> are hashed and encrypted together according to the OPPR
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>pii_transforms</code>
+                <code>col_mapping</code>
             </td>
             <td>
-                  <code><span title="collections.abc.Mapping">Mapping</span>[<span title="str">str</span>, <a class="autorefs autorefs-internal" title="carduus.token.PiiTransform (carduus.token.pii.PiiTransform)" href="#carduus.token.PiiTransform">PiiTransform</a> | <a class="autorefs autorefs-internal" title="carduus.token.OpprlPii" href="#carduus.token.OpprlPii">OpprlPii</a>]</code>
+                  <code><span title="collections.abc.Mapping">Mapping</span>[<a class="autorefs autorefs-internal" title="PiiAttribute (spindle_token.core.PiiAttribute)" href="#spindle_token.core.PiiAttribute">PiiAttribute</a>, <span title="str">str</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A dictionary that maps column names of <code>df</code> to <a class="autorefs autorefs-internal" title="carduus.token.PiiTransform" href="#carduus.token.PiiTransform">PiiTransform</a>
-objects to specify how each raw PII column is normalized and enhanced into derived PII attributes.
-Values can also be a member of the <a class="autorefs autorefs-internal" title="carduus.token.OpprlPii" href="#carduus.token.OpprlPii">OpprlPii</a> enum if using the
-standard OPPRL tokens.</p>
+                <p>A dictionary that maps instances of <a class="autorefs autorefs-internal" href="#spindle_token.core.PiiAttribute"><code>PiiAttribute</code></a> to the corresponding
+column name of <code>df</code>.</p>
               </div>
             </td>
             <td>
@@ -940,23 +1572,22 @@ standard OPPRL tokens.</p>
                 <code>tokens</code>
             </td>
             <td>
-                  <code><span title="collections.abc.Sequence">Sequence</span>[<a class="autorefs autorefs-internal" title="carduus.token.TokenSpec
+                  <code><span title="collections.abc.Iterable">Iterable</span>[<a class="autorefs autorefs-internal" title="Token
 
 
   
       dataclass
-  " href="#carduus.token.TokenSpec">TokenSpec</a> | <a class="autorefs autorefs-internal" title="carduus.token.OpprlToken" href="#carduus.token.OpprlToken">OpprlToken</a>]</code>
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A collection of <a class="autorefs autorefs-internal" title="carduus.token.TokenSpec
+                <p>A collection of <a class="autorefs autorefs-internal" title="Token
 
 
   
       dataclass
-  " href="#carduus.token.TokenSpec"><code>TokenSpec</code></a> objects that denotes which PII attributes
-are encrypted into each token. Elements can also be a member of the <a class="autorefs autorefs-internal" title="carduus.token.OpprlToken" href="#carduus.token.OpprlToken">OpprlToken</a>
-enum if using the standard OPPRL tokens.</p>
+  " href="#spindle_token.core.Token"><code>Token</code></a> objects that denotes which tokens (from which PII attributes)
+should be added to the dataframe.</p>
               </div>
             </td>
             <td>
@@ -999,7 +1630,7 @@ recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your 
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The <code>DataFrame</code> with PII columns replaced by encrypted tokens.</p>
+                <p>The input <code>DataFrame</code> with by encrypted tokens added.</p>
               </div>
             </td>
           </tr>
@@ -1013,25 +1644,15 @@ recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your 
 <div class="doc doc-object doc-function">
 
 
-<h2 id="carduus.token.transcrypt_out" class="doc doc-heading">
-            <span class="doc doc-object-name doc-function-name">carduus.token.transcrypt_out</span>
+<h3 id="spindle_token.transcode_out" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">transcode_out</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">recipient_public_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">private_key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
 
 
-</h2>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">transcrypt_out</span><span class="p">(</span>
-    <span class="n">df</span><span class="p">,</span>
-    <span class="n">token_columns</span><span class="p">,</span>
-    <span class="n">recipient_public_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">private_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span>
-</code></pre></div>
+    <div class="doc doc-contents ">
 
-    <div class="doc doc-contents first">
-
-        <p>Prepares a <code>DataFrame</code> containing encrypted tokens to be sent to a specific trusted party by re-encrypting
-the tokens using the recipient's public key without exposing the original PII.</p>
-<p>Output tokens will be unmatchable to any dataset or within the given dataset until the intended recipient
-processes the data with <a class="autorefs autorefs-internal" title="carduus.token.transcrypt_in" href="#carduus.token.transcrypt_in"><code>transcrypt_in</code></a>.</p>
+        <p>Transcodes token columns of a dataframe into ephemeral tokens.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1054,7 +1675,7 @@ processes the data with <a class="autorefs autorefs-internal" title="carduus.tok
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Spark <code>DataFrame</code> with token columns to transcrypt.</p>
+                <p>The pyspark <code>DataFrame</code> containing token columns.</p>
               </div>
             </td>
             <td>
@@ -1063,14 +1684,25 @@ processes the data with <a class="autorefs autorefs-internal" title="carduus.tok
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>token_columns</code>
+                <code>tokens</code>
             </td>
             <td>
-                  <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>]</code>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[<a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The collection of column names that correspond to tokens.</p>
+                <p>A collection of <a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+  " href="#spindle_token.core.Token"><code>Token</code></a> objects that denote which columns of the input dataframe
+will be transcoded into ephemeral tokens.</p>
               </div>
             </td>
             <td>
@@ -1113,29 +1745,8 @@ recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your 
           </tr>
       </tbody>
     </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="pyspark.sql.DataFrame">DataFrame</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The <code>DataFrame</code> with the original encrypted tokens re-encrypted for sending to the recipient.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Returns:
+    The <code>DataFrame</code> with the tokens replaced by ephemeral tokens for sending to the recipient.</p>
 
     </div>
 
@@ -1144,19 +1755,17 @@ recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your 
 <div class="doc doc-object doc-function">
 
 
-<h2 id="carduus.token.transcrypt_in" class="doc doc-heading">
-            <span class="doc doc-object-name doc-function-name">carduus.token.transcrypt_in</span>
+<h3 id="spindle_token.transcode_in" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">transcode_in</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">private_key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
 
 
-</h2>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">transcrypt_in</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">token_columns</span><span class="p">,</span> <span class="n">private_key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-</code></pre></div>
+    <div class="doc doc-contents ">
 
-    <div class="doc doc-contents first">
-
-        <p>Used by the recipient of a <code>DataFrame</code> containing tokens in the intermediate representation produced by
-<a class="autorefs autorefs-internal" title="carduus.token.transcrypt_out" href="#carduus.token.transcrypt_out"><code>transcrypt_out</code></a> to re-encrypt the tokens such that they will match with
-other datasets</p>
+        <p>Transcodes ephemeral token columns into normal tokens.</p>
+<p>Used by the data recipient of a dataset containing ephemeral tokens produced by <a class="autorefs autorefs-internal" title="transcode_out(df, tokens, recipient_public_key=None, private_key=None)" href="#spindle_token.transcode_out"><code>transcode_out</code></a>
+to transcode the ephemeral tokens such that they will match other datasets tokenized with the same private key.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1179,7 +1788,7 @@ other datasets</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Spark <code>DataFrame</code> with token columns to transcrypt.</p>
+                <p>Spark <code>DataFrame</code> with ephemeral token columns to transcode.</p>
               </div>
             </td>
             <td>
@@ -1188,14 +1797,25 @@ other datasets</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>token_columns</code>
+                <code>tokens</code>
             </td>
             <td>
-                  <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>]</code>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[<a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The collection of column names that correspond to tokens.</p>
+                <p>A collection of <a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+  " href="#spindle_token.core.Token"><code>Token</code></a> objects that denote which columns of the input dataframe
+will be transcoded from ephemeral tokens into normal tokens.</p>
               </div>
             </td>
             <td>
@@ -1211,7 +1831,8 @@ other datasets</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Your private RSA key. This argument should only be set when reading from a secrets manager or testing, otherwise it is
+                <p>Your private RSA key. Must be the corresponding private key for the public key given to the sender when calling
+<code>transcode_out</code>. This argument should only be set when reading from a secrets manager or testing, otherwise it is
 recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your private key.</p>
               </div>
             </td>
@@ -1238,327 +1859,27 @@ recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your 
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The <code>DataFrame</code> with the original encrypted tokens re-encrypted for sending to the destination.</p>
+                <p>The <code>DataFrame</code> with the ephemeral tokens replaced with normal tokens.</p>
               </div>
             </td>
           </tr>
       </tbody>
     </table>
-
-    </div>
-
-</div><p>The <code>TokenSpec</code> class allows for custom tokens, beyond the builtin OPPRL tokens, to be generated during tokenization. See the <a href="../guides/custom-tokens/">custom tokens guide</a> for more information.</p>
-
-
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="carduus.token.TokenSpec" class="doc doc-heading">
-            <code>carduus.token.TokenSpec</code>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
-  </span>
-
-</h2>
-
-
-    <div class="doc doc-contents first">
-
-
-        <p>An collection of PII fields that will be encrypted together to create a token.</p>
-<p>For an enum of standard <code>TokenSpec</code> instances that comply with the Open Privacy Preserving Record Linkage protocol
-see <a class="autorefs autorefs-internal" title="carduus.token.OpprlToken" href="#carduus.token.OpprlToken"><code>OpprlToken</code></a>.</p>
-
-
-<p><span class="doc-section-title">Attributes:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code><span title="carduus.token.TokenSpec.name">name</span></code></td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the column that holds these tokens.</p>
-              </div>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code><span title="carduus.token.TokenSpec.fields">fields</span></code></td>
-            <td>
-                  <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The PII fields to encrypt together to create token values.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div><h1 id="opprl-implementation">OPPRL Implementation</h1>
-<p>Although carduus is designed to be extensible, most users will want to use the tokenization procedure proposed by the <a href="../opprl/">Open Privacy Preserving Record Linkage</a> (OPPRL) protocol. This open specification proposes standard ways of normalizing, enhancing, and encrypting data such that all user across all OPPRL implementations, including carduus, can share data between trusted parties.</p>
-<p>The following two <code>enum</code> objects provide <code>PiiTransform</code> instances and <code>TokenSpec</code> instances that comply with OPPRL. These can be passed to the column mapping and token set arguments of <code>tokenize</code> respectively.</p>
-
-
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="carduus.token.OpprlPii" class="doc doc-heading">
-            <code>carduus.token.OpprlPii</code>
-
-
-</h2>
-
-
-    <div class="doc doc-contents first">
-            <p class="doc doc-class-bases">
-              Bases: <code><span title="enum.Enum">Enum</span></code></p>
-
-
-        <p>Enum of <a class="autorefs autorefs-internal" title="carduus.token.PiiTransform" href="#carduus.token.PiiTransform">PiiTransform</a> objects for the PII fields supported by the Open Privacy Preserving
-Record Linkage specification.</p>
-
-
-<p><span class="doc-section-title">Attributes:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code><span title="carduus.token.OpprlPii.first_name">first_name</span></code></td>
-            <td>
-                  <code><span title="carduus.token.pii.NameTransform">NameTransform</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p><a class="autorefs autorefs-internal" title="carduus.token.PiiTransform" href="#carduus.token.PiiTransform">PiiTransform</a> implementation for a subject's first name according to the OPPRL standard.</p>
-              </div>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code><span title="carduus.token.OpprlPii.middle_name">middle_name</span></code></td>
-            <td>
-                  <code><span title="carduus.token.pii.NameTransform">NameTransform</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p><a class="autorefs autorefs-internal" title="carduus.token.PiiTransform" href="#carduus.token.PiiTransform">PiiTransform</a> implementation for a subject's middle name according to the OPPRL standard.</p>
-              </div>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code><span title="carduus.token.OpprlPii.last_name">last_name</span></code></td>
-            <td>
-                  <code><span title="carduus.token.pii.NameTransform">NameTransform</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p><a class="autorefs autorefs-internal" title="carduus.token.PiiTransform" href="#carduus.token.PiiTransform">PiiTransform</a> implementation for a subject's last (aka family) name according to the OPPRL standard.</p>
-              </div>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code><span title="carduus.token.OpprlPii.gender">gender</span></code></td>
-            <td>
-                  <code><span title="carduus.token.pii.GenderTransform">GenderTransform</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p><a class="autorefs autorefs-internal" title="carduus.token.PiiTransform" href="#carduus.token.PiiTransform">PiiTransform</a> implementation for a subject's gender according to the OPPRL standard.</p>
-              </div>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code><span title="carduus.token.OpprlPii.birth_date">birth_date</span></code></td>
-            <td>
-                  <code><span title="carduus.token.pii.DateTransform">DateTransform</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p><a class="autorefs autorefs-internal" title="carduus.token.PiiTransform" href="#carduus.token.PiiTransform">PiiTransform</a> implementation for a subject's date of birth according to the OPPRL standard.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
 
     </div>
 
 </div>
 
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="carduus.token.OpprlToken" class="doc doc-heading">
-            <code>carduus.token.OpprlToken</code>
-
-
-</h2>
-
-
-    <div class="doc doc-contents first">
-            <p class="doc doc-class-bases">
-              Bases: <code><span title="enum.Enum">Enum</span></code></p>
-
-
-        <p>Enum of <a class="autorefs autorefs-internal" title="carduus.token.TokenSpec
-
-
-  
-      dataclass
-  " href="#carduus.token.TokenSpec"><code>TokenSpec</code></a> objects that meet the Open Privacy Preserving
-Record Linkage tokenization specification.</p>
-
-
-<p><span class="doc-section-title">Attributes:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code><span title="carduus.token.OpprlToken.opprl_token_1">opprl_token_1</span></code></td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Token #1 from the OPPRL specification. Creates tokens based on <code>first_initial</code>, <code>last_name</code>, <code>gender</code>, and <code>birth_date</code>.</p>
-              </div>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code><span title="carduus.token.OpprlToken.opprl_token_2">opprl_token_2</span></code></td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Token #2 from the OPPRL specification. Creates tokens based on <code>first_soundex</code>, <code>last_soundex</code>, <code>gender</code>, and <code>birth_date</code>.</p>
-              </div>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code><span title="carduus.token.OpprlToken.orrpl_token_3">orrpl_token_3</span></code></td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Token #3 from the OPPRL specification. Creates tokens based on the <code>first_metaphone</code>, <code>last_metaphone</code>, <code>gender</code>, and <code>birth_date</code>.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div><h1 id="encryption-key-management">Encryption Key Management</h1>
-<p>See the <a href="../guides/getting-started/#encryption-keys">encryption key section</a> of the "Getting started" guide for details about how Carduus accesses encryption keys.</p>
-
-
 <div class="doc doc-object doc-function">
 
 
-<h2 id="carduus.keys.generate_pem_keys" class="doc doc-heading">
-            <span class="doc doc-object-name doc-function-name">carduus.keys.generate_pem_keys</span>
+<h3 id="spindle_token.generate_pem_keys" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">generate_pem_keys</span><span class="p">(</span><span class="n">key_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span></code>
+
+</h3>
 
 
-</h2>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">generate_pem_keys</span><span class="p">(</span><span class="n">key_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span>
-</code></pre></div>
-
-    <div class="doc doc-contents first">
+    <div class="doc doc-contents ">
 
         <p>Generates a fresh RSA key pair.</p>
 
@@ -1618,29 +1939,780 @@ Record Linkage tokenization specification.</p>
 
     </div>
 
-</div><h1 id="interfaces">Interfaces</h1>
-<p>Carduus offers interfaces that can be extended by the user to add additional behaviors to the tokenization and transcryption processes.</p>
-<p>The <code>PiiTransform</code> abstract base class can be extended to add support for custom PII attributes, normalizations, and enhancements. See the <a href="../guides/custom-pii/">custom PII guide</a> for more details.</p>
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="spindle_token.opprl" class="doc doc-heading">
+            <code>spindle_token.opprl</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>A module of classes that provide standard configuration for different versions of the OPPRL protocol.</p>
+<p>Each class is made up of class variables holding all instances of <a class="autorefs autorefs-internal" title="PiiAttribute" href="#spindle_token.core.PiiAttribute">PiiAttributes</a>,
+<a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+  " href="#spindle_token.core.Token">Token</a>, and <a class="autorefs autorefs-internal" href="#spindle_token.core.TokenProtocolFactory">TokenProtocolFactory</a> that make up
+the complete spec of the corresponding OPPRL version.</p>
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
 
 
 <div class="doc doc-object doc-class">
 
 
 
-<h2 id="carduus.token.PiiTransform" class="doc doc-heading">
-            <code>carduus.token.PiiTransform</code>
+<h3 id="spindle_token.opprl.OpprlV0" class="doc doc-heading">
+            <code>OpprlV0</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>All instances of <a class="autorefs autorefs-internal" href="#spindle_token.core.PiiAttribute">PiiAttribute</a>, <a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+  " href="#spindle_token.core.Token">Token</a>, and
+<a class="autorefs autorefs-internal" href="#spindle_token.core.TokenProtocolFactory">TokenProtocolFactory</a> for v0 of the OPPRL protocol.</p>
+<p>All members are class variables, and therefore this class does not need to be instantiated.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV0.first_name">first_name</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.NameAttribute">NameAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's first name.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV0.last_name">last_name</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.NameAttribute">NameAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's last (aka family) name.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV0.gender">gender</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.GenderAttribute">GenderAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's gender.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV0.birth_date">birth_date</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.DateAttribute">DateAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's date of birth.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV0.protocol">protocol</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="TokenProtocolFactory (spindle_token.core.TokenProtocolFactory)" href="#spindle_token.core.TokenProtocolFactory">TokenProtocolFactory</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tokenization protocol for producing OPPRL version 0 tokens.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV0.token1">token1</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first initial, last name, gender, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV0.token2">token2</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first soundex, last soundex, gender, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV0.token3">token3</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first metaphone, last metaphone, gender, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="spindle_token.opprl.OpprlV1" class="doc doc-heading">
+            <code>OpprlV1</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>All instances of <a class="autorefs autorefs-internal" href="#spindle_token.core.PiiAttribute">PiiAttribute</a>, <a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+  " href="#spindle_token.core.Token">Token</a>, and
+<a class="autorefs autorefs-internal" href="#spindle_token.core.TokenProtocolFactory">TokenProtocolFactory</a> for v1 of the OPPRL protocol.</p>
+<p>All members are class variables, and therefore this class does not need to be instantiated.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.first_name">first_name</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.NameAttribute">NameAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's first name.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.last_name">last_name</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.NameAttribute">NameAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's last (aka family) name.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.gender">gender</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.GenderAttribute">GenderAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's gender.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.birth_date">birth_date</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.DateAttribute">DateAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's date of birth.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.email">email</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.EmailAttribute">EmailAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's email address.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.hem">hem</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.HashedEmail">HashedEmail</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's SHA2 hashed email address.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.phone">phone</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.PhoneNumberAttribute">PhoneNumberAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's phone number.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.ssn">ssn</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.SsnAttribute">SsnAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's social security number.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.group_number">group_number</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.GroupNumberAttribute">GroupNumberAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's health plan group number.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.member_id">member_id</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.MemberIdAttribute">MemberIdAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's health plan member ID.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.protocol">protocol</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="TokenProtocolFactory (spindle_token.core.TokenProtocolFactory)" href="#spindle_token.core.TokenProtocolFactory">TokenProtocolFactory</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tokenization protocol for producing OPPRL version 0 tokens.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.token1">token1</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first initial, last name, gender, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.token2">token2</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first soundex, last soundex, gender, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.token3">token3</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first metaphone, last metaphone, gender, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.token4">token4</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first initial, last name, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.token5">token5</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first soundex, last soundex, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.token6">token6</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first metaphone, last metaphone, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.token7">token7</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first name and phone number.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.token8">token8</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from birth date and phone number.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.token9">token9</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first name and SSN.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.token10">token10</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from birth date and SSN.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.token11">token11</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from an email address.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.token12">token12</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from a SHA2 hashed email address.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV1.token13">token13</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from health plan group number and member ID.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="spindle_token.opprl.IdentityAttribute" class="doc doc-heading">
+            <code>IdentityAttribute</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="PiiAttribute (spindle_token.core.PiiAttribute)" href="#spindle_token.core.PiiAttribute">PiiAttribute</a></code></p>
+
+
+        <p>An implementation of <a class="autorefs autorefs-internal" href="#spindle_token.core.PiiAttribute">PiiAttribute</a> with no transformation (normalization) logic.</p>
+<p>This class is useful when your data contains columns that can be used as attributes
+as-is with no normalization. In particular, if your data has columns that correspond
+to PII attributes that would typically be derived from other PII attributes, such as
+the initial of the first name.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <p>Create an identity attribute that uses the first initial directly
+as opposed to deriving from the first name.</p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">attribute</span> <span class="o">=</span> <span class="n">IdentityAttribute</span><span class="p">(</span><span class="s2">&quot;opprl.v1.first.initial&quot;</span><span class="p">)</span>
+</code></pre></div>
+    <p>The transform method returns the input column unchanged.</p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">attribute</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;first_initial&quot;</span><span class="p">),</span> <span class="n">StringType</span><span class="p">())</span>
+<span class="go">Column&lt;&#39;first_initial&#39;&gt;</span>
+</code></pre></div>
+    <p>There are no derivatives of identity attributes aside from the attribute itself.</p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">attribute</span><span class="o">.</span><span class="n">derivatives</span><span class="p">()</span>
+<span class="go">{&#39;opprl.v1.first.initial&#39;: IdentityAttribute(opprl.v1.first.initial)}</span>
+</code></pre></div>
+    <p>Identity attributes can be passed to the tokenize function.</p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token.opprl</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpprlV1</span> <span class="k">as</span> <span class="n">v1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tokenize</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">df</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">IdentityAttribute</span><span class="p">(</span><span class="s2">&quot;opprl.v1.first.initial&quot;</span><span class="p">):</span> <span class="s2">&quot;first_initial&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">v1</span><span class="o">.</span><span class="n">last_name</span><span class="p">:</span> <span class="s2">&quot;last_name&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">v1</span><span class="o">.</span><span class="n">gender</span><span class="p">:</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">v1</span><span class="o">.</span><span class="n">birth_date</span><span class="p">:</span> <span class="s2">&quot;birth_date&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">},</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">[</span><span class="n">v1</span><span class="o">.</span><span class="n">token1</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+<span class="go">DataFrame[first_initial: string, last_name: string, ..., opprl_token_1v1: string]</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="spindle_token.core" class="doc doc-heading">
+            <code>spindle_token.core</code>
 
 
 </h2>
 
-
     <div class="doc doc-contents first">
+
+        <p>The core abstractions of spindle-token, including abstract base classes for extending functionality.</p>
+<p>The spindle-token library provides base interfaces that cane be extended by users to define custom token 
+specifications to encrypt with existing versions of OPPRL cryptography protocols, or define entirely new 
+tokenization protocols.</p>
+
+
+<details class="warning" open>
+  <summary>Warning</summary>
+  <p>Extending the base classes in this module to customize the tokenization behavior has no security or 
+privacy guarantees. These abstractions -- like all OSS -- are "use at your own risk" and users should
+only use these advanced features if they understand them.</p>
+</details>
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="spindle_token.core.PiiAttribute" class="doc doc-heading">
+            <code>PiiAttribute</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
               Bases: <code><span title="abc.ABC">ABC</span></code></p>
 
 
-        <p>Abstract base class for normalization and enhancement of a specific PII attribute.</p>
-<p>Intended to be extended by users to add support for building tokens from a custom PII attribute.</p>
+        <p>An attribute (aka column) of personally identifiable information (PII) to use when constructing tokens.</p>
+<p>This abstract base class is intended to be extended by users to add support for building tokens from a custom PII attribute.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.core.PiiAttribute.attr_id">attr_id</span></code></td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An identifier for the PiiAttribute. Should be unique across all logically different PiiAttributes.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
 
@@ -1663,18 +2735,39 @@ Record Linkage tokenization specification.</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="carduus.token.PiiTransform.normalize" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">normalize</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span></code>
+<h4 id="spindle_token.core.PiiAttribute.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">attr_id</span><span class="p">)</span></code>
 
-</h3>
+</h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>A normalized representation of the PII column.</p>
+        <p>Initializes the PiiAttribute with the given globally unique attribute ID.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="spindle_token.core.PiiAttribute.transform" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">transform</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Transforms the raw PII column into a normalized representation.</p>
 <p>A normalized value has eliminated all representation or encoding differences so all instances of the
 same logical values have identical physical values. For example, text attributes will often be normalized
-by filtering to alpha-numeric characters and whitespace, standardizing to whitespace to the space character,
+by filtering to alpha-numeric characters and whitespace, standardizing all whitespace to the space character,
 and converting all alpha characters to uppercase to ensure that all ways of representing the same phrase
 normalize to the exact same string.</p>
 
@@ -1744,7 +2837,7 @@ thus requires corresponding normalization into a <code>DateType</code>.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The normalized version of the PII attribute.</p>
+                <p>A pyspark Column expression of normalized PII values.</p>
               </div>
             </td>
           </tr>
@@ -1758,17 +2851,127 @@ thus requires corresponding normalization into a <code>DateType</code>.</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="carduus.token.PiiTransform.enhancements" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">enhancements</span><span class="p">(</span><span class="n">column</span><span class="p">)</span></code>
+<h4 id="spindle_token.core.PiiAttribute.derivatives" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">derivatives</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A collection of PII attributes that can be derived from this PII attribute, including this PiiAttribute.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <a class="autorefs autorefs-internal" title="PiiAttribute (spindle_token.core.PiiAttribute)" href="#spindle_token.core.PiiAttribute">PiiAttribute</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A <code>dict</code> with globally unique (typically namespaced) attribute IDs as the key. Values are instances of</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <a class="autorefs autorefs-internal" title="PiiAttribute (spindle_token.core.PiiAttribute)" href="#spindle_token.core.PiiAttribute">PiiAttribute</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><a class="autorefs autorefs-internal" href="#spindle_token.core.PiiAttribute">PiiAttribute</a> that produce normalized values for each derivative attribute</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <a class="autorefs autorefs-internal" title="PiiAttribute (spindle_token.core.PiiAttribute)" href="#spindle_token.core.PiiAttribute">PiiAttribute</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>from the normalized values of this PiiAttribute.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="spindle_token.core.TokenProtocol" class="doc doc-heading">
+            <code>TokenProtocol</code>
+
 
 </h3>
 
 
     <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="abc.ABC">ABC</span></code></p>
 
-        <p>A collection of PII attributes that can be automatically derived from a given normalized PII attribute</p>
-<p>If an implementation of <a class="autorefs autorefs-internal" title="carduus.token.PiiTransform" href="#carduus.token.PiiTransform">PiiTransform</a> does not override this method, it is
-assumed that no enhancements can be derived</p>
+
+        <p>An abstract base class for a specific version of the OPPRL tokenization protocol.</p>
+<p>This abstract base class is intended to be extended by users who want to implement custom tokenization protocols.</p>
+<p>It is assumed that instances of the <code>TokenProtocol</code> will provide any configuration or other inputs
+(such as encryption keys) required to produce tokens. See <a class="autorefs autorefs-internal" href="#spindle_token.core.TokenProtocolFactory"><code>TokenProtocolFactory</code></a>
+for more information.</p>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="spindle_token.core.TokenProtocol.tokenize" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">tokenize</span><span class="p">(</span><span class="n">attribute_ids</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Creates a Column expression for a single token.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1784,14 +2987,15 @@ assumed that no enhancements can be derived</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>column</code>
+                <code>attribute_ids</code>
             </td>
             <td>
-                  <code><span title="pyspark.sql.Column">Column</span></code>
+                  <code><span title="list">list</span>[<span title="str">str</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The normalized PII column to produce enhancements from.</p>
+                <p>A collection <a class="autorefs autorefs-internal" href="#spindle_token.core.PiiAttribute"><code>PiiAttribute</code></a> attribute IDs corresponding to the attributes
+to combine into the token.</p>
               </div>
             </td>
             <td>
@@ -1802,14 +3006,463 @@ assumed that no enhancements can be derived</p>
     </table>
 
 
-<details class="return" open>
-  <summary>Return</summary>
-  <p>A <code>dict</code> with keys that correspond to the PII attributes of the ___ and values that correspond to the <code>Column</code>
-expression that produced the new PII from a normalized input attribute.</p>
-</details>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="pyspark.sql.Column">Column</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A pyspark <code>Column</code> expression representing token values.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
     </div>
 
 </div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="spindle_token.core.TokenProtocol.transcode_out" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">transcode_out</span><span class="p">(</span><span class="n">token</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Transcodes the given token into an ephemeral token.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>token</code>
+            </td>
+            <td>
+                  <code><span title="pyspark.sql.Column">Column</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A pyspark <code>Column</code> of tokens.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="pyspark.sql.Column">Column</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A pyspark <code>Column</code> expression of ephemeral tokens created from the input tokens.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="spindle_token.core.TokenProtocol.transcode_in" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">transcode_in</span><span class="p">(</span><span class="n">ephemeral_token</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Transcodes the given ephemeral token into a normal token.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>ephemeral_token</code>
+            </td>
+            <td>
+                  <code><span title="pyspark.sql.Column">Column</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A pyspark <code>Column</code> of ephemeral tokens.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="pyspark.sql.Column">Column</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A pyspark <code>Column</code> expression of tokens created from the input ephemeral tokens.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="spindle_token.core.TokenProtocolFactory" class="doc doc-heading">
+            <code>TokenProtocolFactory</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="abc.ABC">ABC</span></code>, <code><span title="typing.Generic">Generic</span>[<span title="spindle_token.core.P">P</span>]</code></p>
+
+
+        <p>An abstract base class for factories that instantiate <code>TokenProtocol</code> implementations with user provided encryption keys.</p>
+<p>This abstract base class is intended to be extended by users who want to implement custom tokenization protocols.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.core.TokenProtocolFactory.factory_id">factory_id</span></code></td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An identifier for the <code>TokenProtocolFactory</code>. Should be globally unique across all logically different <code>TokenProtocolFactory</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="spindle_token.core.TokenProtocolFactory.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">factory_id</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initializes the <code>TokenProtocolFactory</code> with the given globally unique factory ID.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="spindle_token.core.TokenProtocolFactory.bind" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">bind</span><span class="p">(</span><span class="n">private_key</span><span class="p">,</span> <span class="n">recipient_public_key</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Creates an instance of the <a class="autorefs autorefs-internal" href="#spindle_token.core.TokenProtocol">TokenProtocol</a> with the user provided encryption keys.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>private_key</code>
+            </td>
+            <td>
+                  <code><span title="bytes">bytes</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The private RSA key to use when tokenizing PII and transcoding tokens.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>recipient_public_key</code>
+            </td>
+            <td>
+                  <code><span title="bytes">bytes</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The public RSA key of the intended data recipient to use when transcoding tokens into ephemeral tokens.
+Can be <code>None</code> if the instance of <code>TokenProtocol</code> will not be transcoding tokens into ephemeral tokens.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="spindle_token.core.P">P</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An instance of a <code>TokenProtocol</code> implementation.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="spindle_token.core.Token" class="doc doc-heading">
+            <code>Token</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>A specification of a token.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.core.Token.name">name</span></code></td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An identifier safe name for the attribute. Will be used as the column name on dataframes. Must be unique
+across other <code>Token</code> specifications.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.core.Token.protocol">protocol</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="TokenProtocolFactory (spindle_token.core.TokenProtocolFactory)" href="#spindle_token.core.TokenProtocolFactory">TokenProtocolFactory</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An instance of <code>TokenProtocolFactory</code> that, when provided encryption keys, produced an instance of the
+<code>TokenProtocol</code> that generates this kind of token.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.core.Token.attribute_ids">attribute_ids</span></code></td>
+            <td>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A collection of attribute IDs used to lookup instances of <code>PiiAttribute</code> corresponding to the fields used to create the token.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
 
 
 
