@@ -152,7 +152,7 @@ containing a dataset partitioned into files.</p>
   --help                          Show this message and exit.
 </code></pre></div>
 <h1 id="limitations">Limitations</h1>
-<p>The following limitations of the spindle-token CLI are. For a superior experience, consider using spindle-token as a Python library. If your use case requires addressing some of these limitations, please open an <a href="https://github.com/spindle-health/carduus/issues">issue</a> with additional details. </p>
+<p>The following limitations of the spindle-token CLI are. For a superior experience, consider using spindle-token as a Python library. If your use case requires addressing some of these limitations, please open an <a href="https://github.com/spindle-health/spindle-token/issues">issue</a> with additional details. </p>
 <h3 id="no-horizontal-scaling">No Horizontal Scaling</h3>
 <p>The spindle-token CLI is built with <a href="https://spark.apache.org/">Apache Spark</a> to allow for data parallelism. Spark is designed to distribute workloads horizontally across a cluster of multiple machines connected to the same network. The spindle-token CLI runs spark in "local" mode that switches execution to a multi-threaded design on a single host machine.</p>
 <p>The spindle-token CLI cannot be passed to <code>spark-submit</code>, nor is there currently a way to pass <a href="https://spark.apache.org/docs/latest/spark-connect-overview.html">spark connect</a> information to a remote spark cluster. If you would like to use spindle-token on a Spark cluster, it is recommended that you use the spindle-token Python library.</p>

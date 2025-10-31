@@ -1,6 +1,6 @@
 # Release Guide
 
-This is a guide for how to publish a new release of `carduus` including all steps required to update documentation.
+This is a guide for how to publish a new release of `spindle-token` including all steps required to update documentation.
 
 1. Checkout the `main` branch and `git pull`.
 

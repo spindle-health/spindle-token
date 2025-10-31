@@ -42,7 +42,7 @@ jobs:
 
       - name: Install Dependencies
         run: poetry install
-      - name: Run Teset Suite
+      - name: Run Test Suite
         run: poetry run pytest
       - name: Lint Python Code
         run: poetry run black --check .

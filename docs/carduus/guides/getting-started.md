@@ -17,7 +17,7 @@ The latest stable release of carduus can be installed from [PyPI](https://pypi.o
 pip install carduus
 ```
 
-You can also build Carduus from source using [Poetry](https://python-poetry.org/). The source code is hosted [on Github](https://github.com/Spindle-Health/carduus). Checkout the commit you wish to build and run  `poetry build` in the project's root.
+You can also build Carduus from source using [Poetry](https://python-poetry.org/). The source code is hosted [on Github](https://github.com/spindle-health/spindle-token/tree/carduus). Checkout the commit you wish to build and run  `poetry build` in the project's root.
 
 ## Encryption Keys
 

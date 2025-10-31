@@ -1,7 +1,7 @@
 # Code of Conduct
 
 These community rules are put in place in order to ensure that development of 
-carduus stays focused and productive.
+spindle-token stays focused and productive.
 
 ## Our Pledge
 
@@ -58,7 +58,7 @@ a project may be further defined and clarified by project maintainers.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported anonymously using [this form](https://forms.gle/dw63VR9jhiRHnnuC9). All
+reported anonymously using [this form](https://forms.gle/v96Uv8gDd5Zd1vQ88). All
 complaints will be reviewed and investigated and will result in a response that
 is deemed necessary and appropriate to the circumstances. The project team is
 obligated to maintain confidentiality with regard to the reporter of an incident.
