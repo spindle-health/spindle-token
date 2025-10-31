@@ -1093,9 +1093,9 @@
 
 
 <h1 id="migrating-from-carduus-to-spindle-token">Migrating from carduus to spindle-token</h1>
-<p>Prior to the v1.0 release of spindle-token, the python library <a href="https://pypi.org/project/carduus/">carduus</a> implemented the early version of the Open Privacy Preserving Record Linkage (OPPRL) protocol.
+<p>Prior to the v1.0 release of <a href="https://pypi.org/project/spindle-token/">spindle-token</a>, the python library <a href="https://pypi.org/project/carduus/">carduus</a> implemented the early version of the Open Privacy Preserving Record Linkage (OPPRL) protocol.
 Since the release of carduus, new versions of the OPPRL protocol have been published and the spindle-token python package was introduced. 
-See <a href="https://github.com/spindle-health/carduus/pull/26">the pull request</a> for the full story.</p>
+See <a href="https://github.com/spindle-health/spindle-token/pull/26">the pull request</a> for the full story.</p>
 <p>In summary, carduus only supported version 0 of the OPPRL while spindle-token supports all versions (including version 0). The spindle-token library can be parameterized to produce tokens that match tokens produced by carduus.</p>
 <p>This guide is intended to help carduus users migrate their code to spindle-token without breaking their tokenized data assets. At a high level, the abstraction of both libraries is the same. The main differences are in parameterization and naming. </p>
 <h2 id="tokenization">Tokenization</h2>

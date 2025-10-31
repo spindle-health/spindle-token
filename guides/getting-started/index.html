@@ -1209,7 +1209,7 @@
 <p>The latest stable release of spindle-token can be installed from <a href="https://pypi.org/project/spindle-token/">PyPI</a> into your active Python environment using <code>pip</code>.</p>
 <div class="highlight"><pre><span></span><code>pip install spindle-token
 </code></pre></div>
-<p>You can also build spindle-token from source using <a href="https://python-poetry.org/">Poetry</a>. The source code is hosted <a href="https://github.com/spindle-health/carduus">on Github</a>. Checkout the commit you wish to build and run  <code>poetry build</code> in the project's root.</p>
+<p>You can also build spindle-token from source using <a href="https://python-poetry.org/">Poetry</a>. The source code is hosted <a href="https://github.com/spindle-health/spindle-token">on Github</a>. Checkout the commit you wish to build and run  <code>poetry build</code> in the project's root.</p>
 <h2 id="encryption-keys">Encryption Keys</h2>
 <p>Tokenization is a specific use case of cryptography and relies on encryption keys. Spindle-token users are expected to provision and manage their own encryption keys.</p>
 <p>There are 3 kinds of encryption keys that play different roles:</p>
@@ -1226,7 +1226,7 @@
 <p>Public keys don't need to be managed as secrets. It is possible to specify the public key (in PEM format) for your intended data recipient with the <code>SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY</code> environment variable or pass the public key to spindle-token functions as an explicit argument. Users can pick whichever method is more convenient. </p>
 <h3 id="generating-new-keys">Generating New Keys</h3>
 <p>Spindle-token expects encryption keys to be represented with the <a href="https://en.wikipedia.org/wiki/Privacy-Enhanced_Mail">PEM</a> encoding. Private keys should use the <a href="https://en.wikipedia.org/wiki/PKCS_8">PKCS #8</a> format and public keys should be formatted as <a href="https://www.rfc-editor.org/rfc/rfc5280#section-4.1">SubjectPublicKeyInfo</a>. It is recommended to use a key size of 2048 bits.</p>
-<p>You can generate these keys using tools like <a href="https://www.openssl.org/"><code>openssl</code></a> or by calling the <code>generate_pem_keys</code> function provided by Carduus. This function will return a <code>tuple</code> containing 2 instances of <code>bytes</code>. The first is the PEM data for your private key that you must keep secret. The second is the PEM data for your public key that can may share with the parties you intend to receive data from.</p>
+<p>You can generate these keys using tools like <a href="https://www.openssl.org/"><code>openssl</code></a> or by calling the <code>generate_pem_keys</code> function provided by spindle-token. This function will return a <code>tuple</code> containing 2 instances of <code>bytes</code>. The first is the PEM data for your private key that you must keep secret. The second is the PEM data for your public key that can may share with the parties you intend to receive data from.</p>
 <p>You can decode these keys into strings of text (using UTF-8) or write them into a <code>.pem</code> file for later use. </p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_pem_keys</span>
 
@@ -1380,7 +1380,7 @@
 <h2 id="next-steps">Next Steps</h2>
 <ul>
 <li>Reference the full <a href="../../api/">API</a></li>
-<li>Learn more about using Carduus and extending it's functionality from the advanced user guides:<ul>
+<li>Learn more about using spindle-token and extending it's functionality from the advanced user guides:<ul>
 <li><a href="../databricks/">Using spindle-token on Databricks</a></li>
 <li><a href="../custom-tokens/">Defining custom token specifications</a></li>
 </ul>

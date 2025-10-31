@@ -1113,26 +1113,24 @@
 
 
 <h1 id="spindle-token">Spindle Token</h1>
-<!-- @TODO Replace with spindle-token badge after publishing. -->
-<!-- [![PyPI version](https://badge.fury.io/py/carduus.svg)](https://badge.fury.io/py/carduus) -->
-
+<p><a href="https://badge.fury.io/py/spindle-token"><img alt="PyPI version" src="https://badge.fury.io/py/spindle-token.svg" /></a></p>
 <p>The open source implementation of the Open Privacy Preserving Record Linkage (OPPRL) protocol build on Spark.</p>
 <h2 id="rationale">Rationale</h2>
 <p>Privacy Preserving Record Linkage (PPRL) is crucial component to data de-identification systems. PPRL obfuscates identifying attributes or other sensitive information about the subjects described in the records of a dataset while still preserving the ability to link records pertaining to the same subject through the use of an encrypted token. This practice is sometimes referred to as "tokenization" and is one of the components of data de-identification.</p>
 <p>The task of PPRL is to replace the attributes of a every record denoting Personally Identifiable Information (PII) with a token produced by a one-way cryptographic function. This prevents observers of the tokenized data from obtaining the PII. The tokens are produced deterministically such that input records with the same, or similar, PII attributes will produce an identical token. This allows practitioners to associate records across datasets that are highly likely to belong to the same data subject without having access to PII.</p>
 <p>Tokenization is also used when data is shared between organizations to limit, or in some cases fully mitigate, the risk of subject re-identification in the event that an untrusted third party gains access to a dataset containing sensitive data. Each party produces encrypted tokens using a different secret key so that any compromised data asset is, at worst, only matchable to other datasets maintained by the same party. During data sharing transactions, a specific "transcode" data flow is used to re-encrypt the sender's tokens into ephemeral tokens that do not match tokens in any other dataset and can only be ingested using the recipients secret key. At no point in the "transcode" data flow is the original PII used.</p>
-<p>The spindle-token is the canonical implementation of the <a href="https://spindle-health.github.io/carduus/opprl/">Open Privacy Preserving Record Linkage</a> (OPPRL) protocol. This protocol presents a standardized methodology for tokenization that can be implemented in any data system to increase interoperability. The spindle-token implementation is a python library that distributes tokenization workloads using apache <a href="https://spark.apache.org/">Spark</a> across multiple cores or multiple machines in a high performance computing cluster for efficient tokenization of any scale datasets.</p>
-<p>The pre-v1.0 versions of this library were published under the name "carduus" and the deprecated APIs can be found <a href="https://spindle-health.github.io/carduus/carduus/api/">here</a>.</p>
+<p>The spindle-token is the canonical implementation of the <a href="https://token.spindlehealth.com/opprl/PROTOCOL/">Open Privacy Preserving Record Linkage</a> (OPPRL) protocol. This protocol presents a standardized methodology for tokenization that can be implemented in any data system to increase interoperability. The spindle-token implementation is a python library that distributes tokenization workloads using apache <a href="https://spark.apache.org/">Spark</a> across multiple cores or multiple machines in a high performance computing cluster for efficient tokenization of any scale datasets.</p>
+<p>The pre-v1.0 versions of this library were published under the name "carduus" and the deprecated APIs can be found <a href="https://token.spindlehealth.com/carduus/api/">here</a>.</p>
 <h2 id="getting-started">Getting Started</h2>
-<p>See the <a href="https://spindle-health.github.io/carduus/guides/getting-started/">getting started guide</a> on the project's web page for an detailed explanation of how carduus is used including example code snippets.</p>
-<p>The full <a href="https://spindle-health.github.io/carduus/api/">API</a> and an <a href="https://spindle-health.github.io/carduus/guides/databricks/">example usage on Databricks</a> are also provided on the project's web page.</p>
+<p>See the <a href="https://token.spindlehealth.com/guides/getting-started/">getting started guide</a> on the project's web page for an detailed explanation of how carduus is used including example code snippets.</p>
+<p>The full <a href="https://token.spindlehealth.com/api/">API</a> and an <a href="https://token.spindlehealth.com/guides/databricks/">example usage on Databricks</a> are also provided on the project's web page.</p>
 <h2 id="security-audit">Security Audit</h2>
 <p>This project has received a security audit from <a href="https://echeloncyber.com/">Echelon Risk + Cyber</a> who provided the following statement. More details on this security audit can be obtained from Echelon Risk + Cyber at <a href="https://echeloncyber.com/spindle-health-security-certification-report">this link</a>.</p>
 <blockquote>
 <p>Echelon Risk + Cyber certifies that as of May 30, 2025, The Spindle Token implementation and Open Privacy Preserving Record Linkage (OPPRL) Protocol exhibit a high degree of alignment with secure cryptographic standards and secure development practices. The use of FIPS -compliant algorithms (AES-GCM-SIV, RSA-OAEP, SHA2 family), layered encryption, and privacy preserving design patterns indicate strong foundational security. Note: This certification is issued in good faith, based on the materials available to the Echelon team at the time of the review.</p>
 </blockquote>
 <h2 id="contributing">Contributing</h2>
-<p>Please refer to the spindle-token <a href="https://spindle-health.github.io/carduus/CONTRIBUTING/">contributing guide</a> for information on how to get started contributing to the project.</p>
+<p>Please refer to the spindle-token <a href="https://token.spindlehealth.com/CONTRIBUTING/">contributing guide</a> for information on how to get started contributing to the project.</p>
 <h3 id="organizations-that-have-contributed-to-spindle-token">Organizations that have contributed to spindle-token</h3>
 <p><a href="https://spindlehealth.com/">
     <img
