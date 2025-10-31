@@ -13,29 +13,35 @@ dependencies = [
     "phonenumberslite (>=9.0.12,<10.0.0)",
 ]
 
+[dependency-groups]
+test = [
+    "pytest (>=7.2)",
+    # pyspark.testing.utils requires pandas
+    "pandas (>=1.05)",
+    # pyspark.testing.utils requires pyarrow
+    "pyarrow (>=4.0.0)",
+    # pyspark.testing.utils breaks on numpy 2.0 and above on spark 3.x
+    # https://issues.apache.org/jira/browse/SPARK-48710
+    "numpy (<2.0.0)",
+    "setuptools (>=60.0.0)",
+    "pytest-cov (>=6.1.1)",
+    "black",
+    "mypy",
+]
+docs = [
+    "mkdocs (>=1.6)",
+    "mkdocs-material (>=9.6.14)",
+    "mkdocstrings (>=0.29)",
+    "mkdocstrings-python (>=1.14.6)",
+    "mkdocs-jupyter (>=0.25.1)",
+    "mkdocs-click (>=0.9.0)",
+]
+
 [project.scripts]
 spindle-token = "spindle_token._cli:cli"
 
 [tool.poetry]
 packages = [{ include = "spindle_token", from = "src" }]
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.2"
-# pyspark.testing.utils requires pandas
-pandas = ">=1.0.5"
-# pyspark.testing.utils requires pyarrow
-pyarrow = ">=4.0.0"
-# pyspark.testing.utils breaks on numpy 2. 
-numpy = "<2.0"
-black = "*"
-mypy = "*"
-mkdocs = ">=1.6"
-mkdocs-material = ">=9.6.14"
-mkdocstrings = ">=0.29"
-mkdocstrings-python = ">=1.14.6"
-mkdocs-jupyter = ">=0.25.1"
-mkdocs-click = "^0.9.0"
-pytest-cov = "^6.1.1"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
