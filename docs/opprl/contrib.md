@@ -1,15 +1,17 @@
 # Contributing to the OPPRL Protocol
 
-> :warning: This specification is incomplete.
+> :warning: These guides incomplete. 
 
 ## Contributing OPPRL Evaluation Data
 
-> Post on the [discussion board](https://github.com/Spindle-Health/carduus/discussions) in the OPPRL section. 
+> Post on the [discussion board](https://github.com/spindle-health/spindle-token/discussions) in the OPPRL section. 
 
 ## Contributing Research
 
-> Post on the [discussion board](https://github.com/Spindle-Health/carduus/discussions) in the OPPRL section. 
+> Post on the [discussion board](https://github.com/spindle-health/spindle-token/discussions) in the OPPRL section. 
 
 ## Proposing Changes
 
-> Open a PR to spec document in the Carduus repository.
+> Post on the [discussion board](https://github.com/spindle-health/spindle-token/discussions) in the OPPRL section
+> and then after consensus is reached in the discussion open a Pull Request to modify
+> [PROTOCOL.md](https://github.com/spindle-health/spindle-token/blob/main/PROTOCOL.md).

@@ -15,7 +15,7 @@ The latest stable release of spindle-token can be installed from [PyPI](https://
 pip install spindle-token
 ```
 
-You can also build spindle-token from source using [Poetry](https://python-poetry.org/). The source code is hosted [on Github](https://github.com/spindle-health/carduus). Checkout the commit you wish to build and run  `poetry build` in the project's root.
+You can also build spindle-token from source using [Poetry](https://python-poetry.org/). The source code is hosted [on Github](https://github.com/spindle-health/spindle-token). Checkout the commit you wish to build and run  `poetry build` in the project's root.
 
 ## Encryption Keys
 
@@ -43,7 +43,7 @@ Public keys don't need to be managed as secrets. It is possible to specify the p
 
 Spindle-token expects encryption keys to be represented with the [PEM](https://en.wikipedia.org/wiki/Privacy-Enhanced_Mail) encoding. Private keys should use the [PKCS #8](https://en.wikipedia.org/wiki/PKCS_8) format and public keys should be formatted as [SubjectPublicKeyInfo](https://www.rfc-editor.org/rfc/rfc5280#section-4.1). It is recommended to use a key size of 2048 bits.
 
-You can generate these keys using tools like [`openssl`](https://www.openssl.org/) or by calling the `generate_pem_keys` function provided by Carduus. This function will return a `tuple` containing 2 instances of `bytes`. The first is the PEM data for your private key that you must keep secret. The second is the PEM data for your public key that can may share with the parties you intend to receive data from.
+You can generate these keys using tools like [`openssl`](https://www.openssl.org/) or by calling the `generate_pem_keys` function provided by spindle-token. This function will return a `tuple` containing 2 instances of `bytes`. The first is the PEM data for your private key that you must keep secret. The second is the PEM data for your public key that can may share with the parties you intend to receive data from.
 
 You can decode these keys into strings of text (using UTF-8) or write them into a `.pem` file for later use. 
 
@@ -215,6 +215,6 @@ For more information about different modes of deployment, see the official Spark
 ## Next Steps
 
 - Reference the full [API](../api.md)
-- Learn more about using Carduus and extending it's functionality from the advanced user guides:
+- Learn more about using spindle-token and extending it's functionality from the advanced user guides:
     - [Using spindle-token on Databricks](./databricks.ipynb)
     - [Defining custom token specifications](./custom-tokens.md)

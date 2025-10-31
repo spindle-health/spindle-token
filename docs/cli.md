@@ -98,7 +98,7 @@ The help text, options, and arguments of every command and sub-command of the sp
 
 # Limitations
 
-The following limitations of the spindle-token CLI are. For a superior experience, consider using spindle-token as a Python library. If your use case requires addressing some of these limitations, please open an [issue](https://github.com/spindle-health/carduus/issues) with additional details. 
+The following limitations of the spindle-token CLI are. For a superior experience, consider using spindle-token as a Python library. If your use case requires addressing some of these limitations, please open an [issue](https://github.com/spindle-health/spindle-token/issues) with additional details. 
 
 ### No Horizontal Scaling
 

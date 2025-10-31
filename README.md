@@ -1,7 +1,6 @@
 # Spindle Token
 
-<!-- @TODO Replace with spindle-token badge after publishing. -->
-<!-- [![PyPI version](https://badge.fury.io/py/carduus.svg)](https://badge.fury.io/py/carduus) -->
+[![PyPI version](https://badge.fury.io/py/spindle-token.svg)](https://badge.fury.io/py/spindle-token)
 
 The open source implementation of the Open Privacy Preserving Record Linkage (OPPRL) protocol build on Spark.
 
@@ -13,15 +12,15 @@ The task of PPRL is to replace the attributes of a every record denoting Persona
 
 Tokenization is also used when data is shared between organizations to limit, or in some cases fully mitigate, the risk of subject re-identification in the event that an untrusted third party gains access to a dataset containing sensitive data. Each party produces encrypted tokens using a different secret key so that any compromised data asset is, at worst, only matchable to other datasets maintained by the same party. During data sharing transactions, a specific "transcode" data flow is used to re-encrypt the sender's tokens into ephemeral tokens that do not match tokens in any other dataset and can only be ingested using the recipients secret key. At no point in the "transcode" data flow is the original PII used.
 
-The spindle-token is the canonical implementation of the [Open Privacy Preserving Record Linkage](https://spindle-health.github.io/carduus/opprl/) (OPPRL) protocol. This protocol presents a standardized methodology for tokenization that can be implemented in any data system to increase interoperability. The spindle-token implementation is a python library that distributes tokenization workloads using apache [Spark](https://spark.apache.org/) across multiple cores or multiple machines in a high performance computing cluster for efficient tokenization of any scale datasets.
+The spindle-token is the canonical implementation of the [Open Privacy Preserving Record Linkage](https://token.spindlehealth.com/opprl/PROTOCOL/) (OPPRL) protocol. This protocol presents a standardized methodology for tokenization that can be implemented in any data system to increase interoperability. The spindle-token implementation is a python library that distributes tokenization workloads using apache [Spark](https://spark.apache.org/) across multiple cores or multiple machines in a high performance computing cluster for efficient tokenization of any scale datasets.
 
-The pre-v1.0 versions of this library were published under the name "carduus" and the deprecated APIs can be found [here](https://spindle-health.github.io/carduus/carduus/api/).
+The pre-v1.0 versions of this library were published under the name "carduus" and the deprecated APIs can be found [here](https://token.spindlehealth.com/carduus/api/).
 
 ## Getting Started
 
-See the [getting started guide](https://spindle-health.github.io/carduus/guides/getting-started/) on the project's web page for an detailed explanation of how carduus is used including example code snippets.
+See the [getting started guide](https://token.spindlehealth.com/guides/getting-started/) on the project's web page for an detailed explanation of how carduus is used including example code snippets.
 
-The full [API](https://spindle-health.github.io/carduus/api/) and an [example usage on Databricks](https://spindle-health.github.io/carduus/guides/databricks/) are also provided on the project's web page.
+The full [API](https://token.spindlehealth.com/api/) and an [example usage on Databricks](https://token.spindlehealth.com/guides/databricks/) are also provided on the project's web page.
 
 ## Security Audit
 
@@ -31,7 +30,7 @@ This project has received a security audit from [Echelon Risk + Cyber](https://e
 
 ## Contributing
 
-Please refer to the spindle-token [contributing guide](https://spindle-health.github.io/carduus/CONTRIBUTING/) for information on how to get started contributing to the project.
+Please refer to the spindle-token [contributing guide](https://token.spindlehealth.com/CONTRIBUTING/) for information on how to get started contributing to the project.
 
 ### Organizations that have contributed to spindle-token
 
