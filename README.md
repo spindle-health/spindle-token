@@ -4,7 +4,7 @@
 
 The open source implementation of the Open Privacy Preserving Record Linkage (OPPRL) protocol build on Spark.
 
-> :warning: Carduus has not reached a v1.0 release yet and therefore the API and behaviors are subject to change. See the [contributing](./CONTRIBUTING.md) guide if you would like to help the project.
+> :warning: Carduus has been superseded by [spindle-token](https://pypi.org/project/spindle-token/) which includes a superset of carduus's functionality. Carduus remains available on [pypi](https://pypi.org/project/carduus/) and [Github](https://github.com/spindle-health/spindle-token/tree/carduus) but future development on OPPRL tokenization will be focused on spindle-token. You can read more [here](https://github.com/spindle-health/spindle-token/pull/35).
 
 ## Rationale
 
