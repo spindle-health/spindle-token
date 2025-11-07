@@ -24,11 +24,13 @@ See the [getting started guide](https://spindle-health.github.io/carduus/guides/
 
 The full [API](https://spindle-health.github.io/carduus/api/) and an [example usage on Databricks](https://spindle-health.github.io/carduus/guides/databricks/) are also provided on the project's web page.
 
-## Security Audit
+## Independent Security Review
 
-This project has received a security audit from [Echelon Risk + Cyber](https://echeloncyber.com/) who provided the following statement. More details on this security audit can be obtained from Echelon Risk + Cyber at [this link](https://echeloncyber.com/spindle-health-security-certification-report).
+Spindle engaged [Echelon Risk + Cyber](https://echeloncyber.com/), an independent, leading cybersecurity firm, to conduct an audit of the Spindle Token implementation. The review evaluated and confirmed alignment with industry best practices in secure software development, cryptographic algorithm selection, and tokenization methods.
 
- > Echelon Risk + Cyber certifies that as of May 30, 2025, The Spindle Token implementation and Open Privacy Preserving Record Linkage (OPPRL) Protocol exhibit a high degree of alignment with secure cryptographic standards and secure development practices. The use of FIPS -compliant algorithms (AES-G CM-SIV, RSA-OAEP, SHA2 family), layered encryption, and privacy preserving design patterns indicate strong foundational security. Note: This certification is issued in good faith, based on the materials available to the Echelon team at the time of the review.
+[View the full report](https://echeloncyber.com/spindle-health-security-certification-report).
+
+This report reflects Echelon Risk + Cyber’s independent professional opinion as of the date of review and does not constitute a warranty, certification, or guarantee of future performance or security. The scope of the assessment was limited to the artifacts, documentation, and workshop discussions reviewed through May 30, 2025, and does not extend to undisclosed code, subsequent modifications, or third-party dependencies.
 
 ## Contributing
 
