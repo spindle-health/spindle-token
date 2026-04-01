@@ -739,6 +739,43 @@ def test_tokenize_v2_stays_distinct_for_different_private_keys(
     assert sender_token != recipient_token
 
 
+def test_valid_ssn_variants_produce_matchable_tokens(
+    spark: SparkSession, private_key: bytes
+):
+    pii = spark.createDataFrame(
+        [
+            Row(
+                first_name="Louis",
+                birth_date="1822-12-27",
+                ssn="123-45-6789",
+            ),
+            Row(
+                first_name="Louis",
+                birth_date="1822-12-27",
+                ssn="123456789",
+            ),
+        ]
+    )
+
+    tokens = tokenize(
+        pii,
+        col_mapping={
+            v1.first_name: "first_name",
+            v1.birth_date: "birth_date",
+            v1.ssn: "ssn",
+        },
+        tokens=[v1.token9, v1.token10],
+        private_key=private_key,
+    )
+
+    ssn_tokens = tokens.select("opprl_token_9v1", "opprl_token_10v1").collect()
+
+    assert len(ssn_tokens) == 2
+    assert ssn_tokens[0] == ssn_tokens[1]
+    assert ssn_tokens[0][0] is not None
+    assert ssn_tokens[0][1] is not None
+
+
 def test_v2_protocol_rejects_non_rsa_private_keys_at_bind_time():
     non_rsa_private_key = ec.generate_private_key(ec.SECP256R1()).private_bytes(
         encoding=Encoding.PEM,

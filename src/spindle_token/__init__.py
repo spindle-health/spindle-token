@@ -8,7 +8,7 @@ respectively.
 
 """
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 from collections.abc import Mapping, Iterable
 from pyspark.sql import DataFrame, Column

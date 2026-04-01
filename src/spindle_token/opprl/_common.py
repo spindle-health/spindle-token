@@ -235,7 +235,7 @@ class SsnAttribute(PiiAttribute):
     """An implementation of PiiAttribute for US social security numbers."""
 
     def transform(self, column: Column, _: DataType):
-        column = regexp_replace(column.cast(StringType()), "[^\\D]", "")
+        column = regexp_replace(column.cast(StringType()), r"\D", "")
         return when(_is_valid_ssn(column), column)
 
 
