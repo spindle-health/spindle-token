@@ -2,12 +2,21 @@ import pytest
 from datetime import date
 from pyspark.sql import SparkSession, Row
 from pyspark.sql.types import StructType, StructField, StringType, DateType
-from pyspark.sql.functions import regexp_replace, substring
+from pyspark.sql.functions import col, regexp_replace, substring
 from pyspark.testing.utils import assertDataFrameEqual, assertSchemaEqual
+from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.primitives.serialization import (
+    load_pem_private_key,
+    Encoding,
+    NoEncryption,
+    PrivateFormat,
+)
 from spindle_token import tokenize, transcode_out, transcode_in
 from spindle_token._crypto import _PRIVATE_KEY_ENV_VAR, _RECIPIENT_PUBLIC_KEY_ENV_VAR
+from spindle_token._utils import base64_no_newline
 from spindle_token.core import PiiAttribute, Token
-from spindle_token.opprl import OpprlV0 as v0, OpprlV1 as v1, IdentityAttribute
+from spindle_token.opprl import OpprlV0 as v0, OpprlV1 as v1, OpprlV2 as v2, IdentityAttribute
+from spindle_token.opprl.v2 import _derive_aes_key as v2_derive_aes_key
 
 
 def test_tokenize_and_transcode_opprl(
@@ -565,3 +574,197 @@ def test_missing_key(spark: SparkSession):
             },
             tokens=[v1.token1],
         )
+
+
+def test_base64_no_newline_removes_all_wrapping_newlines(spark: SparkSession):
+    raw = spark.createDataFrame([Row(payload=bytes(range(120)))])
+    encoded = raw.select(base64_no_newline(col("payload")).alias("token")).collect()[0]["token"]
+
+    assert encoded is not None
+    assert "\r" not in encoded
+    assert "\n" not in encoded
+
+
+def test_v2_key_derivation_is_invariant_to_private_key_pem_encoding(private_key: bytes):
+    key = load_pem_private_key(private_key, None)
+    pkcs8 = key.private_bytes(
+        encoding=Encoding.PEM,
+        format=PrivateFormat.PKCS8,
+        encryption_algorithm=NoEncryption(),
+    )
+    pkcs1 = key.private_bytes(
+        encoding=Encoding.PEM,
+        format=PrivateFormat.TraditionalOpenSSL,
+        encryption_algorithm=NoEncryption(),
+    )
+
+    assert v2_derive_aes_key(pkcs8) == v2_derive_aes_key(pkcs1)
+
+
+def test_tokenize_v2_is_invariant_to_private_key_pem_encoding(
+    spark: SparkSession, private_key: bytes
+):
+    df = spark.createDataFrame(
+        [
+            Row(
+                first_name="LOUIS",
+                last_name="PASTEUR",
+                gender="M",
+                birth_date=date(1822, 12, 27),
+            ),
+        ]
+    )
+    key = load_pem_private_key(private_key, None)
+    pkcs8 = key.private_bytes(
+        encoding=Encoding.PEM,
+        format=PrivateFormat.PKCS8,
+        encryption_algorithm=NoEncryption(),
+    )
+    pkcs1 = key.private_bytes(
+        encoding=Encoding.PEM,
+        format=PrivateFormat.TraditionalOpenSSL,
+        encryption_algorithm=NoEncryption(),
+    )
+
+    tokens_from_pkcs8 = tokenize(
+        df,
+        {
+            v2.first_name: "first_name",
+            v2.last_name: "last_name",
+            v2.gender: "gender",
+            v2.birth_date: "birth_date",
+        },
+        [v2.token1],
+        private_key=pkcs8,
+    )
+
+    tokens_from_pkcs1 = tokenize(
+        df,
+        {
+            v2.first_name: "first_name",
+            v2.last_name: "last_name",
+            v2.gender: "gender",
+            v2.birth_date: "birth_date",
+        },
+        [v2.token1],
+        private_key=pkcs1,
+    )
+
+    assertDataFrameEqual(
+        tokens_from_pkcs8.select(v2.token1.name),
+        tokens_from_pkcs1.select(v2.token1.name),
+    )
+
+
+def test_tokenize_v2_matches_golden_vector(spark: SparkSession, private_key: bytes):
+    df = spark.createDataFrame(
+        [
+            Row(
+                first_name="LOUIS",
+                last_name="PASTEUR",
+                gender="M",
+                birth_date=date(1822, 12, 27),
+            ),
+        ]
+    )
+
+    tokens = tokenize(
+        df,
+        {
+            v2.first_name: "first_name",
+            v2.last_name: "last_name",
+            v2.gender: "gender",
+            v2.birth_date: "birth_date",
+        },
+        [v2.token1],
+        private_key=private_key,
+    ).select(v2.token1.name)
+
+    expected = spark.createDataFrame(
+        [
+            Row(
+                opprl_token_1v2="nuyWVjxW1qEG729faKRkbSucaJqPxHg8Zdc/Tycs/cFxl7a+eWs6sl5QcErjAB5OXoOvtk3iEgvuNxBP43eRQbJl//C2k3gbBTlk3AJ9+Sg="
+            )
+        ]
+    )
+
+    assertDataFrameEqual(tokens, expected)
+
+
+def test_tokenize_v2_stays_distinct_for_different_private_keys(
+    spark: SparkSession, private_key: bytes, acme_private_key: bytes
+):
+    df = spark.createDataFrame(
+        [
+            Row(
+                first_name="LOUIS",
+                last_name="PASTEUR",
+                gender="M",
+                birth_date=date(1822, 12, 27),
+            ),
+        ]
+    )
+
+    sender_token = (
+        tokenize(
+            df,
+            {
+                v2.first_name: "first_name",
+                v2.last_name: "last_name",
+                v2.gender: "gender",
+                v2.birth_date: "birth_date",
+            },
+            [v2.token1],
+            private_key=private_key,
+        )
+        .select(v2.token1.name)
+        .head()[0]
+    )
+    recipient_token = (
+        tokenize(
+            df,
+            {
+                v2.first_name: "first_name",
+                v2.last_name: "last_name",
+                v2.gender: "gender",
+                v2.birth_date: "birth_date",
+            },
+            [v2.token1],
+            private_key=acme_private_key,
+        )
+        .select(v2.token1.name)
+        .head()[0]
+    )
+
+    assert sender_token != recipient_token
+
+
+def test_tokenize_v2_rejects_non_rsa_private_keys(spark: SparkSession):
+    non_rsa_private_key = ec.generate_private_key(ec.SECP256R1()).private_bytes(
+        encoding=Encoding.PEM,
+        format=PrivateFormat.PKCS8,
+        encryption_algorithm=NoEncryption(),
+    )
+    df = spark.createDataFrame(
+        [
+            Row(
+                first_name="LOUIS",
+                last_name="PASTEUR",
+                gender="M",
+                birth_date=date(1822, 12, 27),
+            ),
+        ]
+    )
+
+    with pytest.raises(TypeError, match="RSA"):
+        tokenize(
+            df,
+            {
+                v2.first_name: "first_name",
+                v2.last_name: "last_name",
+                v2.gender: "gender",
+                v2.birth_date: "birth_date",
+            },
+            [v2.token1],
+            private_key=non_rsa_private_key,
+        ).collect()

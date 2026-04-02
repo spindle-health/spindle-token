@@ -9,6 +9,7 @@ from spindle_token.core import Token, PiiAttribute
 from spindle_token._crypto import _PRIVATE_KEY_ENV_VAR, _RECIPIENT_PUBLIC_KEY_ENV_VAR
 from spindle_token.opprl.v0 import OpprlV0 as v0
 from spindle_token.opprl.v1 import OpprlV1 as v1
+from spindle_token.opprl.v2 import OpprlV2 as v2
 
 
 # All OPPRL token specifications in a dictionary for easy lookup by the token name.
@@ -29,32 +30,51 @@ TOKEN_SPECS: dict[str, Token] = {
     v1.token11.name: v1.token11,
     v1.token12.name: v1.token12,
     v1.token13.name: v1.token13,
+    v2.token1.name: v2.token1,
+    v2.token2.name: v2.token2,
+    v2.token3.name: v2.token3,
+    v2.token4.name: v2.token4,
+    v2.token5.name: v2.token5,
+    v2.token6.name: v2.token6,
+    v2.token7.name: v2.token7,
+    v2.token8.name: v2.token8,
+    v2.token9.name: v2.token9,
+    v2.token10.name: v2.token10,
+    v2.token11.name: v2.token11,
+    v2.token12.name: v2.token12,
+    v2.token13.name: v2.token13,
 }
 
 
 # Keys are the column names that the CLI will expect.
 _COLUMN_TO_ATTRIBUTES: dict[str, list[PiiAttribute]] = {
-    "first_name": [v0.first_name, v1.first_name],
-    "last_name": [v0.last_name, v1.last_name],
-    "gender": [v0.gender, v1.gender],
-    "birth_date": [v0.birth_date, v1.birth_date],
+    "first_name": [v0.first_name, v1.first_name, v2.first_name],
+    "last_name": [v0.last_name, v1.last_name, v2.last_name],
+    "gender": [v0.gender, v1.gender, v2.gender],
+    "birth_date": [v0.birth_date, v1.birth_date, v2.birth_date],
     "email": [
         v1.email,
+        v2.email,
     ],
     "hem": [
         v1.hem,
+        v2.hem,
     ],
     "phone": [
         v1.phone,
+        v2.phone,
     ],
     "ssn": [
         v1.ssn,
+        v2.ssn,
     ],
     "group_number": [
         v1.group_number,
+        v2.group_number,
     ],
     "member_id": [
         v1.member_id,
+        v2.member_id,
     ],
 }
 
