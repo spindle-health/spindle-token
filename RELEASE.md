@@ -4,10 +4,22 @@ This is a guide for how to publish a new release of `spindle-token` including al
 
 1. Checkout the `main` branch and `git pull`.
 
+1. Set Poetry to use Python 3.12.
+
+    ```
+    poetry env use python3.12
+    ```
+
 1. Ensure tests are passing.
 
     ```
     poetry run pytest
+    ```
+
+1. Check code formatting.
+
+    ```
+    poetry run black --check .
     ```
 
 1. Check the versions in `pyproject.toml` and the root `__init__.py` to make sure they are both the intended version.

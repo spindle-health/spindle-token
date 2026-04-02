@@ -125,7 +125,7 @@ Notice that both records with `label = 1` received the same pair of tokens despi
 
 The `col_mapping` argument is a dictionary that maps standard OPPRL attributes -- logical types of PII fields -- to the corresponding column names from the `pii` DataFrame. This tells spindle-health how to normalize and enhance the values found in each column. For example, the `Opprlv1.first_name` object will apply name cleaning rules of version 1 of the OPPRL protocol to the values found in the `first_name` column. Spindle-token will also use this mapping to determine how to derive other PII attributes (such as first initial, soundex, and metaphone encodings) used to construct some tokens.
 
-The `tokens` argument is collection of OPPRL token specifications. Each token specification denotes a PII fields to jointly hash and encrypt to create a token. The current latest version of the OPPRL protocol supports three token specifications, described below:
+The `tokens` argument is collection of OPPRL token specifications. Each token specification denotes a PII fields to jointly hash and encrypt to create a token. The v1 protocol shown in this guide supports three token specifications, described below:
 
 | Token | Fields to jointly encrypt |
 |-|-|
@@ -136,6 +136,8 @@ The `tokens` argument is collection of OPPRL token specifications. Each token sp
 > :bulb: **Why multiple tokens?** 
 >
 > Each use case has a different tolerance for false positive and false negative matches. By producing multiple tokens for each record using PII attributes, each user can customize their match logic to trade-off between different kinds of match errors. Linking records that match on _any_ token will result in fewer false negatives, and linking records that match _all_ tokens will result in fewer false positives. User can design their own match strategies by using subsets of tokens.
+
+If you need the same-key stability fix described in the security findings, use `OpprlV2` instead of `OpprlV1`. The examples in this guide stay on v1 so they continue to match the existing compatibility-frozen token vectors.
 
 ## Transcoding and Ephemeral Tokens
 

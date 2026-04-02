@@ -3,7 +3,17 @@ from pathlib import Path
 import pandas as pd
 from click.testing import CliRunner
 from pyspark.errors import AnalysisException
-from spindle_token._cli import cli
+from spindle_token._cli import TOKEN_SPECS, cli, infer_column_mapping
+from spindle_token.opprl import OpprlV2 as v2
+
+
+def test_v2_tokens_are_registered():
+    assert v2.token1.name in TOKEN_SPECS
+    assert v2.token13.name in TOKEN_SPECS
+
+    mapping = infer_column_mapping(["first_name", "email"])
+    assert mapping[v2.first_name] == "first_name"
+    assert mapping[v2.email] == "email"
 
 
 class TestTokenizeCommand:
