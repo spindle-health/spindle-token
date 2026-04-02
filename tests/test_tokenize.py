@@ -739,9 +739,7 @@ def test_tokenize_v2_stays_distinct_for_different_private_keys(
     assert sender_token != recipient_token
 
 
-def test_valid_ssn_variants_produce_matchable_tokens(
-    spark: SparkSession, private_key: bytes
-):
+def test_valid_ssn_variants_produce_matchable_tokens(spark: SparkSession, private_key: bytes):
     pii = spark.createDataFrame(
         [
             Row(
