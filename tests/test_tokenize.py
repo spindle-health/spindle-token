@@ -739,6 +739,52 @@ def test_tokenize_v2_stays_distinct_for_different_private_keys(
     assert sender_token != recipient_token
 
 
+def test_v2_protocol_rejects_non_rsa_private_keys_at_bind_time():
+    non_rsa_private_key = ec.generate_private_key(ec.SECP256R1()).private_bytes(
+        encoding=Encoding.PEM,
+        format=PrivateFormat.PKCS8,
+        encryption_algorithm=NoEncryption(),
+    )
+
+    with pytest.raises(TypeError, match="RSA"):
+        v2.protocol.bind(non_rsa_private_key, None)
+
+
+def test_transcode_out_v2_rejects_non_rsa_private_keys_at_bind_time(
+    spark: SparkSession, acme_public_key: bytes
+):
+    non_rsa_private_key = ec.generate_private_key(ec.SECP256R1()).private_bytes(
+        encoding=Encoding.PEM,
+        format=PrivateFormat.PKCS8,
+        encryption_algorithm=NoEncryption(),
+    )
+    tokens = spark.createDataFrame([Row(opprl_token_1v2="placeholder")])
+
+    with pytest.raises(TypeError, match="RSA"):
+        transcode_out(
+            tokens,
+            (v2.token1,),
+            recipient_public_key=acme_public_key,
+            private_key=non_rsa_private_key,
+        )
+
+
+def test_transcode_in_v2_rejects_non_rsa_private_keys_at_bind_time(spark: SparkSession):
+    non_rsa_private_key = ec.generate_private_key(ec.SECP256R1()).private_bytes(
+        encoding=Encoding.PEM,
+        format=PrivateFormat.PKCS8,
+        encryption_algorithm=NoEncryption(),
+    )
+    ephemeral_tokens = spark.createDataFrame([Row(opprl_token_1v2="placeholder")])
+
+    with pytest.raises(TypeError, match="RSA"):
+        transcode_in(
+            ephemeral_tokens,
+            (v2.token1,),
+            private_key=non_rsa_private_key,
+        )
+
+
 def test_tokenize_v2_rejects_non_rsa_private_keys(spark: SparkSession):
     non_rsa_private_key = ec.generate_private_key(ec.SECP256R1()).private_bytes(
         encoding=Encoding.PEM,
