@@ -3,7 +3,7 @@
 Most users will only need to use the 3 main functions in this top-level module along with the provided
 configuration objects corresponding to OPPRL tokenization.
 
-The 3 main functions provide tokenization and transcoding capabilities for data senders and recipients 
+The 3 main functions provide tokenization and transcoding capabilities for data senders and recipients
 respectively.
 
 """
@@ -25,7 +25,6 @@ from cryptography.hazmat.primitives.serialization import (
 from spindle_token.core import PiiAttribute, Token, TokenProtocol
 from spindle_token._crypto import private_key_from_env, public_key_from_env
 from spindle_token._utils import attr_id_to_col_name
-
 
 __all__ = ["tokenize", "transcode_out", "transcode_in", "generate_pem_keys"]
 

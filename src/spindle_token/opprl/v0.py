@@ -26,7 +26,6 @@ from spindle_token._crypto import (
 from spindle_token._utils import null_propagating, base64_no_newline, attr_id_to_col_name
 from spindle_token.opprl._common import NameAttribute, GenderAttribute, DateAttribute
 
-
 __all__ = ["OpprlV0"]
 
 
