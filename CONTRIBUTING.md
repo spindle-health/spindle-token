@@ -74,8 +74,20 @@ the root directory of the project.
 poetry install
 ```
 
-To run the test suite, use the following command in the root of the project.
+The project is currently tested against Python 3.12. If your default interpreter is newer, point Poetry at Python 3.12
+before installing dependencies:
 
 ```
+poetry env use python3.12
+```
+
+To run the Spark-backed test suite locally, make sure the driver and worker processes use the same interpreter from the
+Poetry virtualenv, then run:
+
+```
+VENV="$(poetry env info --path)"
+PYSPARK_PYTHON="$VENV/bin/python" \
+PYSPARK_DRIVER_PYTHON="$VENV/bin/python" \
+PYARROW_IGNORE_TIMEZONE=1 \
 poetry run pytest
 ```
