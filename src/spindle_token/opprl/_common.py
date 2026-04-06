@@ -1,7 +1,7 @@
 """An private (internal) module containing common implementations of [PiiAttribute][spindle_token.core.PiiAttribute] for attributes used to construct tokens across OPPRL versions.
 
-This module is private to allow for implementations to be changed without creating breaking changes. 
-If breaking behavior changes are introduced to any PiiAttribute implementation a copy of the old 
+This module is private to allow for implementations to be changed without creating breaking changes.
+If breaking behavior changes are introduced to any PiiAttribute implementation a copy of the old
 behavior should be added to the corresponding module of the lowest dependant OPPRL version and all
 references across all dependant OPPRL versions should use updated to use that "frozen" class instead.
 """

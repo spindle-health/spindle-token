@@ -1,11 +1,11 @@
 """The core abstractions of spindle-token, including abstract base classes for extending functionality.
 
-The spindle-token library provides base interfaces that cane be extended by users to define custom token 
-specifications to encrypt with existing versions of OPPRL cryptography protocols, or define entirely new 
+The spindle-token library provides base interfaces that cane be extended by users to define custom token
+specifications to encrypt with existing versions of OPPRL cryptography protocols, or define entirely new
 tokenization protocols.
 
 Warning:
-    Extending the base classes in this module to customize the tokenization behavior has no security or 
+    Extending the base classes in this module to customize the tokenization behavior has no security or
     privacy guarantees. These abstractions -- like all OSS -- are "use at your own risk" and users should
     only use these advanced features if they understand them.
 
@@ -17,7 +17,6 @@ from dataclasses import dataclass
 from typing import Generic, TypeVar
 from pyspark.sql import DataFrame, Column
 from pyspark.sql.types import DataType
-
 
 __all__ = ["PiiAttribute", "Token", "TokenProtocol", "TokenProtocolFactory"]
 

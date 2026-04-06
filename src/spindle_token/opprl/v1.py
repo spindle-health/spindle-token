@@ -24,7 +24,6 @@ from spindle_token.opprl._common import (
 )
 import spindle_token.opprl.v0 as v0
 
-
 __all__ = ["OpprlV1"]
 
 

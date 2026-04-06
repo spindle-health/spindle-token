@@ -11,7 +11,6 @@ from spindle_token.opprl.v0 import OpprlV0 as v0
 from spindle_token.opprl.v1 import OpprlV1 as v1
 from spindle_token.opprl.v2 import OpprlV2 as v2
 
-
 # All OPPRL token specifications in a dictionary for easy lookup by the token name.
 TOKEN_SPECS: dict[str, Token] = {
     v0.token1.name: v0.token1,
