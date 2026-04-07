@@ -15,6 +15,11 @@ The latest stable release of spindle-token can be installed from [PyPI](https://
 pip install spindle-token
 ```
 
+If your dependency scanner reports warnings about `oci` or `pyOpenSSL`, those are not
+direct runtime dependencies of spindle-token. In normal Spark usage, they usually come
+from other packages in the environment and do not affect spindle-token unless your own
+code imports them.
+
 You can also build spindle-token from source using [Poetry](https://python-poetry.org/). The source code is hosted [on Github](https://github.com/spindle-health/spindle-token). Checkout the commit you wish to build and run  `poetry build` in the project's root.
 
 ## Encryption Keys
