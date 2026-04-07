@@ -18,3 +18,5 @@ site/
 .lsp
 .vscode
 *.code-workspace
+
+/private-docs
