@@ -1,5 +1,11 @@
 import pytest
 import os
+from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.primitives.serialization import (
+    Encoding,
+    NoEncryption,
+    PrivateFormat,
+)
 from pyspark.sql import SparkSession
 
 
@@ -112,3 +118,13 @@ Fyls61jQVEedIuRk7YtouCaLcZbDyCQJNgxiZpegRkkGwAlJMrhgJ6AT5NS3ChLI
 mI7fCXo7x0B5OWnSanc=
 -----END PRIVATE KEY-----
 """
+
+
+@pytest.fixture(scope="session")
+def non_rsa_private_key() -> bytes:
+    key = ec.generate_private_key(ec.SECP256R1())
+    return key.private_bytes(
+        encoding=Encoding.PEM,
+        format=PrivateFormat.PKCS8,
+        encryption_algorithm=NoEncryption(),
+    )
