@@ -3,6 +3,8 @@ from pathlib import Path
 import pandas as pd
 from click.testing import CliRunner
 from pyspark.errors import AnalysisException
+from pyspark.sql import Row, SparkSession
+from spindle_token import tokenize
 from spindle_token._cli import TOKEN_SPECS, cli, infer_column_mapping
 from spindle_token.opprl import OpprlV2 as v2
 
@@ -151,6 +153,77 @@ class TestTokenizeCommand:
         actual = pd.read_csv(tmp_path / "tokens.csv", sep="|", header=0)
         pd.testing.assert_frame_equal(actual, self.expected)
 
+
+class TestTokenizeV2Command:
+    pii = pd.DataFrame(
+        {
+            "first_name": pd.Series(["Louis", "louis"]),
+            "last_name": pd.Series(["Pasteur", "pasteur"]),
+            "gender": pd.Series(["male", "M"]),
+            "birth_date": pd.Series(["1822-12-27", "1822-12-27"]),
+        }
+    )
+    expected = pd.DataFrame(
+        {
+            "first_name": pd.Series(["Louis", "louis"]),
+            "last_name": pd.Series(["Pasteur", "pasteur"]),
+            "gender": pd.Series(["male", "M"]),
+            "birth_date": pd.Series(["1822-12-27", "1822-12-27"]),
+            "opprl_token_1v2": pd.Series(
+                [
+                    "nuyWVjxW1qEG729faKRkbSucaJqPxHg8Zdc/Tycs/cFxl7a+eWs6sl5QcErjAB5OXoOvtk3iEgvuNxBP43eRQbJl//C2k3gbBTlk3AJ9+Sg=",
+                    "nuyWVjxW1qEG729faKRkbSucaJqPxHg8Zdc/Tycs/cFxl7a+eWs6sl5QcErjAB5OXoOvtk3iEgvuNxBP43eRQbJl//C2k3gbBTlk3AJ9+Sg=",
+                ]
+            ),
+        }
+    )
+
+    def test_option_names(self, tmp_path: Path, private_key: bytes):
+        runner = CliRunner()
+        with open(tmp_path / "test_key.pem", "wb") as f:
+            f.write(private_key)
+        self.pii.to_csv(tmp_path / "pii.csv", sep="|", header=True, index=False)
+        result = runner.invoke(
+            cli,
+            [
+                "tokenize",
+                "--token",
+                "opprl_token_1v2",
+                "--key",
+                str(tmp_path / "test_key.pem"),
+                "--format",
+                "csv",
+                str(tmp_path / "pii.csv"),
+                str(tmp_path / "tokens.csv"),
+            ],
+        )
+        assert result.exit_code == 0
+        actual = pd.read_csv(tmp_path / "tokens.csv", sep="|", header=0)
+        pd.testing.assert_frame_equal(actual, self.expected)
+
+    def test_key_from_env_var(self, tmp_path: Path, private_key: bytes):
+        runner = CliRunner()
+        self.pii.to_csv(tmp_path / "pii.csv", sep="|", header=True, index=False)
+        result = runner.invoke(
+            cli,
+            [
+                "tokenize",
+                "-t",
+                "opprl_token_1v2",
+                "-f",
+                "csv",
+                str(tmp_path / "pii.csv"),
+                str(tmp_path / "tokens.csv"),
+            ],
+            env=dict(
+                SPINDLE_TOKEN_PRIVATE_KEY=private_key.decode(),
+            ),
+        )
+        assert result.exit_code == 0
+        assert sorted(os.listdir(tmp_path)) == ["pii.csv", "tokens.csv"]
+        actual = pd.read_csv(tmp_path / "tokens.csv", sep="|", header=0)
+        pd.testing.assert_frame_equal(actual, self.expected)
+
     def test_invalid_key(self, tmp_path: Path, acme_public_key: bytes):
         runner = CliRunner()
         with open(tmp_path / "test_key.pem", "wb") as f:
@@ -261,6 +334,15 @@ class TestTranscryptCommands:
             ),
         }
     )
+    v2_tokens = pd.DataFrame(
+        {
+            "opprl_token_1v2": pd.Series(
+                [
+                    "nuyWVjxW1qEG729faKRkbSucaJqPxHg8Zdc/Tycs/cFxl7a+eWs6sl5QcErjAB5OXoOvtk3iEgvuNxBP43eRQbJl//C2k3gbBTlk3AJ9+Sg=",
+                ]
+            ),
+        }
+    )
 
     def test_option_names(
         self,
@@ -336,6 +418,88 @@ class TestTranscryptCommands:
 
         actual = pd.read_csv(tmp_path / "acme_tokens.csv", sep="|", header=0)
         pd.testing.assert_frame_equal(actual, self.expected)
+
+    def test_v2_roundtrip(
+        self,
+        tmp_path: Path,
+        private_key: bytes,
+        acme_public_key: bytes,
+        acme_private_key: bytes,
+        spark: SparkSession,
+    ):
+        runner = CliRunner()
+
+        with open(tmp_path / "test_key.pem", "wb") as f:
+            f.write(private_key)
+        with open(tmp_path / "acme_pubkey.pem", "wb") as f:
+            f.write(acme_public_key)
+        with open(tmp_path / "acme_key.pem", "wb") as f:
+            f.write(acme_private_key)
+        self.v2_tokens.to_csv(tmp_path / "tokens.csv", sep="|", header=True, index=False)
+
+        result1 = runner.invoke(
+            cli,
+            [
+                "transcode",
+                "out",
+                "--token",
+                "opprl_token_1v2",
+                "--key",
+                str(tmp_path / "test_key.pem"),
+                "--recipient",
+                str(tmp_path / "acme_pubkey.pem"),
+                "--format",
+                "csv",
+                str(tmp_path / "tokens.csv"),
+                str(tmp_path / "ephemeral_tokens.csv"),
+            ],
+        )
+        assert result1.exit_code == 0
+
+        result2 = runner.invoke(
+            cli,
+            [
+                "transcode",
+                "in",
+                "--token",
+                "opprl_token_1v2",
+                "--key",
+                str(tmp_path / "acme_key.pem"),
+                "--format",
+                "csv",
+                str(tmp_path / "ephemeral_tokens.csv"),
+                str(tmp_path / "acme_tokens.csv"),
+            ],
+        )
+        assert result2.exit_code == 0
+
+        expected = (
+            tokenize(
+                spark.createDataFrame(
+                    [
+                        Row(
+                            first_name="Louis",
+                            last_name="Pasteur",
+                            gender="male",
+                            birth_date="1822-12-27",
+                        ),
+                    ]
+                ),
+                {
+                    v2.first_name: "first_name",
+                    v2.last_name: "last_name",
+                    v2.gender: "gender",
+                    v2.birth_date: "birth_date",
+                },
+                [v2.token1],
+                private_key=acme_private_key,
+            )
+            .select(v2.token1.name)
+            .toPandas()
+        )
+
+        actual = pd.read_csv(tmp_path / "acme_tokens.csv", sep="|", header=0)
+        pd.testing.assert_frame_equal(actual, expected)
 
     def test_option_aliases(
         self,

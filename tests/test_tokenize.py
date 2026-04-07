@@ -4,7 +4,6 @@ from pyspark.sql import SparkSession, Row
 from pyspark.sql.types import StructType, StructField, StringType, DateType
 from pyspark.sql.functions import col, regexp_replace, substring
 from pyspark.testing.utils import assertDataFrameEqual, assertSchemaEqual
-from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives.serialization import (
     load_pem_private_key,
     Encoding,
@@ -17,6 +16,73 @@ from spindle_token._utils import base64_no_newline
 from spindle_token.core import PiiAttribute, Token
 from spindle_token.opprl import OpprlV0 as v0, OpprlV1 as v1, OpprlV2 as v2, IdentityAttribute
 from spindle_token.opprl.v2 import _derive_aes_key as v2_derive_aes_key
+
+
+def _name_birth_col_mapping(version):
+    return {
+        version.first_name: "first_name",
+        version.last_name: "last_name",
+        version.gender: "gender",
+        version.birth_date: "birth_date",
+    }
+
+
+def _full_col_mapping(version):
+    mapping = _name_birth_col_mapping(version)
+    mapping.update(
+        {
+            version.email: "email",
+            version.phone: "phone",
+            version.ssn: "ssn",
+            version.group_number: "group_number",
+            version.member_id: "member_id",
+        }
+    )
+    return mapping
+
+
+def _name_birth_dataframe(spark: SparkSession):
+    return spark.createDataFrame(
+        [
+            Row(
+                first_name="LOUIS",
+                last_name="PASTEUR",
+                gender="M",
+                birth_date=date(1822, 12, 27),
+            ),
+        ]
+    )
+
+
+def _custom_pii_dataframe(spark: SparkSession):
+    return spark.createDataFrame(
+        [
+            Row(
+                id=1,
+                first_name="MARIE",
+                last_name="Curie",
+                gender="f",
+                birth_date="1867-11-07",
+                zipcode="none",
+            ),
+            Row(
+                id=2,
+                first_name="Pierre",
+                last_name="Curie",
+                gender="m",
+                birth_date="1859-05-15",
+                zipcode="none",
+            ),
+            Row(
+                id=3,
+                first_name="Jonas",
+                last_name="Salk",
+                gender="m",
+                birth_date="1914-10-28",
+                zipcode="10016",
+            ),
+        ]
+    )
 
 
 def test_tokenize_and_transcode_opprl(
@@ -73,15 +139,7 @@ def test_tokenize_and_transcode_opprl(
         v0.last_name: "last_name",
         v0.gender: "gender",
         v0.birth_date: "birth_date",
-        v1.first_name: "first_name",
-        v1.last_name: "last_name",
-        v1.gender: "gender",
-        v1.birth_date: "birth_date",
-        v1.email: "email",
-        v1.phone: "phone",
-        v1.ssn: "ssn",
-        v1.group_number: "group_number",
-        v1.member_id: "member_id",
+        **_full_col_mapping(v1),
     }
 
     tokens = tokenize(
@@ -230,7 +288,141 @@ def test_tokenize_and_transcode_opprl(
     )
 
 
-def test_identity_attribute(spark: SparkSession, private_key: bytes):
+def test_tokenize_and_transcode_opprl_v2(
+    spark: SparkSession, private_key: bytes, acme_public_key: bytes, acme_private_key: bytes
+):
+    all_tokens = [
+        v2.token1,
+        v2.token2,
+        v2.token3,
+        v2.token4,
+        v2.token5,
+        v2.token6,
+        v2.token7,
+        v2.token8,
+        v2.token9,
+        v2.token10,
+        v2.token11,
+        v2.token12,
+        v2.token13,
+    ]
+    all_token_names = [token.name for token in all_tokens]
+    pii = spark.createDataFrame(
+        [
+            Row(
+                first_name="Louis",
+                last_name="Pasteur",
+                gender="male",
+                birth_date="1822-12-27",
+                email="lpasteur@notareal.email",
+                phone="(234) 555-7890",
+                ssn="666-12-3456",  # 666 is invalid
+                group_number="FAKE123",
+                member_id="12345",
+            ),
+            Row(
+                first_name="louis",
+                last_name="pasteur",
+                gender="M",
+                birth_date="1822-12-27",
+                email="LPasteur@NotAReal.Email",
+                phone="1-234-555-7890",
+                ssn="123-34-0000",  # 0000 is invalid
+                group_number="fake123",
+                member_id="12345",
+            ),
+        ]
+    )
+
+    tokens = tokenize(
+        pii,
+        col_mapping=_full_col_mapping(v2),
+        tokens=all_tokens,
+        private_key=private_key,
+    )
+
+    assertDataFrameEqual(
+        tokens.select(*all_token_names),
+        spark.createDataFrame(
+            [
+                Row(
+                    opprl_token_1v2="nuyWVjxW1qEG729faKRkbSucaJqPxHg8Zdc/Tycs/cFxl7a+eWs6sl5QcErjAB5OXoOvtk3iEgvuNxBP43eRQbJl//C2k3gbBTlk3AJ9+Sg=",
+                    opprl_token_2v2="JyYXQ1SRWLEhuRFc8RFRYA50DJE6H5m+jYibQsrIFcxBiGXssQdUWGKf3uLOjsy+K6M3j/KzCR//jSEGHk9rJe/ftsEDd9FWAUuZB4LOB1U=",
+                    opprl_token_3v2="raKMBPwixCVxKoAm8GhLQ8hbrRS3a+UHCPuPKxMZM3uFrM7pKNPTD9+rCcEO+REgMXnQmqFQ5P5Qp6LnFAnd29vrHvL1se6o9eqvd9i1JbI=",
+                    opprl_token_4v2="SDBWjD+Avv6gkduXspSFnvwO6R6UcQyJXu/38qU0Eul4fGdZ8HtM0zrn5nPBvR8MjL/vaiOeOWU5EX7Od3orlOSo8OyqNnB6kC6gRYyfxS0=",
+                    opprl_token_5v2="zmGEZF4GbYfByY+Of0fXSSVQ+zXLxcBkPPis7LE9FTHLkJJX1AFPX7dA2ZOoVCQUFgW439fNZo/UokN2JPkqs+OhiJMqV1gVV2m3FeRqmfo=",
+                    opprl_token_6v2="2ChBsRGmhCxastg6w1Yb5nGyUXfJxoIpkvPdEkmLnncTrJBqfaamEEUrIuHGhGh8P+Pj4lGd2dmqtSG8tKK8hS6QtheKmbw2SCoftR6qYDw=",
+                    opprl_token_7v2="0TK0KrT2E8M+DVfTZiCLQBJzSybMsUV0Z6zYa7Nrx6wq4JY2YUjgDApWmdw1Wbj0DYj7rS6BNMopQIRVJxBdxA3fho2k0YWpgmoYonPKgT8=",
+                    opprl_token_8v2="RACaZP9bI/5a6m0avE68POPwk6DKTs7Cb+QCqRMHixFRTFn1ve1wmdnkLHS1H1Y8cuFQfE0sUyr2peUuDDxYPvqhviLwa2YQBZ5LlH7aVhY=",
+                    opprl_token_9v2=None,
+                    opprl_token_10v2=None,
+                    opprl_token_11v2="y5OXM78eSZQuF4GcOLhDuHwLfTy+1GjVHzPs/HfAedC+vsuPGDqEhkKox7exxrvmeb6znY9rYwqWFDzbkCnP+bhw7yS0leDW5GsSw0Z2KAA=",
+                    opprl_token_12v2="PG3K/jKV+F0X9niGuwQ30WnV6Al7ODAZ50l72v9xVnEZrV+J2ZgFS+eAPvmzzxOjFWC2x80Bj9HSbymjF0hv+dPXO0tGdBEh3A2yuOCNtt0=",
+                    opprl_token_13v2="ZES8RJx5PGYigXn6zn1naSMF5YBGmMcPpF2wo0eNxvIFVooIUg+QxY8v9lqxJerl64DAojdZeIxXijq/QjtN+tBH8Oh8qWydR98TdKWeA0w=",
+                ),
+                Row(
+                    opprl_token_1v2="nuyWVjxW1qEG729faKRkbSucaJqPxHg8Zdc/Tycs/cFxl7a+eWs6sl5QcErjAB5OXoOvtk3iEgvuNxBP43eRQbJl//C2k3gbBTlk3AJ9+Sg=",
+                    opprl_token_2v2="JyYXQ1SRWLEhuRFc8RFRYA50DJE6H5m+jYibQsrIFcxBiGXssQdUWGKf3uLOjsy+K6M3j/KzCR//jSEGHk9rJe/ftsEDd9FWAUuZB4LOB1U=",
+                    opprl_token_3v2="raKMBPwixCVxKoAm8GhLQ8hbrRS3a+UHCPuPKxMZM3uFrM7pKNPTD9+rCcEO+REgMXnQmqFQ5P5Qp6LnFAnd29vrHvL1se6o9eqvd9i1JbI=",
+                    opprl_token_4v2="SDBWjD+Avv6gkduXspSFnvwO6R6UcQyJXu/38qU0Eul4fGdZ8HtM0zrn5nPBvR8MjL/vaiOeOWU5EX7Od3orlOSo8OyqNnB6kC6gRYyfxS0=",
+                    opprl_token_5v2="zmGEZF4GbYfByY+Of0fXSSVQ+zXLxcBkPPis7LE9FTHLkJJX1AFPX7dA2ZOoVCQUFgW439fNZo/UokN2JPkqs+OhiJMqV1gVV2m3FeRqmfo=",
+                    opprl_token_6v2="2ChBsRGmhCxastg6w1Yb5nGyUXfJxoIpkvPdEkmLnncTrJBqfaamEEUrIuHGhGh8P+Pj4lGd2dmqtSG8tKK8hS6QtheKmbw2SCoftR6qYDw=",
+                    opprl_token_7v2="0TK0KrT2E8M+DVfTZiCLQBJzSybMsUV0Z6zYa7Nrx6wq4JY2YUjgDApWmdw1Wbj0DYj7rS6BNMopQIRVJxBdxA3fho2k0YWpgmoYonPKgT8=",
+                    opprl_token_8v2="RACaZP9bI/5a6m0avE68POPwk6DKTs7Cb+QCqRMHixFRTFn1ve1wmdnkLHS1H1Y8cuFQfE0sUyr2peUuDDxYPvqhviLwa2YQBZ5LlH7aVhY=",
+                    opprl_token_9v2=None,
+                    opprl_token_10v2=None,
+                    opprl_token_11v2="y5OXM78eSZQuF4GcOLhDuHwLfTy+1GjVHzPs/HfAedC+vsuPGDqEhkKox7exxrvmeb6znY9rYwqWFDzbkCnP+bhw7yS0leDW5GsSw0Z2KAA=",
+                    opprl_token_12v2="PG3K/jKV+F0X9niGuwQ30WnV6Al7ODAZ50l72v9xVnEZrV+J2ZgFS+eAPvmzzxOjFWC2x80Bj9HSbymjF0hv+dPXO0tGdBEh3A2yuOCNtt0=",
+                    opprl_token_13v2="ZES8RJx5PGYigXn6zn1naSMF5YBGmMcPpF2wo0eNxvIFVooIUg+QxY8v9lqxJerl64DAojdZeIxXijq/QjtN+tBH8Oh8qWydR98TdKWeA0w=",
+                ),
+            ],
+            StructType([StructField(t, StringType()) for t in all_token_names]),
+        ),
+    )
+
+    ephemeral_tokens = transcode_out(
+        tokens.select(*all_token_names),
+        tokens=all_tokens,
+        recipient_public_key=acme_public_key,
+        private_key=private_key,
+    )
+    assertSchemaEqual(
+        ephemeral_tokens.schema,
+        StructType([StructField(token, StringType()) for token in all_token_names]),
+    )
+    # RSA-OAEP wrap values are intentionally not golden-tested here; we only
+    # assert that the transfer is shape-preserving and that the roundtrip back
+    # to the recipient matches tokenization with the recipient's private key.
+    assert ephemeral_tokens.distinct().count() == 2
+
+    tokens2 = transcode_in(
+        ephemeral_tokens.select(*all_token_names),
+        tokens=all_tokens,
+        private_key=acme_private_key,
+    )
+
+    assertDataFrameEqual(
+        tokens2.select(*all_token_names),
+        tokenize(
+            pii,
+            col_mapping=_full_col_mapping(v2),
+            tokens=all_tokens,
+            private_key=acme_private_key,
+        ).select(*all_token_names),
+    )
+
+
+@pytest.mark.parametrize(
+    ("version", "identity_attr_id"),
+    [
+        (v1, "opprl.v1.email.sha2"),
+        (v2, "opprl.v2.email.sha2"),
+    ],
+    ids=["v1", "v2"],
+)
+def test_identity_attribute(
+    spark: SparkSession, private_key: bytes, version, identity_attr_id: str
+):
     pii = spark.createDataFrame(
         [
             Row(
@@ -239,10 +431,12 @@ def test_identity_attribute(spark: SparkSession, private_key: bytes):
             ),
         ]
     )
-    token_from_email = tokenize(pii, {v1.email: "email"}, [v1.token12], private_key).head()
-    token_from_hem = tokenize(pii, {v1.hem: "hem"}, [v1.token12], private_key).head()
+    token_from_email = tokenize(
+        pii, {version.email: "email"}, [version.token12], private_key
+    ).head()
+    token_from_hem = tokenize(pii, {version.hem: "hem"}, [version.token12], private_key).head()
     token_from_identity = tokenize(
-        pii, {IdentityAttribute("opprl.v1.email.sha2"): "hem"}, [v1.token12], private_key
+        pii, {IdentityAttribute(identity_attr_id): "hem"}, [version.token12], private_key
     ).head()
     assert token_from_email
     assert token_from_hem
@@ -273,95 +467,105 @@ class ZipcodeAttribute(PiiAttribute):
         return attrs
 
 
-def test_custom_pii_and_token(spark: SparkSession, private_key: bytes):
+@pytest.mark.parametrize("version", [v1, v2], ids=["v1", "v2"])
+def test_custom_pii_and_token(spark: SparkSession, private_key: bytes, version):
     zipAttr = ZipcodeAttribute("test.zipcode")
-    assertDataFrameEqual(
-        tokenize(
-            (
-                spark.createDataFrame(
-                    [
-                        Row(
-                            id=1,
-                            first_name="MARIE",
-                            last_name="Curie",
-                            gender="f",
-                            birth_date="1867-11-07",
-                            zipcode="none",
-                        ),
-                        Row(
-                            id=2,
-                            first_name="Pierre",
-                            last_name="Curie",
-                            gender="m",
-                            birth_date="1859-05-15",
-                            zipcode="none",
-                        ),
-                        Row(
-                            id=3,
-                            first_name="Jonas",
-                            last_name="Salk",
-                            gender="m",
-                            birth_date="1914-10-28",
-                            zipcode="10016",
-                        ),
-                    ]
-                )
-            ),
-            col_mapping={
-                v1.first_name: "first_name",
-                v1.last_name: "last_name",
-                v1.gender: "gender",
-                v1.birth_date: "birth_date",
-                zipAttr: "zipcode",
-            },
-            tokens=[
-                Token(
-                    "custom_token", v1.protocol, (v1.last_name.attr_id, zipAttr.zip3.attr_id)
+    if version is v1:
+        expected = spark.createDataFrame(
+            [
+                Row(
+                    id=1,
+                    first_name="MARIE",
+                    last_name="Curie",
+                    gender="f",
+                    birth_date="1867-11-07",
+                    zipcode="none",
+                    custom_token="wqj0vIgw/ZyOXxUv+0vNNgQRjD0PDE+mpmoDV87VZtW29Ln9FqP+RD+J5qDxCR55L8DnRVG2glOuMfH+f0ab5xecgRJKiDYQxZclpbtllAo=",
+                    opprl_token_1v1="jhAhAyXgsHfitM9RP2wmCylqmZKyBeqVT1/4MUwPSxTtQnkkIAlyp7roClPq+uyxUnbWmJZ8OKHv3gNjr93dMGyW17xeeNPUtFfBG4aJKtc=",
                 ),
-                v1.token1,
-            ],
-            private_key=private_key,
-        ),
-        (
-            spark.createDataFrame(
-                [
-                    Row(
-                        id=1,
-                        first_name="MARIE",
-                        last_name="Curie",
-                        gender="f",
-                        birth_date="1867-11-07",
-                        zipcode="none",
-                        custom_token="wqj0vIgw/ZyOXxUv+0vNNgQRjD0PDE+mpmoDV87VZtW29Ln9FqP+RD+J5qDxCR55L8DnRVG2glOuMfH+f0ab5xecgRJKiDYQxZclpbtllAo=",
-                        opprl_token_1v1="jhAhAyXgsHfitM9RP2wmCylqmZKyBeqVT1/4MUwPSxTtQnkkIAlyp7roClPq+uyxUnbWmJZ8OKHv3gNjr93dMGyW17xeeNPUtFfBG4aJKtc=",
-                    ),
-                    Row(
-                        id=2,
-                        first_name="Pierre",
-                        last_name="Curie",
-                        gender="m",
-                        birth_date="1859-05-15",
-                        zipcode="none",
-                        custom_token="wqj0vIgw/ZyOXxUv+0vNNgQRjD0PDE+mpmoDV87VZtW29Ln9FqP+RD+J5qDxCR55L8DnRVG2glOuMfH+f0ab5xecgRJKiDYQxZclpbtllAo=",
-                        opprl_token_1v1="KX2pApi2629jaAQ723ME27MdAoOC0yR3szhnEVMQ6XN+ZWPSETEMSSY90ZBZRvwS7ATX0xBz/77fHzNgVuRdMKKkjK8STwDDgIIeHdRGBGc=",
-                    ),
-                    Row(
-                        id=3,
-                        first_name="Jonas",
-                        last_name="Salk",
-                        gender="m",
-                        birth_date="1914-10-28",
-                        zipcode="10016",
-                        custom_token="ivB2PcFMwqF6X/PhrxfhyOTJSWkmPankGf7+FCdN2WXDXS5mhB16epK+6MG7lQZShTKXSGnlD4CnSM1//HP09zSx7d/TIMR1ddSd6fx6r84=",
-                        opprl_token_1v1="x1Q4bxg7lXaiDAQhsFCrkVh9Z3uP9g7fzQZUfs8wsdLuN1qj53GDdWHUQCQUvoJt5XfdFbU2pbhw9frYVs3YaMhkE4QBqxOKjMMN8fkQPfQ=",
-                    ),
-                ]
-            )
-        ),
-    )
+                Row(
+                    id=2,
+                    first_name="Pierre",
+                    last_name="Curie",
+                    gender="m",
+                    birth_date="1859-05-15",
+                    zipcode="none",
+                    custom_token="wqj0vIgw/ZyOXxUv+0vNNgQRjD0PDE+mpmoDV87VZtW29Ln9FqP+RD+J5qDxCR55L8DnRVG2glOuMfH+f0ab5xecgRJKiDYQxZclpbtllAo=",
+                    opprl_token_1v1="KX2pApi2629jaAQ723ME27MdAoOC0yR3szhnEVMQ6XN+ZWPSETEMSSY90ZBZRvwS7ATX0xBz/77fHzNgVuRdMKKkjK8STwDDgIIeHdRGBGc=",
+                ),
+                Row(
+                    id=3,
+                    first_name="Jonas",
+                    last_name="Salk",
+                    gender="m",
+                    birth_date="1914-10-28",
+                    zipcode="10016",
+                    custom_token="ivB2PcFMwqF6X/PhrxfhyOTJSWkmPankGf7+FCdN2WXDXS5mhB16epK+6MG7lQZShTKXSGnlD4CnSM1//HP09zSx7d/TIMR1ddSd6fx6r84=",
+                    opprl_token_1v1="x1Q4bxg7lXaiDAQhsFCrkVh9Z3uP9g7fzQZUfs8wsdLuN1qj53GDdWHUQCQUvoJt5XfdFbU2pbhw9frYVs3YaMhkE4QBqxOKjMMN8fkQPfQ=",
+                ),
+            ]
+        )
+    else:
+        expected = spark.createDataFrame(
+            [
+                Row(
+                    id=1,
+                    first_name="MARIE",
+                    last_name="Curie",
+                    gender="f",
+                    birth_date="1867-11-07",
+                    zipcode="none",
+                    custom_token="Y3Wy9XvgB7NeP8H7HvaIHLoYs82PNoVmGQTWbdxA5JFral5NHdolfu53H2Cr9y/Xa9gUVsed0WodnzKX4YVpG0M3cy6aw8+G122aATClYqI=",
+                    opprl_token_1v2="hneywiFaPXm86lsjc8DYfT/bcUW3UcCBVz6E1+fQZ+1wzkXxD3IorYqedEn3tzH9ehv5x3oj1yuNhPegx8krhlw4b9uuRlcQkwr/kZqD144=",
+                ),
+                Row(
+                    id=2,
+                    first_name="Pierre",
+                    last_name="Curie",
+                    gender="m",
+                    birth_date="1859-05-15",
+                    zipcode="none",
+                    custom_token="Y3Wy9XvgB7NeP8H7HvaIHLoYs82PNoVmGQTWbdxA5JFral5NHdolfu53H2Cr9y/Xa9gUVsed0WodnzKX4YVpG0M3cy6aw8+G122aATClYqI=",
+                    opprl_token_1v2="tNJPAe/pWOdiLzlsXM+cu93mKwiJ5pGPzDn43Iih+6JPHmFJeSHqg+63sEugmVN8G0Cwblk1QXsoC5cUhJ30e2IzqV20KBThbL8nGVO6LuM=",
+                ),
+                Row(
+                    id=3,
+                    first_name="Jonas",
+                    last_name="Salk",
+                    gender="m",
+                    birth_date="1914-10-28",
+                    zipcode="10016",
+                    custom_token="h+mSZruwrXIKUruQUljLxAZskj3sENAoxL1jRS5Eu0UKnkeQnXVDggDMmcBo18LQAUZib0vXZ1Hy2bk1/4Biury7Hl0n/P/T2s/6Xyd/pSA=",
+                    opprl_token_1v2="eh7BqMqi7dDYgEqUQluffhitGp7zgFN4T50M5vq0cvMOBS5Ljsuhqk76uIV3ZxmRwg7Dyzyuz7tYEODPRtB8HASeGrzWa2sfyRU3rtSr/tU=",
+                ),
+            ]
+        )
+
+    tokens = tokenize(
+        _custom_pii_dataframe(spark),
+        col_mapping={
+            version.first_name: "first_name",
+            version.last_name: "last_name",
+            version.gender: "gender",
+            version.birth_date: "birth_date",
+            zipAttr: "zipcode",
+        },
+        tokens=[
+            Token(
+                "custom_token",
+                version.protocol,
+                (version.last_name.attr_id, zipAttr.zip3.attr_id),
+            ),
+            version.token1,
+        ],
+        private_key=private_key,
+    ).orderBy("id")
+
+    assertDataFrameEqual(tokens, expected)
 
 
-def test_null_safe_tokenize(spark: SparkSession, private_key: bytes):
+@pytest.mark.parametrize("version", [v0, v1, v2], ids=["v0", "v1", "v2"])
+def test_null_safe_tokenize(spark: SparkSession, private_key: bytes, version):
     actual = tokenize(
         (
             spark.createDataFrame(
@@ -393,17 +597,8 @@ def test_null_safe_tokenize(spark: SparkSession, private_key: bytes):
                 ]
             )
         ),
-        col_mapping={
-            v0.first_name: "first_name",
-            v0.last_name: "last_name",
-            v0.gender: "gender",
-            v0.birth_date: "birth_date",
-            v1.first_name: "first_name",
-            v1.last_name: "last_name",
-            v1.gender: "gender",
-            v1.birth_date: "birth_date",
-        },
-        tokens=[v0.token3, v1.token1, v1.token2, v1.token3],
+        col_mapping=_name_birth_col_mapping(version),
+        tokens=[version.token1, version.token2, version.token3],
         private_key=private_key,
     )
 
@@ -414,40 +609,44 @@ def test_null_safe_tokenize(spark: SparkSession, private_key: bytes):
                 last_name="PASTEUR",
                 gender="M",
                 birth_date=date(1822, 12, 27),
-                opprl_token_3v0=None,
-                opprl_token_1v1=None,
-                opprl_token_2v1=None,
-                opprl_token_3v1=None,
+                **{
+                    version.token1.name: None,
+                    version.token2.name: None,
+                    version.token3.name: None,
+                },
             ),
             Row(
                 first_name="LOUIS",
                 last_name=None,
                 gender="M",
                 birth_date=date(1822, 12, 27),
-                opprl_token_3v0=None,
-                opprl_token_1v1=None,
-                opprl_token_2v1=None,
-                opprl_token_3v1=None,
+                **{
+                    version.token1.name: None,
+                    version.token2.name: None,
+                    version.token3.name: None,
+                },
             ),
             Row(
                 first_name="LOUIS",
                 last_name="PASTEUR",
                 gender=None,
                 birth_date=date(1822, 12, 27),
-                opprl_token_3v0=None,
-                opprl_token_1v1=None,
-                opprl_token_2v1=None,
-                opprl_token_3v1=None,
+                **{
+                    version.token1.name: None,
+                    version.token2.name: None,
+                    version.token3.name: None,
+                },
             ),
             Row(
                 first_name="LOUIS",
                 last_name="PASTEUR",
                 gender="M",
                 birth_date=None,
-                opprl_token_3v0=None,
-                opprl_token_1v1=None,
-                opprl_token_2v1=None,
-                opprl_token_3v1=None,
+                **{
+                    version.token1.name: None,
+                    version.token2.name: None,
+                    version.token3.name: None,
+                },
             ),
         ],
         StructType(
@@ -456,10 +655,9 @@ def test_null_safe_tokenize(spark: SparkSession, private_key: bytes):
                 StructField("last_name", StringType()),
                 StructField("gender", StringType()),
                 StructField("birth_date", DateType()),
-                StructField("opprl_token_3v0", StringType()),
-                StructField("opprl_token_1v1", StringType()),
-                StructField("opprl_token_2v1", StringType()),
-                StructField("opprl_token_3v1", StringType()),
+                StructField(version.token1.name, StringType()),
+                StructField(version.token2.name, StringType()),
+                StructField(version.token3.name, StringType()),
             ]
         ),
     )
@@ -467,112 +665,69 @@ def test_null_safe_tokenize(spark: SparkSession, private_key: bytes):
     assertDataFrameEqual(actual, expected)
 
 
+@pytest.mark.parametrize("version", [v0, v1, v2], ids=["v0", "v1", "v2"])
 def test_null_safe_transcode(
-    spark: SparkSession, private_key: bytes, acme_public_key: bytes, acme_private_key: bytes
+    spark: SparkSession,
+    private_key: bytes,
+    acme_public_key: bytes,
+    acme_private_key: bytes,
+    version,
 ):
     tokens = spark.createDataFrame(
-        [Row(opprl_token_1v0=None, opprl_token_1v1=None)],
-        StructType(
-            [
-                StructField("opprl_token_1v0", StringType()),
-                StructField("opprl_token_1v1", StringType()),
-            ]
-        ),
+        [Row(**{version.token1.name: None})],
+        StructType([StructField(version.token1.name, StringType())]),
     )
-    ephemeral = transcode_out(tokens, (v0.token1, v1.token1), acme_public_key, private_key)
+    ephemeral = transcode_out(tokens, (version.token1,), acme_public_key, private_key)
     assertDataFrameEqual(tokens, ephemeral)
-    tokens2 = transcode_in(ephemeral, (v0.token1, v1.token1), acme_private_key)
+    tokens2 = transcode_in(ephemeral, (version.token1,), acme_private_key)
     assertDataFrameEqual(ephemeral, tokens2)
 
 
+@pytest.mark.parametrize("version", [v1, v2], ids=["v1", "v2"])
 def test_keys_from_env(
     spark: SparkSession,
     private_key: bytes,
     acme_public_key: bytes,
     acme_private_key: bytes,
     monkeypatch,
+    version,
 ):
     monkeypatch.setenv(_PRIVATE_KEY_ENV_VAR, private_key.decode())
     monkeypatch.setenv(_RECIPIENT_PUBLIC_KEY_ENV_VAR, acme_public_key.decode())
 
-    tokens = tokenize(
-        (
-            spark.createDataFrame(
-                [
-                    Row(
-                        first_name="LOUIS",
-                        last_name="PASTEUR",
-                        gender="M",
-                        birth_date=date(1822, 12, 27),
-                    ),
-                ]
-            )
-        ),
-        col_mapping={
-            v1.first_name: "first_name",
-            v1.last_name: "last_name",
-            v1.gender: "gender",
-            v1.birth_date: "birth_date",
-        },
-        tokens=[v1.token1],
-    )
+    df = _name_birth_dataframe(spark)
+    tokens = tokenize(df, _name_birth_col_mapping(version), [version.token1])
     assertDataFrameEqual(
         tokens,
-        spark.createDataFrame(
-            [
-                Row(
-                    first_name="LOUIS",
-                    last_name="PASTEUR",
-                    gender="M",
-                    birth_date=date(1822, 12, 27),
-                    opprl_token_1v1="dmJAQHj05pZXDYudIx7W+aeZhZXFDULhNoxJGMl2+U5kr/1lFQF1uCaN9vbjBhsQRkImFBz3+F0kxm4lF3bNoes9B3idmq4pwGXD6ey1ncg=",
-                ),
-            ],
+        tokenize(
+            df,
+            _name_birth_col_mapping(version),
+            [version.token1],
+            private_key=private_key,
         ),
     )
-    ephemeral_tokens = transcode_out(tokens, (v1.token1,))
+
+    ephemeral_tokens = transcode_out(tokens, (version.token1,))
 
     # Simulate the environment of the recipient.
     monkeypatch.setenv(_PRIVATE_KEY_ENV_VAR, acme_private_key.decode())
-    acme_tokens = transcode_in(ephemeral_tokens, (v1.token1,))
+    acme_tokens = transcode_in(ephemeral_tokens, (version.token1,))
     assertDataFrameEqual(
         acme_tokens,
-        spark.createDataFrame(
-            [
-                Row(
-                    first_name="LOUIS",
-                    last_name="PASTEUR",
-                    gender="M",
-                    birth_date=date(1822, 12, 27),
-                    opprl_token_1v1="qGPiZl9WXPsfIiHADpX3M5sR94fQWrsJBvE/jkvuGQ6Xq9OXPanO2urYEO+Jnzfn4b4RTqfT7QAVQufKYmQiHIf9zdzSXAYj70fsGcGEogw=",
-                ),
-            ],
+        tokenize(
+            df,
+            _name_birth_col_mapping(version),
+            [version.token1],
+            private_key=acme_private_key,
         ),
     )
 
 
-def test_missing_key(spark: SparkSession):
+@pytest.mark.parametrize("version", [v1, v2], ids=["v1", "v2"])
+def test_missing_key(spark: SparkSession, version):
     with pytest.raises(ValueError, match="No private RSA key found"):
         tokenize(
-            (
-                spark.createDataFrame(
-                    [
-                        Row(
-                            first_name="LOUIS",
-                            last_name="PASTEUR",
-                            gender="M",
-                            birth_date=date(1822, 12, 27),
-                        ),
-                    ]
-                )
-            ),
-            col_mapping={
-                v1.first_name: "first_name",
-                v1.last_name: "last_name",
-                v1.gender: "gender",
-                v1.birth_date: "birth_date",
-            },
-            tokens=[v1.token1],
+            _name_birth_dataframe(spark), _name_birth_col_mapping(version), [version.token1]
         )
 
 
@@ -739,7 +894,10 @@ def test_tokenize_v2_stays_distinct_for_different_private_keys(
     assert sender_token != recipient_token
 
 
-def test_valid_ssn_variants_produce_matchable_tokens(spark: SparkSession, private_key: bytes):
+@pytest.mark.parametrize("version", [v1, v2], ids=["v1", "v2"])
+def test_valid_ssn_variants_produce_matchable_tokens(
+    spark: SparkSession, private_key: bytes, version
+):
     pii = spark.createDataFrame(
         [
             Row(
@@ -758,15 +916,15 @@ def test_valid_ssn_variants_produce_matchable_tokens(spark: SparkSession, privat
     tokens = tokenize(
         pii,
         col_mapping={
-            v1.first_name: "first_name",
-            v1.birth_date: "birth_date",
-            v1.ssn: "ssn",
+            version.first_name: "first_name",
+            version.birth_date: "birth_date",
+            version.ssn: "ssn",
         },
-        tokens=[v1.token9, v1.token10],
+        tokens=[version.token9, version.token10],
         private_key=private_key,
     )
 
-    ssn_tokens = tokens.select("opprl_token_9v1", "opprl_token_10v1").collect()
+    ssn_tokens = tokens.select(version.token9.name, version.token10.name).collect()
 
     assert len(ssn_tokens) == 2
     assert ssn_tokens[0] == ssn_tokens[1]
@@ -774,25 +932,16 @@ def test_valid_ssn_variants_produce_matchable_tokens(spark: SparkSession, privat
     assert ssn_tokens[0][1] is not None
 
 
-def test_v2_protocol_rejects_non_rsa_private_keys_at_bind_time():
-    non_rsa_private_key = ec.generate_private_key(ec.SECP256R1()).private_bytes(
-        encoding=Encoding.PEM,
-        format=PrivateFormat.PKCS8,
-        encryption_algorithm=NoEncryption(),
-    )
-
+def test_v2_protocol_rejects_non_rsa_private_keys_at_bind_time(
+    non_rsa_private_key: bytes,
+):
     with pytest.raises(TypeError, match="RSA"):
         v2.protocol.bind(non_rsa_private_key, None)
 
 
 def test_transcode_out_v2_rejects_non_rsa_private_keys_at_bind_time(
-    spark: SparkSession, acme_public_key: bytes
+    spark: SparkSession, acme_public_key: bytes, non_rsa_private_key: bytes
 ):
-    non_rsa_private_key = ec.generate_private_key(ec.SECP256R1()).private_bytes(
-        encoding=Encoding.PEM,
-        format=PrivateFormat.PKCS8,
-        encryption_algorithm=NoEncryption(),
-    )
     tokens = spark.createDataFrame([Row(opprl_token_1v2="placeholder")])
 
     with pytest.raises(TypeError, match="RSA"):
@@ -804,12 +953,9 @@ def test_transcode_out_v2_rejects_non_rsa_private_keys_at_bind_time(
         )
 
 
-def test_transcode_in_v2_rejects_non_rsa_private_keys_at_bind_time(spark: SparkSession):
-    non_rsa_private_key = ec.generate_private_key(ec.SECP256R1()).private_bytes(
-        encoding=Encoding.PEM,
-        format=PrivateFormat.PKCS8,
-        encryption_algorithm=NoEncryption(),
-    )
+def test_transcode_in_v2_rejects_non_rsa_private_keys_at_bind_time(
+    spark: SparkSession, non_rsa_private_key: bytes
+):
     ephemeral_tokens = spark.createDataFrame([Row(opprl_token_1v2="placeholder")])
 
     with pytest.raises(TypeError, match="RSA"):
@@ -820,12 +966,9 @@ def test_transcode_in_v2_rejects_non_rsa_private_keys_at_bind_time(spark: SparkS
         )
 
 
-def test_tokenize_v2_rejects_non_rsa_private_keys(spark: SparkSession):
-    non_rsa_private_key = ec.generate_private_key(ec.SECP256R1()).private_bytes(
-        encoding=Encoding.PEM,
-        format=PrivateFormat.PKCS8,
-        encryption_algorithm=NoEncryption(),
-    )
+def test_tokenize_v2_rejects_non_rsa_private_keys(
+    spark: SparkSession, non_rsa_private_key: bytes
+):
     df = spark.createDataFrame(
         [
             Row(
@@ -848,4 +991,4 @@ def test_tokenize_v2_rejects_non_rsa_private_keys(spark: SparkSession):
             },
             [v2.token1],
             private_key=non_rsa_private_key,
-        ).collect()
+        ).collect()  # tokenize is lazy; force execution so the invalid key is validated.
