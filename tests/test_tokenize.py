@@ -846,9 +846,7 @@ def test_tokenize_v2_matches_golden_vector(spark: SparkSession, private_key: byt
     assertDataFrameEqual(tokens, expected)
 
 
-def test_tokenize_v2_supports_string_birth_dates(
-    spark: SparkSession, private_key: bytes
-):
+def test_tokenize_v2_supports_string_birth_dates(spark: SparkSession, private_key: bytes):
     df = spark.createDataFrame(
         [
             Row(
