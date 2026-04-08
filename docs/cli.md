@@ -18,7 +18,7 @@ This example invocation of the `tokenize` command illustrates the general patter
 
 ```
 spindle-token tokenize \
-    --token opprl_token_1v1 --token opprl_token_2v1 --token opprl_token_3v1 \
+    --token opprl_token_1v2 --token opprl_token_2v2 --token opprl_token_3v2 \
     --key private_key.pem \
     --format csv \
     --parallelism 1 \

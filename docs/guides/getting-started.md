@@ -101,26 +101,26 @@ To perform tokenization, call the `tokenize` function and pass it the PII `DataF
 
 ```python
 from spindle_token import tokenize
-from spindle_token.opprl import OpprlV1
+from spindle_token.opprl import OpprlV2
 
 tokens = tokenize(
     pii,
     col_mapping={
-        OpprlV1.first_name: "first_name",
-        OpprlV1.last_name: "last_name",
-        OpprlV1.gender: "gender",
-        OpprlV1.birth_date: "birth_date",
+        OpprlV2.first_name: "first_name",
+        OpprlV2.last_name: "last_name",
+        OpprlV2.gender: "gender",
+        OpprlV2.birth_date: "birth_date",
     },
-    tokens=[OpprlV1.token1, OpprlV1.token2, OpprlV1.token3],
+    tokens=[OpprlV2.token1, OpprlV2.token2, OpprlV2.token3],
 ).drop("first_name", "last_name", "gender", "birth_date")
 # +-----+--------------------+--------------------+--------------------+
-# |label|     opprl_token_1v1|     opprl_token_2v1|     opprl_token_3v1|
+# |label|     opprl_token_1v2|     opprl_token_2v2|     opprl_token_3v2|
 # +-----+--------------------+--------------------+--------------------+
-# |    1|4YO6eFn0u75yrF+Td...|V6uRRgDgXylFsNM2c...|6N+/voOASNM0ivgA7...|
-# |    1|4YO6eFn0u75yrF+Td...|V6uRRgDgXylFsNM2c...|6N+/voOASNM0ivgA7...|
-# |    2|OLU6TLB4XdWmfhvIS...|3QtCKgeIqO20Jgp9E...|JrrjTxjy97Xe93afx...|
-# |    3|mks197t0d8Uhc3l3s...|YccsE4wMErZvz9oBd...|7wMcWiDjImAhuP307...|
-# |    4|kRZfUY8KScpiHKmxC...|1gKSJDcq6YtwdUc7C...|3h8jUydHTIcOU8jhW...|
+# |    1|...|...|...|
+# |    1|...|...|...|
+# |    2|...|...|...|
+# |    3|...|...|...|
+# |    4|...|...|...|
 # +-----+--------------------+--------------------+--------------------+
 ```
 
@@ -128,9 +128,9 @@ For OPPRL tokens, the column names used for token columns are the OPPRL token na
 
 Notice that both records with `label = 1` received the same pair of tokens despite slight representation differences in the original PII.
 
-The `col_mapping` argument is a dictionary that maps standard OPPRL attributes -- logical types of PII fields -- to the corresponding column names from the `pii` DataFrame. This tells spindle-health how to normalize and enhance the values found in each column. For example, the `Opprlv1.first_name` object will apply name cleaning rules of version 1 of the OPPRL protocol to the values found in the `first_name` column. Spindle-token will also use this mapping to determine how to derive other PII attributes (such as first initial, soundex, and metaphone encodings) used to construct some tokens.
+The `col_mapping` argument is a dictionary that maps standard OPPRL attributes -- logical types of PII fields -- to the corresponding column names from the `pii` DataFrame. This tells spindle-health how to normalize and enhance the values found in each column. For example, the `OpprlV2.first_name` object will apply name cleaning rules of version 2 of the OPPRL protocol to the values found in the `first_name` column. Spindle-token will also use this mapping to determine how to derive other PII attributes (such as first initial, soundex, and metaphone encodings) used to construct some tokens.
 
-The `tokens` argument is collection of OPPRL token specifications. Each token specification denotes a PII fields to jointly hash and encrypt to create a token. The v1 protocol shown in this guide supports three token specifications, described below:
+The `tokens` argument is collection of OPPRL token specifications. Each token specification denotes a PII fields to jointly hash and encrypt to create a token. The v2 protocol shown in this guide supports three token specifications, described below:
 
 | Token | Fields to jointly encrypt |
 |-|-|
@@ -142,7 +142,7 @@ The `tokens` argument is collection of OPPRL token specifications. Each token sp
 >
 > Each use case has a different tolerance for false positive and false negative matches. By producing multiple tokens for each record using PII attributes, each user can customize their match logic to trade-off between different kinds of match errors. Linking records that match on _any_ token will result in fewer false negatives, and linking records that match _all_ tokens will result in fewer false positives. User can design their own match strategies by using subsets of tokens.
 
-If you need the same-key stability fix described in the security findings, use `OpprlV2` instead of `OpprlV1`. The examples in this guide stay on v1 so they continue to match the existing compatibility-frozen token vectors.
+If you need the same-key stability fix described in the security findings, use `OpprlV2` instead of `OpprlV1`. The examples in this guide now use V2, and V1 remains available for historical compatibility checks.
 
 ## Transcoding and Ephemeral Tokens
 
@@ -158,26 +158,26 @@ Spindle-token provides the `transcode_out` function in for the sender to call on
 
 ```python
 from spindle_token import transcode_out
-from spindle_token.opprl import OpprlV1
+from spindle_token.opprl import OpprlV2
 
 tokens_to_send = transcode_out(
     tokens, 
-    tokens=(OpprlV1.token1, OpprlV1.token2, OpprlV1.token3), 
+    tokens=(OpprlV2.token1, OpprlV2.token2, OpprlV2.token3), 
     recipient_public_key=b"""-----BEGIN PUBLIC KEY----- ...""",
 )
 tokens.to_send.show()
 # +-----+--------------------+--------------------+--------------------+
-# |label|     opprl_token_1v1|     opprl_token_2v1|     opprl_token_3v1|
+# |label|     opprl_token_1v2|     opprl_token_2v2|     opprl_token_3v2|
 # +-----+--------------------+--------------------+--------------------+
-# |    1|EUqTdA0Yjb5F82oqj...|iiI/sd+sn+t5qhPDg...|JwpZVzJe+3CMocLGK...|
-# |    1|AXVDGgQ0KMa1ek1/v...|YJeYE9pz507CUzlks...|EKY2JdLhduCq+zj+p...|
-# |    2|XmYqnnMDqD9ZUR6yS...|A4e3L03NWeKbbL8vR...|CAZtbKDYjbbHsqVdc...|
-# |    3|mVhnJ1kz+ZRZvlfKo...|uO13H3LHjVnZ1flUp...|C16RKoV4SvWD5wuVp...|
-# |    4|oI/KS52K4H3M+WBdn...|vczsK9qlbU6TN1vBi...|fpTSrlGgtz3vASFXc...|
+# |    1|...|...|...|
+# |    1|...|...|...|
+# |    2|...|...|...|
+# |    3|...|...|...|
+# |    4|...|...|...|
 # +-----+--------------------+--------------------+--------------------+
 ```
 
-The `tokens` argument is a iterable collection containing the token specifications of the tokens to transcode. It is expected that the input DataFrame has columns with the same name as the `name` attribute of the token specification. For example, `OpprlV1.token3.name` is `opprl_token_3v1` and therefore the DataFrame must contain a column with that name. See the OPPRL protocol for more information on understanding the token name format.
+The `tokens` argument is a iterable collection containing the token specifications of the tokens to transcode. It is expected that the input DataFrame has columns with the same name as the `name` attribute of the token specification. For example, `OpprlV2.token3.name` is `opprl_token_3v2` and therefore the DataFrame must contain a column with that name. See the OPPRL protocol for more information on understanding the token name format.
 
 The `recipient_public_key` argument is the public key provided by the intended recipient. 
 
@@ -189,11 +189,11 @@ Notice that the first 2 records pertaining to the same subject (label = 1) have 
 
 ```python
 from spindle_token import transcode_in
-from spindle_token.opprl import OpprlV1
+from spindle_token.opprl import OpprlV2
 
 tokens_received = transcrypt_in(
     tokens_to_send, 
-    tokens=(OpprlV1.token1, OpprlV1.token2, OpprlV1.token3), 
+    tokens=(OpprlV2.token1, OpprlV2.token2, OpprlV2.token3), 
 )
 tokens_received.show()
 # +-----+--------------------+--------------------+--------------------+

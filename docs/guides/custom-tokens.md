@@ -6,28 +6,28 @@ Some users may want to create tokens by concatenating different PII fields than 
 
 To create a custom token specification, simply instantiate the [spindle_token.core.Token][spindle_token.core.Token] class and provide the required arguments.
 
-The following code example creates a new `Token` definition called `"my_custom_token"` that tokenizes the first initial, the metaphone phonetic encoding of the last name, and the birth date. All fields are combined, hashed, and encrypted according to v1 of the OPPRL protocol.
+The following code example creates a new `Token` definition called `"my_custom_token"` that tokenizes the first initial, the metaphone phonetic encoding of the last name, and the birth date. All fields are combined, hashed, and encrypted according to v2 of the OPPRL protocol.
 
 ```python
 from spindle_token.core import Token
-from spindle_token.opprl import OpprlV1
+from spindle_token.opprl import OpprlV2
 
 my_token = Token(
     "my_custom_token",
-    OpprlV1.protocol,
+    OpprlV2.protocol,
     attributes=[
-        OpprlV1.first_name.initial,
-        OpprlV1.last_name.metaphone,
-        OpprlV1.birth_date,
+        OpprlV2.first_name.initial,
+        OpprlV2.last_name.metaphone,
+        OpprlV2.birth_date,
     ]
 )
 ```
 
 The `name` attribute will be used as the the column name expected by the other spindle-token functions. Thus, it must only contain character that are safe in column names and each logically distinct `Token` instance should have a unique name. 
 
-The `protocol` argument can be any implementation of [TokenProtocolFactory][spindle_token.core.TokenProtocolFactory] but for the remainder of this section we will use the OPPRLv1 implementation provided by spindle-token. See [this section](#custom-protocol) for more details.
+The `protocol` argument can be any implementation of [TokenProtocolFactory][spindle_token.core.TokenProtocolFactory] but for the remainder of this section we will use the OPPRLv2 implementation provided by spindle-token. See [this section](#custom-protocol) for more details.
 
-The instances of [PiiAttribute][spindle_token.core.PiiAttribute] in the `attributes` argument determine the PII fields to jointly tokenize into a single token. This guide uses `PiiAttribute` objects for OPPRLv1 that are built-in to the spindle-health library. See [Custom PII Attributes](#custom-pii) for a guide on defining your own PII.
+The instances of [PiiAttribute][spindle_token.core.PiiAttribute] in the `attributes` argument determine the PII fields to jointly tokenize into a single token. This guide uses `PiiAttribute` objects for OPPRLv2 that are built-in to the spindle-health library. See [Custom PII Attributes](#custom-pii) for a guide on defining your own PII.
 
 We can pass `my_token` to the core spindle-token functions -- such as `tokenize`, `transcode_out`, and `transcode_in` -- alongside the OPPRL tokens or other custom token specifications.
 

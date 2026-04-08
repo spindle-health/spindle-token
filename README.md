@@ -22,6 +22,26 @@ See the [getting started guide](https://token.spindlehealth.com/guides/getting-s
 
 The full [API](https://token.spindlehealth.com/api/) and an [example usage on Databricks](https://token.spindlehealth.com/guides/databricks/) are also provided on the project's web page.
 
+## Migrating from OPPRL V1 to V2
+
+New integrations should use `OpprlV2`. The current examples in this repository
+use V2 unless they are explicitly historical.
+
+If you already have code that imports `OpprlV1`, the migration path is usually a
+small mechanical change:
+
+1. Replace `OpprlV1` imports with `OpprlV2`.
+2. Keep the same attribute mapping and token selection.
+3. Re-run your tokenization and transcode tests against your existing data.
+
+`OpprlV2` preserves the V1 token structure and normalization rules, but it
+canonicalizes the private key before deriving the AES key. That means V2 is the
+right choice when you want the same logical protocol behavior with stable
+results across equivalent PEM encodings of the same RSA key.
+
+If you need byte-for-byte compatibility with historical V1 token outputs, keep
+using `OpprlV1` for those flows.
+
 ## Independent Security Review
 
 Spindle engaged [Echelon Risk + Cyber](https://echeloncyber.com/), an independent, leading cybersecurity firm, to conduct an audit of the Spindle Token implementation. The review evaluated and confirmed alignment with industry best practices in secure software development, cryptographic algorithm selection, and tokenization methods.
