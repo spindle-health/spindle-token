@@ -846,6 +846,76 @@ def test_tokenize_v2_matches_golden_vector(spark: SparkSession, private_key: byt
     assertDataFrameEqual(tokens, expected)
 
 
+def test_tokenize_v2_supports_string_birth_dates(spark: SparkSession, private_key: bytes):
+    df = spark.createDataFrame(
+        [
+            Row(
+                first_name="LOUIS",
+                last_name="PASTEUR",
+                gender="M",
+                birth_date="1822-12-27",
+            ),
+        ]
+    )
+
+    tokens = tokenize(
+        df,
+        {
+            v2.first_name: "first_name",
+            v2.last_name: "last_name",
+            v2.gender: "gender",
+            v2.birth_date: "birth_date",
+        },
+        [v2.token1],
+        private_key=private_key,
+    ).select(v2.token1.name)
+
+    expected = spark.createDataFrame(
+        [
+            Row(
+                opprl_token_1v2="nuyWVjxW1qEG729faKRkbSucaJqPxHg8Zdc/Tycs/cFxl7a+eWs6sl5QcErjAB5OXoOvtk3iEgvuNxBP43eRQbJl//C2k3gbBTlk3AJ9+Sg="
+            )
+        ],
+        "opprl_token_1v2 string",
+    )
+
+    assertDataFrameEqual(tokens, expected)
+
+
+def test_tokenize_v2_returns_null_for_malformed_birth_date(
+    spark: SparkSession, private_key: bytes
+):
+    df = spark.createDataFrame(
+        [
+            Row(
+                first_name="LOUIS",
+                last_name="PASTEUR",
+                gender="M",
+                birth_date="not-a-date",
+            ),
+        ]
+    )
+
+    tokens = tokenize(
+        df,
+        {
+            v2.first_name: "first_name",
+            v2.last_name: "last_name",
+            v2.gender: "gender",
+            v2.birth_date: "birth_date",
+        },
+        [v2.token1],
+        private_key=private_key,
+    ).select(v2.token1.name)
+
+    expected = spark.createDataFrame(
+        [Row(opprl_token_1v2=None)],
+        "opprl_token_1v2 string",
+    )
+
+    assertDataFrameEqual(tokens, expected)
+
+
 def test_tokenize_v2_stays_distinct_for_different_private_keys(
     spark: SparkSession, private_key: bytes, acme_private_key: bytes
 ):

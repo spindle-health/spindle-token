@@ -48,7 +48,7 @@ We use GitHub issues to track public bugs. Report a bug by [opening a new issue]
 ## Feature Request
 
 We like to hear in all feature requests and discussion around the direction of the project. The best place
-to discuss future features is the project's [discussion page](hhttps://github.com/spindle-health/spindle-token/discussions) under
+to discuss future features is the project's [discussion page](https://github.com/spindle-health/spindle-token/discussions) under
 the [ideas](https://github.com/spindle-health/spindle-token/discussions/categories/library-ideas-feature-requests) category.
 
 ## Bug fix, new feature, documentation improvement, or other change.
@@ -63,28 +63,40 @@ your pull request.
 
 ## Running Tests
 
-When working on a code change or addition to spindle-token, it is expected that all changes 
-pass existing tests and probably introduce new tests to ensure stability of future changes. 
+When working on a code change or addition to spindle-token, it is expected that all changes
+pass existing tests and usually introduce new tests to ensure stability of future changes.
 
-Before you are able to run tests, you must have a virtual environment for the project. Spindle-token uses 
-[Poetry](https://python-poetry.org/) to manage Python environments. Once poetry is installed, run the following in 
-the root directory of the project.
+Spindle-token uses [Poetry](https://python-poetry.org/) to manage Python environments. From the root directory of
+the project, point Poetry at Python 3.12, create the virtualenv, and install dependencies:
 
-```
+```bash
+poetry env use python3.12
 poetry install
 ```
 
-The project is currently tested against Python 3.12. If your default interpreter is newer, point Poetry at Python 3.12
-before installing dependencies:
+Before opening a pull request, validate the Spark-backed test suite locally against both supported Spark lines:
 
-```
-poetry env use python3.12
-```
+- Spark 3.5.x
+- Spark 4.0.x
 
-To run the Spark-backed test suite locally, make sure the driver and worker processes use the same interpreter from the
-Poetry virtualenv, then run:
+Run the suite once per environment, using a separate Poetry virtualenv for each Spark line so the local installs do
+not overwrite each other:
 
-```
+```bash
+# Spark 3.5.x env
+POETRY_VIRTUALENVS_PATH=.venvs-spark35 poetry env use 3.12
+poetry install
+poetry run python -m pip install --upgrade --force-reinstall pyspark==3.5.2
+VENV="$(poetry env info --path)"
+PYSPARK_PYTHON="$VENV/bin/python" \
+PYSPARK_DRIVER_PYTHON="$VENV/bin/python" \
+PYARROW_IGNORE_TIMEZONE=1 \
+poetry run pytest
+
+# Spark 4.0.x env
+POETRY_VIRTUALENVS_PATH=.venvs-spark40 poetry env use 3.12
+poetry install
+poetry run python -m pip install --upgrade --force-reinstall pyspark==4.0.2
 VENV="$(poetry env info --path)"
 PYSPARK_PYTHON="$VENV/bin/python" \
 PYSPARK_DRIVER_PYTHON="$VENV/bin/python" \

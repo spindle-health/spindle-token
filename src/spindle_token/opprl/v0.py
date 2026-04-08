@@ -49,7 +49,9 @@ def _tokenize_impl(
     # attribute is used from multiple OPPRL versions for the same token. This is unlikely to be done in practice,
     # but we defend against it nonetheless.
     attribute_order = sorted(attribute_ids)
-    attribute_cols = [col(attr_id_to_col_name(attr_id)) for attr_id in attribute_order]
+    attribute_cols = [
+        col(attr_id_to_col_name(attr_id)).cast("string") for attr_id in attribute_order
+    ]
     plaintext_str = array_join(array(*attribute_cols), delimiter=":")
     token = base64_no_newline(encrypt_aes(to_binary(sha2(plaintext_str, 512), lit("hex"))))
     return when(exists(array(*attribute_cols), isnull), lit(None)).otherwise(token)

@@ -13,7 +13,7 @@ from pyspark.sql.functions import (
     coalesce,
     soundex,
     regexp_replace,
-    to_date,
+    try_to_timestamp,
     lower,
     udf,
     lit,
@@ -157,7 +157,7 @@ class DateAttribute(PiiAttribute):
         if isinstance(dtype, (DateType, TimestampType, TimestampNTZType)):
             return column.cast(DateType())
         if isinstance(dtype, StringType):
-            return to_date(column, self.date_format)
+            return try_to_timestamp(column, lit(self.date_format)).cast(DateType())
         raise Exception(
             f"Cannot normalize column of type {dtype} into a DateType column. Column: {column}."
         )
