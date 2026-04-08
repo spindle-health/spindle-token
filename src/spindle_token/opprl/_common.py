@@ -13,7 +13,7 @@ from pyspark.sql.functions import (
     coalesce,
     soundex,
     regexp_replace,
-    to_date,
+    try_to_timestamp,
     lower,
     udf,
     lit,
@@ -31,11 +31,6 @@ from pyspark.sql.types import (
 )
 from spindle_token.core import PiiAttribute
 from spindle_token._utils import empty_to_null, normalize_text, first_char, metaphone, remap
-
-try:
-    from pyspark.sql.functions import try_to_date
-except ImportError:  # Spark 3.5 and earlier
-    try_to_date = None
 
 
 class IdentityAttribute(PiiAttribute):
@@ -162,9 +157,7 @@ class DateAttribute(PiiAttribute):
         if isinstance(dtype, (DateType, TimestampType, TimestampNTZType)):
             return column.cast(DateType())
         if isinstance(dtype, StringType):
-            if try_to_date is not None:
-                return try_to_date(column, self.date_format)
-            return to_date(column, self.date_format)
+            return try_to_timestamp(column, lit(self.date_format)).cast(DateType())
         raise Exception(
             f"Cannot normalize column of type {dtype} into a DateType column. Column: {column}."
         )
