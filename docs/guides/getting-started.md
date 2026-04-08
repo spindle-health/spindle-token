@@ -7,7 +7,7 @@ This guide provides installation instructions and a quick tour of the main featu
 Spindle-token is a cross-platform python library built on top of [PySpark](https://spark.apache.org/docs/latest/api/python/index.html). It has been validated with the following Spark runtimes:
 
 - Python: 3.10+
-- PySpark: 3.5+, 4.0.x
+- PySpark: Spark 3.5.x through 4.1.x
 
 The latest stable release of spindle-token can be installed from [PyPI](https://pypi.org/project/spindle-token/) into your active Python environment using `pip`.
 
