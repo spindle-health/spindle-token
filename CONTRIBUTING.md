@@ -76,8 +76,7 @@ poetry install
 
 Before opening a pull request, validate the Spark-backed test suite locally against both supported Spark lines:
 
-- Spark 3.5.x
-- Spark 4.0.x
+- Spark 3.5.x through 4.1.x
 
 Run the suite once per environment, using a separate Poetry virtualenv for each Spark line so the local installs do
 not overwrite each other:
@@ -97,6 +96,16 @@ poetry run pytest
 POETRY_VIRTUALENVS_PATH=.venvs-spark40 poetry env use 3.12
 poetry install
 poetry run python -m pip install --upgrade --force-reinstall pyspark==4.0.2
+VENV="$(poetry env info --path)"
+PYSPARK_PYTHON="$VENV/bin/python" \
+PYSPARK_DRIVER_PYTHON="$VENV/bin/python" \
+PYARROW_IGNORE_TIMEZONE=1 \
+poetry run pytest
+
+# Spark 4.1.x env
+POETRY_VIRTUALENVS_PATH=.venvs-spark41 poetry env use 3.12
+poetry install
+poetry run python -m pip install --upgrade --force-reinstall pyspark==4.1.0
 VENV="$(poetry env info --path)"
 PYSPARK_PYTHON="$VENV/bin/python" \
 PYSPARK_DRIVER_PYTHON="$VENV/bin/python" \
