@@ -74,4 +74,7 @@ Please refer to the spindle-token [contributing guide](https://token.spindleheal
 
 ### Individuals that have contributed to spindle-token
 
-[Brian Fallik](https://github.com/bfallik) - @bfallik
+* [Julie Ferris](https://github.com/queenofclaims) - @queenofclains
+* [Rich Ferris](https://github.com/rtferris) - @rtferris
+* [Erik Dreyer](https://github.com/edreyer) - @edreyer
+* [Eddie Pantridge](https://github.com/erp12) - @erp12
