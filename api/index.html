@@ -561,6 +561,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#spindle_token.opprl.OpprlV2" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpprlV2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#spindle_token.opprl.IdentityAttribute" class="md-nav__link">
     <span class="md-ellipsis">
       IdentityAttribute
@@ -1283,6 +1292,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#spindle_token.opprl.OpprlV2" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpprlV2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#spindle_token.opprl.IdentityAttribute" class="md-nav__link">
     <span class="md-ellipsis">
       IdentityAttribute
@@ -1481,7 +1499,7 @@
         <p>A module containing the main API of spindle-token.</p>
 <p>Most users will only need to use the 3 main functions in this top-level module along with the provided
 configuration objects corresponding to OPPRL tokenization.</p>
-<p>The 3 main functions provide tokenization and transcoding capabilities for data senders and recipients 
+<p>The 3 main functions provide tokenization and transcoding capabilities for data senders and recipients
 respectively.</p>
 
 
@@ -2549,6 +2567,401 @@ the complete spec of the corresponding OPPRL version.</p>
 
 
 
+<h3 id="spindle_token.opprl.OpprlV2" class="doc doc-heading">
+            <code>OpprlV2</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>All instances of <a class="autorefs autorefs-internal" href="#spindle_token.core.PiiAttribute">PiiAttribute</a>, <a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+  " href="#spindle_token.core.Token">Token</a>, and
+<a class="autorefs autorefs-internal" href="#spindle_token.core.TokenProtocolFactory">TokenProtocolFactory</a> for v2 of the OPPRL protocol.</p>
+<p>Version 2 preserves the v1 token structure and normalization rules, but canonicalizes the
+private key before deriving the AES key so the same underlying RSA key produces the same
+tokens regardless of equivalent PEM serialization format.</p>
+<p>All members are class variables, and therefore this class does not need to be instantiated.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.first_name">first_name</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.NameAttribute">NameAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's first name.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.last_name">last_name</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.NameAttribute">NameAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's last (aka family) name.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.gender">gender</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.GenderAttribute">GenderAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's gender.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.birth_date">birth_date</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.DateAttribute">DateAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's date of birth.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.email">email</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.EmailAttribute">EmailAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's email address.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.hem">hem</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.HashedEmail">HashedEmail</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's SHA2 hashed email address.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.phone">phone</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.PhoneNumberAttribute">PhoneNumberAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's phone number.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.ssn">ssn</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.SsnAttribute">SsnAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's social security number.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.group_number">group_number</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.GroupNumberAttribute">GroupNumberAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's health plan group number.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.member_id">member_id</span></code></td>
+            <td>
+                  <code><span title="spindle_token.opprl._common.MemberIdAttribute">MemberIdAttribute</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The PII attribute for a subject's health plan member ID.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.protocol">protocol</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="TokenProtocolFactory (spindle_token.core.TokenProtocolFactory)" href="#spindle_token.core.TokenProtocolFactory">TokenProtocolFactory</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tokenization protocol for producing OPPRL version 2 tokens.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.token1">token1</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first initial, last name, gender, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.token2">token2</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first soundex, last soundex, gender, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.token3">token3</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first metaphone, last metaphone, gender, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.token4">token4</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first initial, last name, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.token5">token5</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first soundex, last soundex, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.token6">token6</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first metaphone, last metaphone, and birth date.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.token7">token7</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first name and phone number.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.token8">token8</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from birth date and phone number.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.token9">token9</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from first name and SSN.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.token10">token10</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from birth date and SSN.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.token11">token11</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from an email address.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.token12">token12</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from a SHA2 hashed email address.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="spindle_token.opprl.OpprlV2.token13">token13</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Token
+
+
+  
+      dataclass
+   (spindle_token.core.Token)" href="#spindle_token.core.Token">Token</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A token generated from health plan group number and member ID.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
 <h3 id="spindle_token.opprl.IdentityAttribute" class="doc doc-heading">
             <code>IdentityAttribute</code>
 
@@ -2644,14 +3057,14 @@ as opposed to deriving from the first name.</p>
     <div class="doc doc-contents first">
 
         <p>The core abstractions of spindle-token, including abstract base classes for extending functionality.</p>
-<p>The spindle-token library provides base interfaces that cane be extended by users to define custom token 
-specifications to encrypt with existing versions of OPPRL cryptography protocols, or define entirely new 
+<p>The spindle-token library provides base interfaces that cane be extended by users to define custom token
+specifications to encrypt with existing versions of OPPRL cryptography protocols, or define entirely new
 tokenization protocols.</p>
 
 
 <details class="warning" open>
   <summary>Warning</summary>
-  <p>Extending the base classes in this module to customize the tokenization behavior has no security or 
+  <p>Extending the base classes in this module to customize the tokenization behavior has no security or
 privacy guarantees. These abstractions -- like all OSS -- are "use at your own risk" and users should
 only use these advanced features if they understand them.</p>
 </details>

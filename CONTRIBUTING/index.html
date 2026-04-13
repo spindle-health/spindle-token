@@ -1100,7 +1100,7 @@ Feel free to contact the maintainers if that's a concern.</p>
 </ul>
 <h2 id="feature-request">Feature Request</h2>
 <p>We like to hear in all feature requests and discussion around the direction of the project. The best place
-to discuss future features is the project's <a href="hhttps://github.com/spindle-health/spindle-token/discussions">discussion page</a> under
+to discuss future features is the project's <a href="https://github.com/spindle-health/spindle-token/discussions">discussion page</a> under
 the <a href="https://github.com/spindle-health/spindle-token/discussions/categories/library-ideas-feature-requests">ideas</a> category.</p>
 <h2 id="bug-fix-new-feature-documentation-improvement-or-other-change">Bug fix, new feature, documentation improvement, or other change.</h2>
 <p>We welcome contribution to the codebase via pull requests. In most cases, it is beneficial to discuss your change
@@ -1110,15 +1110,48 @@ pull request, please follow the workflow outlined in the above sections.</p>
 project maintainer). After all iterations of review are finished, one of the project maintainers will merge
 your pull request.</p>
 <h2 id="running-tests">Running Tests</h2>
-<p>When working on a code change or addition to spindle-token, it is expected that all changes 
-pass existing tests and probably introduce new tests to ensure stability of future changes. </p>
-<p>Before you are able to run tests, you must have a virtual environment for the project. Spindle-token uses 
-<a href="https://python-poetry.org/">Poetry</a> to manage Python environments. Once poetry is installed, run the following in 
-the root directory of the project.</p>
-<div class="highlight"><pre><span></span><code>poetry install
+<p>When working on a code change or addition to spindle-token, it is expected that all changes
+pass existing tests and usually introduce new tests to ensure stability of future changes.</p>
+<p>Spindle-token uses <a href="https://python-poetry.org/">Poetry</a> to manage Python environments. From the root directory of
+the project, point Poetry at Python 3.12, create the virtualenv, and install dependencies:</p>
+<div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>env<span class="w"> </span>use<span class="w"> </span>python3.12
+poetry<span class="w"> </span>install
 </code></pre></div>
-<p>To run the test suite, use the following command in the root of the project.</p>
-<div class="highlight"><pre><span></span><code>poetry run pytest
+<p>Before opening a pull request, validate the Spark-backed test suite locally against both supported Spark lines:</p>
+<ul>
+<li>Spark 3.5.x through 4.1.x</li>
+</ul>
+<p>Run the suite once per environment, using a separate Poetry virtualenv for each Spark line so the local installs do
+not overwrite each other:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Spark 3.5.x env</span>
+<span class="nv">POETRY_VIRTUALENVS_PATH</span><span class="o">=</span>.venvs-spark35<span class="w"> </span>poetry<span class="w"> </span>env<span class="w"> </span>use<span class="w"> </span><span class="m">3</span>.12
+poetry<span class="w"> </span>install
+poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>--force-reinstall<span class="w"> </span><span class="nv">pyspark</span><span class="o">==</span><span class="m">3</span>.5.2
+<span class="nv">VENV</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>poetry<span class="w"> </span>env<span class="w"> </span>info<span class="w"> </span>--path<span class="k">)</span><span class="s2">&quot;</span>
+<span class="nv">PYSPARK_PYTHON</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$VENV</span><span class="s2">/bin/python&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">PYSPARK_DRIVER_PYTHON</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$VENV</span><span class="s2">/bin/python&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">PYARROW_IGNORE_TIMEZONE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+poetry<span class="w"> </span>run<span class="w"> </span>pytest
+
+<span class="c1"># Spark 4.0.x env</span>
+<span class="nv">POETRY_VIRTUALENVS_PATH</span><span class="o">=</span>.venvs-spark40<span class="w"> </span>poetry<span class="w"> </span>env<span class="w"> </span>use<span class="w"> </span><span class="m">3</span>.12
+poetry<span class="w"> </span>install
+poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>--force-reinstall<span class="w"> </span><span class="nv">pyspark</span><span class="o">==</span><span class="m">4</span>.0.2
+<span class="nv">VENV</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>poetry<span class="w"> </span>env<span class="w"> </span>info<span class="w"> </span>--path<span class="k">)</span><span class="s2">&quot;</span>
+<span class="nv">PYSPARK_PYTHON</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$VENV</span><span class="s2">/bin/python&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">PYSPARK_DRIVER_PYTHON</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$VENV</span><span class="s2">/bin/python&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">PYARROW_IGNORE_TIMEZONE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+poetry<span class="w"> </span>run<span class="w"> </span>pytest
+
+<span class="c1"># Spark 4.1.x env</span>
+<span class="nv">POETRY_VIRTUALENVS_PATH</span><span class="o">=</span>.venvs-spark41<span class="w"> </span>poetry<span class="w"> </span>env<span class="w"> </span>use<span class="w"> </span><span class="m">3</span>.12
+poetry<span class="w"> </span>install
+poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>--force-reinstall<span class="w"> </span><span class="nv">pyspark</span><span class="o">==</span><span class="m">4</span>.1.0
+<span class="nv">VENV</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>poetry<span class="w"> </span>env<span class="w"> </span>info<span class="w"> </span>--path<span class="k">)</span><span class="s2">&quot;</span>
+<span class="nv">PYSPARK_PYTHON</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$VENV</span><span class="s2">/bin/python&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">PYSPARK_DRIVER_PYTHON</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$VENV</span><span class="s2">/bin/python&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">PYARROW_IGNORE_TIMEZONE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+poetry<span class="w"> </span>run<span class="w"> </span>pytest
 </code></pre></div>
 
 

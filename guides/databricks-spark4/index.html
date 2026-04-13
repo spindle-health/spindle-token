@@ -9,10 +9,6 @@
       
       
       
-        <link rel="prev" href="../getting-started/">
-      
-      
-        <link rel="next" href="../custom-tokens/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -20,7 +16,7 @@
     
     
       
-        <title>Spindle Token on Databricks - Spindle Token</title>
+        <title>Databricks spark4 - Spindle Token</title>
       
     
     
@@ -86,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#spindle-token-databricks-getting-started-guide" class="md-skip">
+        <a href="#spindle-token-databricks-bootstrap-guide-for-spark-4" class="md-skip">
           Skip to content
         </a>
       
@@ -122,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Spindle Token on Databricks
+              Databricks spark4
             
           </span>
         </div>
@@ -319,20 +315,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -348,7 +342,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Guides
@@ -359,19 +353,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../databricks/" class="md-nav__link">
         
   
   
@@ -382,7 +367,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -938,6 +922,32 @@
   
     
   
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string-date-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      String Date Inputs
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1677,25 +1687,52 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </style>
 <!-- End of mermaid configuration --><div class="jupyter-wrapper">
 <div class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1d87313b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="spindle-token-databricks-getting-started-guide">Spindle-token Databricks Getting Started Guide<a class="anchor-link" href="#spindle-token-databricks-getting-started-guide">¶</a></h1><p>Spindle-token is an implementation of the Open Privacy Preserving Record Linkage (OPPRL) specification. It allows organizations to replace personally identifiable information (PII) with encrypted tokens that can be used to correlate data records pertaining to the same subject while keeping the subject anonymous.</p>
-<p>This notebook demonstrates the use of the <code>spindle-token</code> python package in databricks to parallelize the tokenization processes using Spark clusters.</p>
-<p>The following is a 5 row sample dataset of PII that will be tokenized. Notice that despite cosmetic differences the first 2 rows (label = 1) are describing the same subject and will receive the same sets of token values.</p>
+<h1 id="spindle-token-databricks-bootstrap-guide-for-spark-4">Spindle-token Databricks Bootstrap Guide for Spark 4<a class="anchor-link" href="#spindle-token-databricks-bootstrap-guide-for-spark-4">¶</a></h1><p>This notebook is intended for Databricks clusters running Spark 4.x.
+It installs <code>spindle-token</code> directly from GitHub so you can test changes
+before publishing a release.</p>
+<p>If you are testing an unpublished branch, change the install cell to a
+branch name or commit SHA.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1fa2865f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="prerequisites">Prerequisites<a class="anchor-link" href="#prerequisites">¶</a></h2><p>This notebook expects a Databricks secret scope named <code>spindle-token</code>
+with secrets named <code>PrivateKey</code> and <code>MyPartnerPublicKey</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fc61db76">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="string-date-inputs">String Date Inputs<a class="anchor-link" href="#string-date-inputs">¶</a></h2><p>This Spark 4 notebook intentionally uses string <code>birth_date</code> values.
+The library should normalize those strings safely, even when Spark 4 is
+running with stricter date parsing behavior.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ae133052">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [0]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-1">
@@ -1708,128 +1745,21 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">pii</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
-    <span class="p">[</span>
-        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"Jonas"</span><span class="p">,</span> <span class="s2">"Salk"</span><span class="p">,</span> <span class="s2">"male"</span><span class="p">,</span> <span class="s2">"1914-10-28"</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"jonas"</span><span class="p">,</span> <span class="s2">"salk"</span><span class="p">,</span> <span class="s2">"M"</span><span class="p">,</span> <span class="s2">"1914-10-28"</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"Elizabeth"</span><span class="p">,</span> <span class="s2">"Blackwell"</span><span class="p">,</span> <span class="s2">"F"</span><span class="p">,</span> <span class="s2">"1821-02-03"</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">"Edward"</span><span class="p">,</span> <span class="s2">"Jenner"</span><span class="p">,</span> <span class="s2">"m"</span><span class="p">,</span> <span class="s2">"1749-05-17"</span><span class="p">),</span>
-        <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">"Alexander"</span><span class="p">,</span> <span class="s2">"Fleming"</span><span class="p">,</span> <span class="s2">"M"</span><span class="p">,</span> <span class="s2">"1881-08-06"</span><span class="p">),</span>
-    <span class="p">],</span>
-    <span class="p">(</span><span class="s2">"label"</span><span class="p">,</span> <span class="s2">"first_name"</span><span class="p">,</span> <span class="s2">"last_name"</span><span class="p">,</span> <span class="s2">"gender"</span><span class="p">,</span> <span class="s2">"birth_date"</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">pii</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="s2">"spindle-token @ git+https://github.com/spindle-health/spindle-token.git@main"</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-1">pii = spark.createDataFrame(
-    [
-        (1, "Jonas", "Salk", "male", "1914-10-28"),
-        (1, "jonas", "salk", "M", "1914-10-28"),
-        (2, "Elizabeth", "Blackwell", "F", "1821-02-03"),
-        (3, "Edward", "Jenner", "m", "1749-05-17"),
-        (4, "Alexander", "Fleming", "M", "1881-08-06"),
-    ],
-    ("label", "first_name", "last_name", "gender", "birth_date"),
-)
-display(pii)</div>
+<div class="clipboard-copy-txt" id="cell-1">%pip install "spindle-token @ git+https://github.com/spindle-health/spindle-token.git@main"</div>
 </div>
 </div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<style scoped="">
-  .table-result-container {
-    max-height: 300px;
-    overflow: auto;
-  }
-  table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-  }
-  th, td {
-    padding: 5px;
-  }
-  th {
-    text-align: left;
-  }
-</style><div class="table-result-container"><table class="table-result"><thead style="background-color: white"><tr><th>label</th><th>first_name</th><th>last_name</th><th>gender</th><th>birth_date</th></tr></thead><tbody><tr><td>1</td><td>Jonas</td><td>Salk</td><td>male</td><td>1914-10-28</td></tr><tr><td>1</td><td>jonas</td><td>salk</td><td>M</td><td>1914-10-28</td></tr><tr><td>2</td><td>Elizabeth</td><td>Blackwell</td><td>F</td><td>1821-02-03</td></tr><tr><td>3</td><td>Edward</td><td>Jenner</td><td>m</td><td>1749-05-17</td></tr><tr><td>4</td><td>Alexander</td><td>Fleming</td><td>M</td><td>1881-08-06</td></tr></tbody></table></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="one-time-workspace-setup">One-time Workspace Setup<a class="anchor-link" href="#one-time-workspace-setup">¶</a></h1><p>See the <a href="https://docs.databricks.com/en/security/secrets/index.html">Databricks documenation</a> for managing secrets to get started. You will need an to install the <a href="https://docs.databricks.com/en/dev-tools/cli/index.html">Databricks CLI</a> and <a href="https://docs.databricks.com/en/dev-tools/cli/authentication.html">authenticate</a> as a user that can manage Databricks secrets.</p>
-<p>Create a secret scope for <code>spindle-token</code> encryption keys by running the following command with the Databricks CLI.</p>
-<br/>
-<pre><code>databricks secrets create-scope spindle-token
-</code></pre>
-<p>Add your private key as a secret in the <code>spindle-token</code> scope.</p>
-<br/>
-<pre><code>(cat &lt;&lt; EOF
------BEGIN PRIVATE KEY-----
-...
------END PRIVATE KEY-----
-EOF
-) | databricks secrets put-secret spindle-token PrivateKey
-</code></pre>
-<p>Add the secrets for the public keys of the third party organizations you will be sending and receiving tokenized data to/from.</p>
-<br/>
-<pre><code>(cat &lt;&lt; EOF
------BEGIN PUBLIC KEY-----
-...
------END PUBLIC KEY-----
-EOF
-) | databricks secrets put-secret spindle-token MyPartnerPublicKey
-</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="optional-databricks-compute-setup">Optional Databricks Compute Setup<a class="anchor-link" href="#optional-databricks-compute-setup">¶</a></h1><p>Users can provide encryption keys to spindle-token via programmatic access to Databricks secrets (via <code>dbutils</code>) or by setting specific environment variables to take the value from Databricks secrets. See the Databricks <a href="https://docs.databricks.com/aws/en/security/secrets/secrets-spark-conf-env-var#reference-a-secret-in-an-environment-variable">secrets documentation</a> for more information.</p>
-<p>Users who wish to use programmatic access via <code>dbutils</code> don't need any cluster configuration and can skip the remainder of this section.</p>
-<p>To configure your Databricks compute such that your encryption keys will be available as environment variables, use the following syntax in the Databricks Compute configuration UI. See the Databricks documentation on <a href="https://docs.databricks.com/aws/en/compute/configure#environment-variables">Environment Variables</a> for more information.</p>
-<pre><code>SPINDLE_TOKEN_PRIVATE_KEY={{secrets/spindle-token/PrivateKey}}
-SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY={{secrets/spindle-token/MyPartnerPublicKey}}
-</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="install-spindle-token">Install spindle-token<a class="anchor-link" href="#install-spindle-token">¶</a></h1><p>You can install <code>spindle-token</code> on your cluster, or within the notebook. See the <a href="https://docs.databricks.com/en/libraries/notebooks-python-libraries.html">Databricks docs</a> for more information.</p>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=30534d53">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [0]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-2">
@@ -1842,27 +1772,62 @@ SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY={{secrets/spindle-token/MyPartnerPublicKey}}
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">spindle</span><span class="o">-</span><span class="n">token</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyarrow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyspark</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">spindle_token_version</span>
+
+<span class="n">expected_spark_prefix</span> <span class="o">=</span> <span class="s2">"4."</span>
+<span class="k">assert</span> <span class="n">spark</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">expected_spark_prefix</span><span class="p">),</span> <span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"Expected Spark 4.x, found </span><span class="si">{</span><span class="n">spark</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">"</span>
+<span class="p">)</span>
+<span class="k">assert</span> <span class="n">pyspark</span><span class="o">.</span><span class="n">__version__</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">expected_spark_prefix</span><span class="p">),</span> <span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"Expected PySpark 4.x, found </span><span class="si">{</span><span class="n">pyspark</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">"</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Spark version: </span><span class="si">{</span><span class="n">spark</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PySpark version: </span><span class="si">{</span><span class="n">pyspark</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"spindle-token version: </span><span class="si">{</span><span class="n">spindle_token_version</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Python version: </span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"pandas version: </span><span class="si">{</span><span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"pyarrow version: </span><span class="si">{</span><span class="n">pa</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"numpy version: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-2">%pip install spindle-token</div>
+<div class="clipboard-copy-txt" id="cell-2">import sys
+
+import numpy as np
+import pandas as pd
+import pyarrow as pa
+import pyspark
+
+from spindle_token import __version__ as spindle_token_version
+
+expected_spark_prefix = "4."
+assert spark.version.startswith(expected_spark_prefix), (
+    f"Expected Spark 4.x, found {spark.version}"
+)
+assert pyspark.__version__.startswith(expected_spark_prefix), (
+    f"Expected PySpark 4.x, found {pyspark.__version__}"
+)
+
+print(f"Spark version: {spark.version}")
+print(f"PySpark version: {pyspark.__version__}")
+print(f"spindle-token version: {spindle_token_version}")
+print(f"Python version: {sys.version}")
+print(f"pandas version: {pd.__version__}")
+print(f"pyarrow version: {pa.__version__}")
+print(f"numpy version: {np.__version__}")</div>
 </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="tokenization-of-pii">Tokenization of PII<a class="anchor-link" href="#tokenization-of-pii">¶</a></h1>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=9589b182">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1871,6 +1836,77 @@ SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY={{secrets/spindle-token/MyPartnerPublicKey}}
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-3">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">IntegerType</span>
+
+<span class="n">pii</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"Jonas"</span><span class="p">,</span> <span class="s2">"Salk"</span><span class="p">,</span> <span class="s2">"male"</span><span class="p">,</span> <span class="s2">"1914-10-28"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"jonas"</span><span class="p">,</span> <span class="s2">"salk"</span><span class="p">,</span> <span class="s2">"M"</span><span class="p">,</span> <span class="s2">"1914-10-28"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"Elizabeth"</span><span class="p">,</span> <span class="s2">"Blackwell"</span><span class="p">,</span> <span class="s2">"F"</span><span class="p">,</span> <span class="s2">"1821-02-03"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">"Edward"</span><span class="p">,</span> <span class="s2">"Jenner"</span><span class="p">,</span> <span class="s2">"m"</span><span class="p">,</span> <span class="s2">"1749-05-17"</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">"Alexander"</span><span class="p">,</span> <span class="s2">"Fleming"</span><span class="p">,</span> <span class="s2">"M"</span><span class="p">,</span> <span class="s2">"1881-08-06"</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">StructType</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">StructField</span><span class="p">(</span><span class="s2">"label"</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+            <span class="n">StructField</span><span class="p">(</span><span class="s2">"first_name"</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+            <span class="n">StructField</span><span class="p">(</span><span class="s2">"last_name"</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+            <span class="n">StructField</span><span class="p">(</span><span class="s2">"gender"</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+            <span class="n">StructField</span><span class="p">(</span><span class="s2">"birth_date"</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+        <span class="p">]</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">pii</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">pii</span><span class="p">)</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-3">from pyspark.sql.types import StructField, StructType, StringType, IntegerType
+
+pii = spark.createDataFrame(
+    [
+        (1, "Jonas", "Salk", "male", "1914-10-28"),
+        (1, "jonas", "salk", "M", "1914-10-28"),
+        (2, "Elizabeth", "Blackwell", "F", "1821-02-03"),
+        (3, "Edward", "Jenner", "m", "1749-05-17"),
+        (4, "Alexander", "Fleming", "M", "1881-08-06"),
+    ],
+    StructType(
+        [
+            StructField("label", IntegerType(), True),
+            StructField("first_name", StringType(), True),
+            StructField("last_name", StringType(), True),
+            StructField("gender", StringType(), True),
+            StructField("birth_date", StringType(), True),
+        ]
+    ),
+)
+
+pii.printSchema()
+display(pii)</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=74646da4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-4">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -1896,7 +1932,7 @@ SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY={{secrets/spindle-token/MyPartnerPublicKey}}
 <span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-3">from spindle_token import tokenize
+<div class="clipboard-copy-txt" id="cell-4">from spindle_token import tokenize
 from spindle_token.opprl import OpprlV2
 
 tokens = tokenize(
@@ -1916,79 +1952,8 @@ display(tokens)</div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="transcode-tokens-as-sender">Transcode Tokens As Sender<a class="anchor-link" href="#transcode-tokens-as-sender">¶</a></h1><p>The OPPRL specification also provides procedures for facilitating the safe transfer of data between trusted parties without a secure connection.</p>
-<p>The process of <strong>transcoding</strong> will re-encrypt of data from one scheme to another without reversing to the original PII or emitting any intermediate values. When the sender transcodes their tokens, the token values of the records no longer match to the sender's data and records within the data being shared no longer match with eachother regardless of the underlying PII. The tokens produced by the sender with <code>transcode_out</code> are called <strong>ephemeral tokens</strong>.</p>
-<p>Notice that the first 2 records pertaining to the same subject (label = 1) no longer have identical tokens.</p>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-4">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token</span><span class="w"> </span><span class="kn">import</span> <span class="n">transcode_out</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token.opprl</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpprlV2</span>
-
-<span class="n">ephemeral_tokens</span> <span class="o">=</span> <span class="n">transcode_out</span><span class="p">(</span>
-    <span class="n">tokens</span><span class="p">,</span> 
-    <span class="n">tokens</span><span class="o">=</span><span class="p">(</span><span class="n">OpprlV2</span><span class="o">.</span><span class="n">token1</span><span class="p">,</span> <span class="n">OpprlV2</span><span class="o">.</span><span class="n">token2</span><span class="p">,</span> <span class="n">OpprlV2</span><span class="o">.</span><span class="n">token3</span><span class="p">),</span> 
-    <span class="n">recipient_public_key</span><span class="o">=</span><span class="n">dbutils</span><span class="o">.</span><span class="n">secrets</span><span class="o">.</span><span class="n">getBytes</span><span class="p">(</span><span class="s2">"spindle-token"</span><span class="p">,</span> <span class="s2">"MyPartnerPublicKey"</span><span class="p">),</span>
-    <span class="n">private_key</span><span class="o">=</span><span class="n">dbutils</span><span class="o">.</span><span class="n">secrets</span><span class="o">.</span><span class="n">getBytes</span><span class="p">(</span><span class="s2">"spindle-token"</span><span class="p">,</span> <span class="s2">"PrivateKey"</span><span class="p">),</span>
-<span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">"first_name"</span><span class="p">,</span> <span class="s2">"last_name"</span><span class="p">,</span> <span class="s2">"birth_date"</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">ephemeral_tokens</span><span class="p">)</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-4">from spindle_token import transcode_out
-from spindle_token.opprl import OpprlV2
-
-ephemeral_tokens = transcode_out(
-    tokens, 
-    tokens=(OpprlV2.token1, OpprlV2.token2, OpprlV2.token3), 
-    recipient_public_key=dbutils.secrets.getBytes("spindle-token", "MyPartnerPublicKey"),
-    private_key=dbutils.secrets.getBytes("spindle-token", "PrivateKey"),
-).drop("first_name", "last_name", "birth_date")
-display(ephemeral_tokens)</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="transcode-tokens-as-recipient">Transcode Tokens As Recipient<a class="anchor-link" href="#transcode-tokens-as-recipient">¶</a></h1><p>When receiving the data with ephemeral tokens, the recipient must call a function to transcode the tokens again so that they match with the rest of the tokens across their data assets.</p>
-<p>For this demonstration, we will load the encryption key our hypothetical recipient and process the ephemeral tokens we created above.</p>
-<p>Notice that the first 2 records pertaining to the same subject (label = 1) have identical tokens again, but do these tokens are not the same as the original tokens because they are encrypted with the scheme for the recipient.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e5adc92f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -2006,37 +1971,39 @@ display(ephemeral_tokens)</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token</span><span class="w"> </span><span class="kn">import</span> <span class="n">transcode_in</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token</span><span class="w"> </span><span class="kn">import</span> <span class="n">transcode_out</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token.opprl</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpprlV2</span>
 
-<span class="n">tokens2</span> <span class="o">=</span> <span class="n">transcode_in</span><span class="p">(</span>
-    <span class="n">ephemeral_tokens</span><span class="p">,</span> 
-    <span class="n">tokens</span><span class="o">=</span><span class="p">(</span><span class="n">OpprlV2</span><span class="o">.</span><span class="n">token1</span><span class="p">,</span> <span class="n">OpprlV2</span><span class="o">.</span><span class="n">token2</span><span class="p">,</span> <span class="n">OpprlV2</span><span class="o">.</span><span class="n">token3</span><span class="p">),</span> 
+<span class="n">ephemeral_tokens</span> <span class="o">=</span> <span class="n">transcode_out</span><span class="p">(</span>
+    <span class="n">tokens</span><span class="p">,</span>
+    <span class="n">tokens</span><span class="o">=</span><span class="p">(</span><span class="n">OpprlV2</span><span class="o">.</span><span class="n">token1</span><span class="p">,</span> <span class="n">OpprlV2</span><span class="o">.</span><span class="n">token2</span><span class="p">,</span> <span class="n">OpprlV2</span><span class="o">.</span><span class="n">token3</span><span class="p">),</span>
+    <span class="n">recipient_public_key</span><span class="o">=</span><span class="n">dbutils</span><span class="o">.</span><span class="n">secrets</span><span class="o">.</span><span class="n">getBytes</span><span class="p">(</span><span class="s2">"spindle-token"</span><span class="p">,</span> <span class="s2">"MyPartnerPublicKey"</span><span class="p">),</span>
     <span class="n">private_key</span><span class="o">=</span><span class="n">dbutils</span><span class="o">.</span><span class="n">secrets</span><span class="o">.</span><span class="n">getBytes</span><span class="p">(</span><span class="s2">"spindle-token"</span><span class="p">,</span> <span class="s2">"PrivateKey"</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">tokens2</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">"first_name"</span><span class="p">,</span> <span class="s2">"last_name"</span><span class="p">,</span> <span class="s2">"birth_date"</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">ephemeral_tokens</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-5">from spindle_token import transcode_in
+<div class="clipboard-copy-txt" id="cell-5">from spindle_token import transcode_out
 from spindle_token.opprl import OpprlV2
 
-tokens2 = transcode_in(
-    ephemeral_tokens, 
-    tokens=(OpprlV2.token1, OpprlV2.token2, OpprlV2.token3), 
+ephemeral_tokens = transcode_out(
+    tokens,
+    tokens=(OpprlV2.token1, OpprlV2.token2, OpprlV2.token3),
+    recipient_public_key=dbutils.secrets.getBytes("spindle-token", "MyPartnerPublicKey"),
     private_key=dbutils.secrets.getBytes("spindle-token", "PrivateKey"),
-)
-display(tokens2)</div>
+).drop("first_name", "last_name", "birth_date")
+display(ephemeral_tokens)</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=22e7850d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [0]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-6">
@@ -2049,9 +2016,25 @@ display(tokens2)</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token</span><span class="w"> </span><span class="kn">import</span> <span class="n">transcode_in</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token.opprl</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpprlV2</span>
+
+<span class="n">tokens2</span> <span class="o">=</span> <span class="n">transcode_in</span><span class="p">(</span>
+    <span class="n">ephemeral_tokens</span><span class="p">,</span>
+    <span class="n">tokens</span><span class="o">=</span><span class="p">(</span><span class="n">OpprlV2</span><span class="o">.</span><span class="n">token1</span><span class="p">,</span> <span class="n">OpprlV2</span><span class="o">.</span><span class="n">token2</span><span class="p">,</span> <span class="n">OpprlV2</span><span class="o">.</span><span class="n">token3</span><span class="p">),</span>
+    <span class="n">private_key</span><span class="o">=</span><span class="n">dbutils</span><span class="o">.</span><span class="n">secrets</span><span class="o">.</span><span class="n">getBytes</span><span class="p">(</span><span class="s2">"spindle-token"</span><span class="p">,</span> <span class="s2">"PrivateKey"</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">tokens2</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-6"></div>
+<div class="clipboard-copy-txt" id="cell-6">from spindle_token import transcode_in
+from spindle_token.opprl import OpprlV2
+
+tokens2 = transcode_in(
+    ephemeral_tokens,
+    tokens=(OpprlV2.token1, OpprlV2.token2, OpprlV2.token3),
+    private_key=dbutils.secrets.getBytes("spindle-token", "PrivateKey"),
+)
+display(tokens2)</div>
 </div>
 </div>
 </div>

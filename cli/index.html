@@ -964,7 +964,7 @@
 <p>Once installed, you can run the commands for <code>tokenize</code> and <code>transcode</code> with the relevant options and arguments. All commands and sub-commands follow the same general design. Positional arguments and paths the the input data and desired location to write output data. Options configure how the input data is transformed. For example, options dictate which tokens should be generated, which file format to use, and the encryption key.</p>
 <p>This example invocation of the <code>tokenize</code> command illustrates the general pattern.</p>
 <div class="highlight"><pre><span></span><code>spindle-token tokenize \
-    --token opprl_token_1v1 --token opprl_token_2v1 --token opprl_token_3v1 \
+    --token opprl_token_1v2 --token opprl_token_2v2 --token opprl_token_3v2 \
     --key private_key.pem \
     --format csv \
     --parallelism 1 \
@@ -1032,7 +1032,7 @@ containing a dataset partitioned into files.</p>
 <div class="highlight"><pre><span></span><code>spindle-token tokenize [OPTIONS] INPUT OUTPUT
 </code></pre></div>
 <p><strong>Options:</strong></p>
-<div class="highlight"><pre><span></span><code>  -t, --token [opprl_token_1v0|opprl_token_2v0|opprl_token_3v0|opprl_token_1v1|opprl_token_2v1|opprl_token_3v1|opprl_token_4v1|opprl_token_5v1|opprl_token_6v1|opprl_token_7v1|opprl_token_8v1|opprl_token_9v1|opprl_token_10v1|opprl_token_11v1|opprl_token_12v1|opprl_token_13v1]
+<div class="highlight"><pre><span></span><code>  -t, --token [opprl_token_1v0|opprl_token_2v0|opprl_token_3v0|opprl_token_1v1|opprl_token_2v1|opprl_token_3v1|opprl_token_4v1|opprl_token_5v1|opprl_token_6v1|opprl_token_7v1|opprl_token_8v1|opprl_token_9v1|opprl_token_10v1|opprl_token_11v1|opprl_token_12v1|opprl_token_13v1|opprl_token_1v2|opprl_token_2v2|opprl_token_3v2|opprl_token_4v2|opprl_token_5v2|opprl_token_6v2|opprl_token_7v2|opprl_token_8v2|opprl_token_9v2|opprl_token_10v2|opprl_token_11v2|opprl_token_12v2|opprl_token_13v2]
                                   An OPPRL token to add to the dataset. Can be
                                   passed multiple times.  [required]
   -k, --key FILENAME              The PEM file containing your private key.
@@ -1065,7 +1065,7 @@ containing a dataset partitioned into files.</p>
 <div class="highlight"><pre><span></span><code>spindle-token transcode in [OPTIONS] INPUT OUTPUT
 </code></pre></div>
 <p><strong>Options:</strong></p>
-<div class="highlight"><pre><span></span><code>  -t, --token [opprl_token_1v0|opprl_token_2v0|opprl_token_3v0|opprl_token_1v1|opprl_token_2v1|opprl_token_3v1|opprl_token_4v1|opprl_token_5v1|opprl_token_6v1|opprl_token_7v1|opprl_token_8v1|opprl_token_9v1|opprl_token_10v1|opprl_token_11v1|opprl_token_12v1|opprl_token_13v1]
+<div class="highlight"><pre><span></span><code>  -t, --token [opprl_token_1v0|opprl_token_2v0|opprl_token_3v0|opprl_token_1v1|opprl_token_2v1|opprl_token_3v1|opprl_token_4v1|opprl_token_5v1|opprl_token_6v1|opprl_token_7v1|opprl_token_8v1|opprl_token_9v1|opprl_token_10v1|opprl_token_11v1|opprl_token_12v1|opprl_token_13v1|opprl_token_1v2|opprl_token_2v2|opprl_token_3v2|opprl_token_4v2|opprl_token_5v2|opprl_token_6v2|opprl_token_7v2|opprl_token_8v2|opprl_token_9v2|opprl_token_10v2|opprl_token_11v2|opprl_token_12v2|opprl_token_13v2]
                                   The column name of an OPPRL token on the
                                   input data to transcode.  [required]
   -k, --key FILENAME              The PEM file containing your private key.
@@ -1090,7 +1090,7 @@ containing a dataset partitioned into files.</p>
 <div class="highlight"><pre><span></span><code>spindle-token transcode out [OPTIONS] INPUT OUTPUT
 </code></pre></div>
 <p><strong>Options:</strong></p>
-<div class="highlight"><pre><span></span><code>  -t, --token [opprl_token_1v0|opprl_token_2v0|opprl_token_3v0|opprl_token_1v1|opprl_token_2v1|opprl_token_3v1|opprl_token_4v1|opprl_token_5v1|opprl_token_6v1|opprl_token_7v1|opprl_token_8v1|opprl_token_9v1|opprl_token_10v1|opprl_token_11v1|opprl_token_12v1|opprl_token_13v1]
+<div class="highlight"><pre><span></span><code>  -t, --token [opprl_token_1v0|opprl_token_2v0|opprl_token_3v0|opprl_token_1v1|opprl_token_2v1|opprl_token_3v1|opprl_token_4v1|opprl_token_5v1|opprl_token_6v1|opprl_token_7v1|opprl_token_8v1|opprl_token_9v1|opprl_token_10v1|opprl_token_11v1|opprl_token_12v1|opprl_token_13v1|opprl_token_1v2|opprl_token_2v2|opprl_token_3v2|opprl_token_4v2|opprl_token_5v2|opprl_token_6v2|opprl_token_7v2|opprl_token_8v2|opprl_token_9v2|opprl_token_10v2|opprl_token_11v2|opprl_token_12v2|opprl_token_13v2]
                                   The column name of an OPPRL token on the
                                   input data to transcode.  [required]
   -r, --recipient FILENAME        The PEM file containing the recipients

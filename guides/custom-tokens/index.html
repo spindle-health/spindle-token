@@ -965,23 +965,23 @@
   
       dataclass
   " href="../../api/#spindle_token.core.Token">spindle_token.core.Token</a> class and provide the required arguments.</p>
-<p>The following code example creates a new <code>Token</code> definition called <code>"my_custom_token"</code> that tokenizes the first initial, the metaphone phonetic encoding of the last name, and the birth date. All fields are combined, hashed, and encrypted according to v1 of the OPPRL protocol.</p>
+<p>The following code example creates a new <code>Token</code> definition called <code>"my_custom_token"</code> that tokenizes the first initial, the metaphone phonetic encoding of the last name, and the birth date. All fields are combined, hashed, and encrypted according to v2 of the OPPRL protocol.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Token</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token.opprl</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpprlV1</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token.opprl</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpprlV2</span>
 
 <span class="n">my_token</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span>
     <span class="s2">&quot;my_custom_token&quot;</span><span class="p">,</span>
-    <span class="n">OpprlV1</span><span class="o">.</span><span class="n">protocol</span><span class="p">,</span>
+    <span class="n">OpprlV2</span><span class="o">.</span><span class="n">protocol</span><span class="p">,</span>
     <span class="n">attributes</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">OpprlV1</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">initial</span><span class="p">,</span>
-        <span class="n">OpprlV1</span><span class="o">.</span><span class="n">last_name</span><span class="o">.</span><span class="n">metaphone</span><span class="p">,</span>
-        <span class="n">OpprlV1</span><span class="o">.</span><span class="n">birth_date</span><span class="p">,</span>
+        <span class="n">OpprlV2</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">initial</span><span class="p">,</span>
+        <span class="n">OpprlV2</span><span class="o">.</span><span class="n">last_name</span><span class="o">.</span><span class="n">metaphone</span><span class="p">,</span>
+        <span class="n">OpprlV2</span><span class="o">.</span><span class="n">birth_date</span><span class="p">,</span>
     <span class="p">]</span>
 <span class="p">)</span>
 </code></pre></div>
 <p>The <code>name</code> attribute will be used as the the column name expected by the other spindle-token functions. Thus, it must only contain character that are safe in column names and each logically distinct <code>Token</code> instance should have a unique name. </p>
-<p>The <code>protocol</code> argument can be any implementation of <a class="autorefs autorefs-internal" href="../../api/#spindle_token.core.TokenProtocolFactory">TokenProtocolFactory</a> but for the remainder of this section we will use the OPPRLv1 implementation provided by spindle-token. See <a href="#custom-protocol">this section</a> for more details.</p>
-<p>The instances of <a class="autorefs autorefs-internal" href="../../api/#spindle_token.core.PiiAttribute">PiiAttribute</a> in the <code>attributes</code> argument determine the PII fields to jointly tokenize into a single token. This guide uses <code>PiiAttribute</code> objects for OPPRLv1 that are built-in to the spindle-health library. See <a href="#custom-pii">Custom PII Attributes</a> for a guide on defining your own PII.</p>
+<p>The <code>protocol</code> argument can be any implementation of <a class="autorefs autorefs-internal" href="../../api/#spindle_token.core.TokenProtocolFactory">TokenProtocolFactory</a> but for the remainder of this section we will use the OPPRLv2 implementation provided by spindle-token. See <a href="#custom-protocol">this section</a> for more details.</p>
+<p>The instances of <a class="autorefs autorefs-internal" href="../../api/#spindle_token.core.PiiAttribute">PiiAttribute</a> in the <code>attributes</code> argument determine the PII fields to jointly tokenize into a single token. This guide uses <code>PiiAttribute</code> objects for OPPRLv2 that are built-in to the spindle-health library. See <a href="#custom-pii">Custom PII Attributes</a> for a guide on defining your own PII.</p>
 <p>We can pass <code>my_token</code> to the core spindle-token functions -- such as <code>tokenize</code>, <code>transcode_out</code>, and <code>transcode_in</code> -- alongside the OPPRL tokens or other custom token specifications.</p>
 <h1 id="custom-pii-attributes"><a name="custom-pii"></a> Custom PII Attributes</h1>
 <p>The OPPRL provides specifications for normalizing and transforming some commonly used PII attributes to account for representation differences that often don't indicate a different true identity for the subject. For example, the OPPRL protocol calls for first names to have their capitalization changed to uppercase and strings of whitespace replaced with a single space character among other normalizations. Furthermore, a "first initial" attributes can be derived from a normalized first name attribute by taking the first letter.</p>

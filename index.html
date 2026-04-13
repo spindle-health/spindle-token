@@ -344,6 +344,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#migrating-from-opprl-v1-to-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migrating from OPPRL V1 to V2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#independent-security-review" class="md-nav__link">
     <span class="md-ellipsis">
       Independent Security Review
@@ -1052,6 +1061,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#migrating-from-opprl-v1-to-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migrating from OPPRL V1 to V2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#independent-security-review" class="md-nav__link">
     <span class="md-ellipsis">
       Independent Security Review
@@ -1124,6 +1142,22 @@
 <h2 id="getting-started">Getting Started</h2>
 <p>See the <a href="https://token.spindlehealth.com/guides/getting-started/">getting started guide</a> on the project's web page for an detailed explanation of how spindle-token is used including example code snippets.</p>
 <p>The full <a href="https://token.spindlehealth.com/api/">API</a> and an <a href="https://token.spindlehealth.com/guides/databricks/">example usage on Databricks</a> are also provided on the project's web page.</p>
+<h2 id="migrating-from-opprl-v1-to-v2">Migrating from OPPRL V1 to V2</h2>
+<p>New integrations should use <code>OpprlV2</code>. The current examples in this repository
+use V2 unless they are explicitly historical.</p>
+<p>If you already have code that imports <code>OpprlV1</code>, the migration path is usually a
+small mechanical change:</p>
+<ol>
+<li>Replace <code>OpprlV1</code> imports with <code>OpprlV2</code>.</li>
+<li>Keep the same attribute mapping and token selection.</li>
+<li>Re-run your tokenization and transcode tests against your existing data.</li>
+</ol>
+<p><code>OpprlV2</code> preserves the V1 token structure and normalization rules, but it
+canonicalizes the private key before deriving the AES key. That means V2 is the
+right choice when you want the same logical protocol behavior with stable
+results across equivalent PEM encodings of the same RSA key.</p>
+<p>If you need byte-for-byte compatibility with historical V1 token outputs, keep
+using <code>OpprlV1</code> for those flows.</p>
 <h2 id="independent-security-review">Independent Security Review</h2>
 <p>Spindle engaged <a href="https://echeloncyber.com/">Echelon Risk + Cyber</a>, an independent, leading cybersecurity firm, to conduct an audit of the Spindle Token implementation. The review evaluated and confirmed alignment with industry best practices in secure software development, cryptographic algorithm selection, and tokenization methods.</p>
 <p><a href="https://echeloncyber.com/spindle-health-security-certification-report">View the full report</a>.</p>
@@ -1147,7 +1181,12 @@
     />
 </a></p>
 <h3 id="individuals-that-have-contributed-to-spindle-token">Individuals that have contributed to spindle-token</h3>
-<p><a href="https://github.com/bfallik">Brian Fallik</a> - @bfallik</p>
+<ul>
+<li><a href="https://github.com/queenofclaims">Julie Ferris</a> - @queenofclains</li>
+<li><a href="https://github.com/rtferris">Rich Ferris</a> - @rtferris</li>
+<li><a href="https://github.com/edreyer">Erik Dreyer</a> - @edreyer</li>
+<li><a href="https://github.com/erp12">Eddie Pantridge</a> - @erp12</li>
+</ul>
 
 
 
