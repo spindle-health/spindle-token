@@ -24,5 +24,5 @@ def test_wheel_metadata_marks_pyspark_as_spark_extra_only() -> None:
         metadata = zf.read("spindle_token-2.0.0.dist-info/METADATA").decode()
 
     assert "Provides-Extra: spark" in metadata
-    assert "Requires-Dist: pyspark (>=3.5.0,<4.2.0) ; extra == \"spark\"" in metadata
+    assert 'Requires-Dist: pyspark (>=3.5.0,<4.2.0) ; extra == "spark"' in metadata
     assert "Requires-Dist: pyspark (>=3.5.0,<4.2.0)\n" not in metadata

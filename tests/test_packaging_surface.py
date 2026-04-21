@@ -11,7 +11,7 @@ def test_pyproject_marks_pyspark_as_spark_extra_only() -> None:
     pyproject = Path(__file__).resolve().parents[1] / "pyproject.toml"
     text = pyproject.read_text()
 
-    assert '[project.optional-dependencies]' in text
+    assert "[project.optional-dependencies]" in text
     assert 'spark = [\n    "pyspark (>=3.5.0,<4.2.0)",\n]' in text
 
 
@@ -24,8 +24,7 @@ def test_cli_help_imports_without_pyspark() -> None:
         else str(project_src) + os.pathsep + env["PYTHONPATH"]
     )
 
-    code = textwrap.dedent(
-        """
+    code = textwrap.dedent("""
         import importlib.abc
         import sys
 
@@ -45,8 +44,7 @@ def test_cli_help_imports_without_pyspark() -> None:
         assert result.exit_code == 0, result.output
         assert "tokenize" in result.output
         assert "transcode" in result.output
-        """
-    )
+        """)
 
     result = subprocess.run(
         [sys.executable, "-c", code],

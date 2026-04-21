@@ -16,8 +16,7 @@ def test_base_package_imports_without_pyspark() -> None:
         else str(project_src) + os.pathsep + env["PYTHONPATH"]
     )
 
-    code = textwrap.dedent(
-        """
+    code = textwrap.dedent("""
         import importlib.abc
         import sys
 
@@ -62,8 +61,7 @@ def test_base_package_imports_without_pyspark() -> None:
             assert "optional 'spark' extra" in str(exc)
         else:
             raise AssertionError("expected ImportError")
-        """
-    )
+        """)
 
     result = subprocess.run(
         [sys.executable, "-c", code],
@@ -86,14 +84,12 @@ def test_opprl_import_form_works_with_pyspark() -> None:
         else str(project_src) + os.pathsep + env["PYTHONPATH"]
     )
 
-    code = textwrap.dedent(
-        """
+    code = textwrap.dedent("""
         from spindle_token.opprl import OpprlV2, IdentityAttribute
 
         assert OpprlV2.token1.name == "opprl_token_1v2"
         assert IdentityAttribute is not None
-        """
-    )
+        """)
 
     result = subprocess.run(
         [sys.executable, "-c", code],

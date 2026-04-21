@@ -384,7 +384,9 @@ def test_tokenize_and_transcode_opprl_v2(
 def test_tokenize_with_token_generator_adds_tokens(spark: SparkSession, private_key: bytes):
     pii = spark.createDataFrame(
         [
-            Row(first_name="Louis", last_name="Pasteur", gender="male", birth_date="1822-12-27"),
+            Row(
+                first_name="Louis", last_name="Pasteur", gender="male", birth_date="1822-12-27"
+            ),
             Row(first_name="louis", last_name="pasteur", gender="M", birth_date="1822-12-27"),
         ]
     )
@@ -413,7 +415,9 @@ def test_transcode_out_with_token_generator_adds_ephemeral_tokens(
 ):
     pii = spark.createDataFrame(
         [
-            Row(first_name="Louis", last_name="Pasteur", gender="male", birth_date="1822-12-27"),
+            Row(
+                first_name="Louis", last_name="Pasteur", gender="male", birth_date="1822-12-27"
+            ),
             Row(first_name="louis", last_name="pasteur", gender="M", birth_date="1822-12-27"),
         ]
     )
@@ -449,7 +453,9 @@ def test_transcode_in_with_token_generator_restores_tokens(
 ):
     pii = spark.createDataFrame(
         [
-            Row(first_name="Louis", last_name="Pasteur", gender="male", birth_date="1822-12-27"),
+            Row(
+                first_name="Louis", last_name="Pasteur", gender="male", birth_date="1822-12-27"
+            ),
             Row(first_name="louis", last_name="pasteur", gender="M", birth_date="1822-12-27"),
         ]
     )
