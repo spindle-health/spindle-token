@@ -14,6 +14,15 @@ Tokenization is also used when data is shared between organizations to limit, or
 
 The spindle-token is the canonical implementation of the [Open Privacy Preserving Record Linkage](https://token.spindlehealth.com/opprl/PROTOCOL/) (OPPRL) protocol. This protocol presents a standardized methodology for tokenization that can be implemented in any data system to increase interoperability. The spindle-token implementation is a python library that distributes tokenization workloads using apache [Spark](https://spark.apache.org/) across multiple cores or multiple machines in a high performance computing cluster for efficient tokenization of any scale datasets.
 
+For Spark-backed tokenization and transcode workflows, install the optional Spark extra:
+
+```bash
+pip install "spindle-token[spark]"
+```
+
+The base `spindle-token` package remains importable without Spark so non-Spark
+environments and serverless dependency checks do not need to pull in PySpark.
+
 The pre-v1.0 versions of this library were published under the name "carduus" and the deprecated APIs can be found [here](https://token.spindlehealth.com/carduus/api/).
 
 ## Getting Started
