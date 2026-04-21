@@ -11,12 +11,16 @@ Warning:
 
 """
 
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
-from typing import Generic, TypeVar
-from pyspark.sql import DataFrame, Column
-from pyspark.sql.types import DataType
+from typing import TYPE_CHECKING, Generic, TypeVar
+
+if TYPE_CHECKING:
+    from pyspark.sql import Column
+    from pyspark.sql.types import DataType
 
 __all__ = ["PiiAttribute", "Token", "TokenProtocol", "TokenProtocolFactory"]
 
