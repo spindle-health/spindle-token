@@ -12,13 +12,22 @@ Spindle-token is a cross-platform python library built on top of [PySpark](https
 The latest stable release of spindle-token can be installed from [PyPI](https://pypi.org/project/spindle-token/) into your active Python environment using `pip`.
 
 ```
-pip install spindle-token
+pip install "spindle-token[spark]"
 ```
+
+If you only need the pure-Python helpers such as version inspection or PEM key
+generation, you can install the base package with `pip install spindle-token`.
+Spark-backed tokenization and transcode APIs require the `spark` extra.
 
 If your dependency scanner reports warnings about `oci` or `pyOpenSSL`, those are not
 direct runtime dependencies of spindle-token. In normal Spark usage, they usually come
 from other packages in the environment and do not affect spindle-token unless your own
 code imports them.
+
+On Databricks serverless notebooks and jobs, use the base package only when you
+do not need the Spark-backed API surface. Databricks manages the Spark Connect
+environment there and warns against installing PySpark or packages that depend
+on it.
 
 You can also build spindle-token from source using [Poetry](https://python-poetry.org/). The source code is hosted [on Github](https://github.com/spindle-health/spindle-token). Checkout the commit you wish to build and run  `poetry build` in the project's root.
 

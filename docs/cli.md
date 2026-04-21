@@ -1,10 +1,19 @@
 # Command Line Interface
 
-The spindle-token command line interface (CLI) offers tokenization and token transcoding capabilities of data files from the local file system.
+The spindle-token command line interface (CLI) offers tokenization and token
+transcoding capabilities of data files from the local file system. Install the
+optional `spark` extra to run the CLI commands:
+
+```bash
+pip install "spindle-token[spark]"
+```
 
 # Usage Guide
 
-The spindle-token CLI is included with every installation of the spindle-token library. Install spindle-token to your python (virtual) environment using `pip`. See our [getting started guide](./guides/getting-started.md) for more information. Make sure the python interpreter directory is on your PATH.
+The spindle-token CLI is available from the package entry point. Install
+`spindle-token[spark]` into your python (virtual) environment using `pip`. See
+our [getting started guide](./guides/getting-started.md) for more information.
+Make sure the python interpreter directory is on your PATH.
 
 You can test your installation and environment setup by running the `--help` command. You should see documentation about the spindle-token CLI.
 
