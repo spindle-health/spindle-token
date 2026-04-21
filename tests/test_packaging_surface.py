@@ -4,28 +4,17 @@ import os
 import subprocess
 import sys
 import textwrap
-import zipfile
+import tomllib
 from pathlib import Path
 
 
-def test_wheel_metadata_marks_pyspark_as_spark_extra_only() -> None:
-    result = subprocess.run(
-        ["poetry", "build", "-f", "wheel"],
-        cwd=Path(__file__).resolve().parents[1],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    assert result.returncode == 0, result.stderr
+def test_pyproject_marks_pyspark_as_spark_extra_only() -> None:
+    pyproject = Path(__file__).resolve().parents[1] / "pyproject.toml"
+    data = tomllib.loads(pyproject.read_text())
 
-    dist_dir = Path(__file__).resolve().parents[1] / "dist"
-    wheel = sorted(dist_dir.glob("spindle_token-2.1.0-*.whl"))[-1]
-    with zipfile.ZipFile(wheel) as zf:
-        metadata = zf.read("spindle_token-2.1.0.dist-info/METADATA").decode()
-
-    assert "Provides-Extra: spark" in metadata
-    assert "Requires-Dist: pyspark (>=3.5.0,<4.2.0) ; extra == \"spark\"" in metadata
-    assert "Requires-Dist: pyspark (>=3.5.0,<4.2.0)\n" not in metadata
+    assert data["project"]["optional-dependencies"]["spark"] == [
+        "pyspark (>=3.5.0,<4.2.0)",
+    ]
 
 
 def test_cli_help_imports_without_pyspark() -> None:

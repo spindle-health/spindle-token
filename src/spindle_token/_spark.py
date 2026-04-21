@@ -48,6 +48,8 @@ def tokenize(
     Returns:
         The input `DataFrame` with by encrypted tokens added.
     """
+    tokens = list(tokens)
+    # Treat empty bytes the same as a missing key so callers fall back to env config.
     if not private_key:
         private_key = private_key_from_env()
 
@@ -141,8 +143,11 @@ def transcode_out(
     Returns:
         The `DataFrame` with the tokens replaced by ephemeral tokens for sending to the recipient.
     """
+    tokens = list(tokens)
+    # Treat empty bytes the same as a missing key so callers fall back to env config.
     if not recipient_public_key:
         recipient_public_key = public_key_from_env()
+    # Treat empty bytes the same as a missing key so callers fall back to env config.
     if not private_key:
         private_key = private_key_from_env()
 
@@ -183,6 +188,8 @@ def transcode_in(
     Returns:
         The `DataFrame` with the ephemeral tokens replaced with normal tokens.
     """
+    tokens = list(tokens)
+    # Treat empty bytes the same as a missing key so callers fall back to env config.
     if not private_key:
         private_key = private_key_from_env()
 

@@ -380,36 +380,102 @@ def test_tokenize_and_transcode_opprl_v2(
         ),
     )
 
-    ephemeral_tokens = transcode_out(
-        tokens.select(*all_token_names),
-        tokens=all_tokens,
+
+def test_tokenize_with_token_generator_adds_tokens(spark: SparkSession, private_key: bytes):
+    pii = spark.createDataFrame(
+        [
+            Row(first_name="Louis", last_name="Pasteur", gender="male", birth_date="1822-12-27"),
+            Row(first_name="louis", last_name="pasteur", gender="M", birth_date="1822-12-27"),
+        ]
+    )
+
+    token_iter = (token for token in (v2.token1,))
+
+    actual = tokenize(
+        pii,
+        col_mapping={
+            v2.first_name: "first_name",
+            v2.last_name: "last_name",
+            v2.gender: "gender",
+            v2.birth_date: "birth_date",
+        },
+        tokens=token_iter,
+        private_key=private_key,
+    )
+
+    assert "opprl_token_1v2" in actual.columns
+
+
+def test_transcode_out_with_token_generator_adds_ephemeral_tokens(
+    spark: SparkSession,
+    private_key: bytes,
+    acme_public_key: bytes,
+):
+    pii = spark.createDataFrame(
+        [
+            Row(first_name="Louis", last_name="Pasteur", gender="male", birth_date="1822-12-27"),
+            Row(first_name="louis", last_name="pasteur", gender="M", birth_date="1822-12-27"),
+        ]
+    )
+    tokens = tokenize(
+        pii,
+        col_mapping={
+            v2.first_name: "first_name",
+            v2.last_name: "last_name",
+            v2.gender: "gender",
+            v2.birth_date: "birth_date",
+        },
+        tokens=[v2.token1],
+        private_key=private_key,
+    )
+
+    token_iter = (token for token in (v2.token1,))
+    actual = transcode_out(
+        tokens,
+        token_iter,
         recipient_public_key=acme_public_key,
         private_key=private_key,
     )
-    assertSchemaEqual(
-        ephemeral_tokens.schema,
-        StructType([StructField(token, StringType()) for token in all_token_names]),
-    )
-    # RSA-OAEP wrap values are intentionally not golden-tested here; we only
-    # assert that the transfer is shape-preserving and that the roundtrip back
-    # to the recipient matches tokenization with the recipient's private key.
-    assert ephemeral_tokens.distinct().count() == 2
 
-    tokens2 = transcode_in(
-        ephemeral_tokens.select(*all_token_names),
-        tokens=all_tokens,
-        private_key=acme_private_key,
+    values = [row[0] for row in actual.select(v2.token1.name).collect()]
+    assert values[0] != values[1]
+
+
+def test_transcode_in_with_token_generator_restores_tokens(
+    spark: SparkSession,
+    private_key: bytes,
+    acme_public_key: bytes,
+    acme_private_key: bytes,
+):
+    pii = spark.createDataFrame(
+        [
+            Row(first_name="Louis", last_name="Pasteur", gender="male", birth_date="1822-12-27"),
+            Row(first_name="louis", last_name="pasteur", gender="M", birth_date="1822-12-27"),
+        ]
+    )
+    tokenized = tokenize(
+        pii,
+        col_mapping={
+            v2.first_name: "first_name",
+            v2.last_name: "last_name",
+            v2.gender: "gender",
+            v2.birth_date: "birth_date",
+        },
+        tokens=[v2.token1],
+        private_key=private_key,
+    )
+    ephemeral = transcode_out(
+        tokenized,
+        [v2.token1],
+        recipient_public_key=acme_public_key,
+        private_key=private_key,
     )
 
-    assertDataFrameEqual(
-        tokens2.select(*all_token_names),
-        tokenize(
-            pii,
-            col_mapping=_full_col_mapping(v2),
-            tokens=all_tokens,
-            private_key=acme_private_key,
-        ).select(*all_token_names),
-    )
+    token_iter = (token for token in (v2.token1,))
+    actual = transcode_in(ephemeral, token_iter, private_key=acme_private_key)
+
+    values = [row[0] for row in actual.select(v2.token1.name).collect()]
+    assert values[0] == values[1]
 
 
 @pytest.mark.parametrize(

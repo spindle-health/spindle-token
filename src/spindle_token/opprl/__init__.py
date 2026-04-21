@@ -8,6 +8,8 @@ from __future__ import annotations
 
 from importlib import import_module
 
+from spindle_token._compat import _is_missing_pyspark
+
 __all__ = ["OpprlV0", "OpprlV1", "OpprlV2", "IdentityAttribute"]
 
 _EXPORTS = {
@@ -33,9 +35,7 @@ def __getattr__(name: str):
     try:
         module = import_module(module_name)
     except ModuleNotFoundError as exc:
-        if exc.name == "pyspark" or (
-            exc.name is not None and exc.name.startswith("pyspark.")
-        ) or "No module named 'pyspark'" in str(exc):
+        if _is_missing_pyspark(exc):
             _raise_spark_import_error(exc)
         raise
 

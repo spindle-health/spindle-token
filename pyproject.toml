@@ -1,6 +1,6 @@
 [project]
 name = "spindle-token"
-version = "2.1.0"
+version = "2.0.0"
 description = "PySpark implementation of the Open Privacy Preserving Record Linkage protocol."
 authors = [{ name = "Eddie Pantridge", email = "eddie@spindlehealth.com" }]
 readme = "README.md"
@@ -41,6 +41,9 @@ docs = [
     "mkdocs-jupyter (>=0.25.1)",
     "mkdocs-click (>=0.9.0)",
 ]
+dev = [
+    "notebook (>=7.5.5,<8.0.0)"
+]
 
 [project.scripts]
 spindle-token = "spindle_token._cli:cli"
@@ -54,3 +57,8 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 96
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: tests that build artifacts or depend on external tooling",
+]

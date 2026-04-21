@@ -9,6 +9,7 @@ from typing import Any
 
 import click
 
+from spindle_token._compat import _is_missing_pyspark
 from spindle_token.core import PiiAttribute, Token
 from spindle_token._crypto import _PRIVATE_KEY_ENV_VAR, _RECIPIENT_PUBLIC_KEY_ENV_VAR
 
@@ -31,9 +32,7 @@ class _LazyTokenSpecs(Mapping[str, Token]):
                 from spindle_token.opprl.v1 import OpprlV1 as v1
                 from spindle_token.opprl.v2 import OpprlV2 as v2
             except ModuleNotFoundError as exc:
-                if exc.name == "pyspark" or (
-                    exc.name is not None and exc.name.startswith("pyspark.")
-                ) or "No module named 'pyspark'" in str(exc):
+                if _is_missing_pyspark(exc):
                     raise _spark_error() from exc
                 raise
 
@@ -94,9 +93,7 @@ class _LazyColumnAttributes(Mapping[str, list[PiiAttribute]]):
                 from spindle_token.opprl.v1 import OpprlV1 as v1
                 from spindle_token.opprl.v2 import OpprlV2 as v2
             except ModuleNotFoundError as exc:
-                if exc.name == "pyspark" or (
-                    exc.name is not None and exc.name.startswith("pyspark.")
-                ) or "No module named 'pyspark'" in str(exc):
+                if _is_missing_pyspark(exc):
                     raise _spark_error() from exc
                 raise
 
@@ -153,14 +150,12 @@ def get_spark(num_threads: int | None):
     try:
         from pyspark.sql import SparkSession
     except ModuleNotFoundError as exc:
-        if exc.name == "pyspark" or (
-            exc.name is not None and exc.name.startswith("pyspark.")
-        ) or "No module named 'pyspark'" in str(exc):
+        if _is_missing_pyspark(exc):
             raise _spark_error() from exc
         raise
 
     p = str(num_threads) if num_threads else "*"
-    return SparkSession.Builder().master(f"local[{p}]").appName("Spindle Token CLI").getOrCreate()
+    return SparkSession.builder.master(f"local[{p}]").appName("Spindle Token CLI").getOrCreate()
 
 
 def write_single_file(dfw, path: str):

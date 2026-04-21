@@ -23,12 +23,13 @@ from cryptography.hazmat.primitives.serialization import (
     PublicFormat,
 )
 
+from spindle_token._compat import _is_missing_pyspark
 from spindle_token.core import PiiAttribute, Token, TokenProtocol
 
 if TYPE_CHECKING:
     from pyspark.sql import Column, DataFrame
 
-__version__ = "2.1.0"
+__version__ = "2.0.0"
 
 __all__ = [
     "PiiAttribute",
@@ -46,9 +47,7 @@ def _spark_api():
     try:
         return import_module("spindle_token._spark")
     except ModuleNotFoundError as exc:
-        if exc.name == "pyspark" or (
-            exc.name is not None and exc.name.startswith("pyspark.")
-        ) or "No module named 'pyspark'" in str(exc):
+        if _is_missing_pyspark(exc):
             raise ImportError(
                 "spindle-token Spark functionality requires the optional 'spark' extra. "
                 "Install with `pip install spindle-token[spark]`."
