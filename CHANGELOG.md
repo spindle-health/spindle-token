@@ -2,7 +2,7 @@
 
 All notable changes to `spindle-token` will be documented in this file.
 
-## Unreleased
+## 2.1.0
 
 ### Packaging and Architecture
 
