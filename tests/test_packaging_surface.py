@@ -4,17 +4,15 @@ import os
 import subprocess
 import sys
 import textwrap
-import tomllib
 from pathlib import Path
 
 
 def test_pyproject_marks_pyspark_as_spark_extra_only() -> None:
     pyproject = Path(__file__).resolve().parents[1] / "pyproject.toml"
-    data = tomllib.loads(pyproject.read_text())
+    text = pyproject.read_text()
 
-    assert data["project"]["optional-dependencies"]["spark"] == [
-        "pyspark (>=3.5.0,<4.2.0)",
-    ]
+    assert '[project.optional-dependencies]' in text
+    assert 'spark = [\n    "pyspark (>=3.5.0,<4.2.0)",\n]' in text
 
 
 def test_cli_help_imports_without_pyspark() -> None:
