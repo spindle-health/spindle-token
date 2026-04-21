@@ -1207,12 +1207,19 @@
 <li>PySpark: Spark 3.5.x through 4.1.x</li>
 </ul>
 <p>The latest stable release of spindle-token can be installed from <a href="https://pypi.org/project/spindle-token/">PyPI</a> into your active Python environment using <code>pip</code>.</p>
-<div class="highlight"><pre><span></span><code>pip install spindle-token
+<div class="highlight"><pre><span></span><code>pip install &quot;spindle-token[spark]&quot;
 </code></pre></div>
+<p>If you only need the pure-Python helpers such as version inspection or PEM key
+generation, you can install the base package with <code>pip install spindle-token</code>.
+Spark-backed tokenization and transcode APIs require the <code>spark</code> extra.</p>
 <p>If your dependency scanner reports warnings about <code>oci</code> or <code>pyOpenSSL</code>, those are not
 direct runtime dependencies of spindle-token. In normal Spark usage, they usually come
 from other packages in the environment and do not affect spindle-token unless your own
 code imports them.</p>
+<p>On Databricks serverless notebooks and jobs, use the base package only when you
+do not need the Spark-backed API surface. Databricks manages the Spark Connect
+environment there and warns against installing PySpark or packages that depend
+on it.</p>
 <p>You can also build spindle-token from source using <a href="https://python-poetry.org/">Poetry</a>. The source code is hosted <a href="https://github.com/spindle-health/spindle-token">on Github</a>. Checkout the commit you wish to build and run  <code>poetry build</code> in the project's root.</p>
 <h2 id="encryption-keys">Encryption Keys</h2>
 <p>Tokenization is a specific use case of cryptography and relies on encryption keys. Spindle-token users are expected to provision and manage their own encryption keys.</p>

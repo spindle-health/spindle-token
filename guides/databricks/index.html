@@ -1684,7 +1684,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="spindle-token-databricks-getting-started-guide">Spindle-token Databricks Getting Started Guide<a class="anchor-link" href="#spindle-token-databricks-getting-started-guide">¶</a></h1><p>Spindle-token is an implementation of the Open Privacy Preserving Record Linkage (OPPRL) specification. It allows organizations to replace personally identifiable information (PII) with encrypted tokens that can be used to correlate data records pertaining to the same subject while keeping the subject anonymous.</p>
-<p>This notebook demonstrates the use of the <code>spindle-token</code> python package in databricks to parallelize the tokenization processes using Spark clusters.</p>
+<p>This notebook demonstrates the use of the <code>spindle-token</code> python package in Databricks cluster notebooks where Spark is already available in the runtime.</p>
+<p>For serverless notebooks and jobs, install only the base <code>spindle-token</code> package if you do not need Spark-backed tokenization. Do not install PySpark or other packages that depend on it in serverless environments.</p>
 <p>The following is a 5 row sample dataset of PII that will be tokenized. Notice that despite cosmetic differences the first 2 rows (label = 1) are describing the same subject and will receive the same sets of token values.</p>
 </div>
 </div>
@@ -1842,9 +1843,9 @@ SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY={{secrets/spindle-token/MyPartnerPublicKey}}
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">spindle</span><span class="o">-</span><span class="n">token</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="s2">"spindle-token[spark]"</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-2">%pip install spindle-token</div>
+<div class="clipboard-copy-txt" id="cell-2">%pip install "spindle-token[spark]"</div>
 </div>
 </div>
 </div>

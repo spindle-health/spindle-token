@@ -955,9 +955,16 @@
 
 
 <h1 id="command-line-interface">Command Line Interface</h1>
-<p>The spindle-token command line interface (CLI) offers tokenization and token transcoding capabilities of data files from the local file system.</p>
+<p>The spindle-token command line interface (CLI) offers tokenization and token
+transcoding capabilities of data files from the local file system. Install the
+optional <code>spark</code> extra to run the CLI commands:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;spindle-token[spark]&quot;</span>
+</code></pre></div>
 <h1 id="usage-guide">Usage Guide</h1>
-<p>The spindle-token CLI is included with every installation of the spindle-token library. Install spindle-token to your python (virtual) environment using <code>pip</code>. See our <a href="../guides/getting-started/">getting started guide</a> for more information. Make sure the python interpreter directory is on your PATH.</p>
+<p>The spindle-token CLI is available from the package entry point. Install
+<code>spindle-token[spark]</code> into your python (virtual) environment using <code>pip</code>. See
+our <a href="../guides/getting-started/">getting started guide</a> for more information.
+Make sure the python interpreter directory is on your PATH.</p>
 <p>You can test your installation and environment setup by running the <code>--help</code> command. You should see documentation about the spindle-token CLI.</p>
 <div class="highlight"><pre><span></span><code>spindle-token --help
 </code></pre></div>
@@ -1032,18 +1039,17 @@ containing a dataset partitioned into files.</p>
 <div class="highlight"><pre><span></span><code>spindle-token tokenize [OPTIONS] INPUT OUTPUT
 </code></pre></div>
 <p><strong>Options:</strong></p>
-<div class="highlight"><pre><span></span><code>  -t, --token [opprl_token_1v0|opprl_token_2v0|opprl_token_3v0|opprl_token_1v1|opprl_token_2v1|opprl_token_3v1|opprl_token_4v1|opprl_token_5v1|opprl_token_6v1|opprl_token_7v1|opprl_token_8v1|opprl_token_9v1|opprl_token_10v1|opprl_token_11v1|opprl_token_12v1|opprl_token_13v1|opprl_token_1v2|opprl_token_2v2|opprl_token_3v2|opprl_token_4v2|opprl_token_5v2|opprl_token_6v2|opprl_token_7v2|opprl_token_8v2|opprl_token_9v2|opprl_token_10v2|opprl_token_11v2|opprl_token_12v2|opprl_token_13v2]
-                                  An OPPRL token to add to the dataset. Can be
-                                  passed multiple times.  [required]
-  -k, --key FILENAME              The PEM file containing your private key.
-  -f, --format [parquet|csv]      The file format of input and output data
-                                  files.  [required]
-  -p, --parallelism INTEGER       The number of worker threads to parallelize
-                                  over. Useful when the input dataset is
-                                  partitioned into multiple part files. If not
-                                  supplied, defaults to the number of logical
-                                  cores.
-  --help                          Show this message and exit.
+<div class="highlight"><pre><span></span><code>  -t, --token TOKEN           An OPPRL token to add to the dataset. Can be
+                              passed multiple times.  [required]
+  -k, --key FILENAME          The PEM file containing your private key.
+  -f, --format [parquet|csv]  The file format of input and output data files.
+                              [required]
+  -p, --parallelism INTEGER   The number of worker threads to parallelize
+                              over. Useful when the input dataset is
+                              partitioned into multiple part files. If not
+                              supplied, defaults to the number of logical
+                              cores.
+  --help                      Show this message and exit.
 </code></pre></div>
 <h2 id="spindle-token-transcode">spindle-token transcode</h2>
 <p>Prepare tokenized datasets to be sent or received.</p>
@@ -1055,55 +1061,41 @@ containing a dataset partitioned into files.</p>
 </code></pre></div>
 <h3 id="in">in</h3>
 <p>Convert a dataset of ephemeral tokens into tokens.</p>
-<p>INPUT is the path to the dataset of ephemeral tokens to create tokens from. If INPUT is a file, it must
-be of the format provided to the <code>--format</code> option. If INPUT is a directory, all files within the
-directory that match the given format will be run.</p>
-<p>OUTPUT is the file or directory in which the tokenized dataset will be written. If INPUT is a
-file, the OUTPUT will be written to as a file. If INPUT is a directory, the OUTPUT will be a directory
-containing a dataset partitioned into files.</p>
 <p><strong>Usage:</strong></p>
 <div class="highlight"><pre><span></span><code>spindle-token transcode in [OPTIONS] INPUT OUTPUT
 </code></pre></div>
 <p><strong>Options:</strong></p>
-<div class="highlight"><pre><span></span><code>  -t, --token [opprl_token_1v0|opprl_token_2v0|opprl_token_3v0|opprl_token_1v1|opprl_token_2v1|opprl_token_3v1|opprl_token_4v1|opprl_token_5v1|opprl_token_6v1|opprl_token_7v1|opprl_token_8v1|opprl_token_9v1|opprl_token_10v1|opprl_token_11v1|opprl_token_12v1|opprl_token_13v1|opprl_token_1v2|opprl_token_2v2|opprl_token_3v2|opprl_token_4v2|opprl_token_5v2|opprl_token_6v2|opprl_token_7v2|opprl_token_8v2|opprl_token_9v2|opprl_token_10v2|opprl_token_11v2|opprl_token_12v2|opprl_token_13v2]
-                                  The column name of an OPPRL token on the
-                                  input data to transcode.  [required]
-  -k, --key FILENAME              The PEM file containing your private key.
-  -f, --format [parquet|csv]      The file format of input and output data
-                                  files.  [required]
-  -p, --parallelism INTEGER       The number of worker threads to parallelize
-                                  over. Useful when the input dataset is
-                                  partitioned into multiple part files. If not
-                                  supplied, defaults to the number of logical
-                                  cores.
-  --help                          Show this message and exit.
+<div class="highlight"><pre><span></span><code>  -t, --token TOKEN           The column name of an OPPRL token on the input
+                              data to transcode.  [required]
+  -k, --key FILENAME          The PEM file containing your private key.
+  -f, --format [parquet|csv]  The file format of input and output data files.
+                              [required]
+  -p, --parallelism INTEGER   The number of worker threads to parallelize
+                              over. Useful when the input dataset is
+                              partitioned into multiple part files. If not
+                              supplied, defaults to the number of logical
+                              cores.
+  --help                      Show this message and exit.
 </code></pre></div>
 <h3 id="out">out</h3>
 <p>Prepare ephemeral tokens for a specific recipient.</p>
-<p>INPUT is the path to the dataset of tokens to create ephemeral tokens from. If INPUT is a file, it must
-be of the format provided to the <code>--format</code> option. If INPUT is a directory, all files within the
-directory that match the given format will be considered a partition of the dataset.</p>
-<p>OUTPUT is the file or directory in which the tokenized dataset will be written. If INPUT is a
-file, the OUTPUT will be written to as a file. If INPUT is a directory, the OUTPUT will be a directory
-containing a dataset partitioned into files.</p>
 <p><strong>Usage:</strong></p>
 <div class="highlight"><pre><span></span><code>spindle-token transcode out [OPTIONS] INPUT OUTPUT
 </code></pre></div>
 <p><strong>Options:</strong></p>
-<div class="highlight"><pre><span></span><code>  -t, --token [opprl_token_1v0|opprl_token_2v0|opprl_token_3v0|opprl_token_1v1|opprl_token_2v1|opprl_token_3v1|opprl_token_4v1|opprl_token_5v1|opprl_token_6v1|opprl_token_7v1|opprl_token_8v1|opprl_token_9v1|opprl_token_10v1|opprl_token_11v1|opprl_token_12v1|opprl_token_13v1|opprl_token_1v2|opprl_token_2v2|opprl_token_3v2|opprl_token_4v2|opprl_token_5v2|opprl_token_6v2|opprl_token_7v2|opprl_token_8v2|opprl_token_9v2|opprl_token_10v2|opprl_token_11v2|opprl_token_12v2|opprl_token_13v2]
-                                  The column name of an OPPRL token on the
-                                  input data to transcode.  [required]
-  -r, --recipient FILENAME        The PEM file containing the recipients
-                                  public key.
-  -k, --key FILENAME              The PEM file containing your private key.
-  -f, --format [parquet|csv]      The file format of input and output data
-                                  files.  [required]
-  -p, --parallelism INTEGER       The number of worker threads to parallelize
-                                  over. Useful when the input dataset is
-                                  partitioned into multiple part files. If not
-                                  supplied, defaults to the number of logical
-                                  cores.
-  --help                          Show this message and exit.
+<div class="highlight"><pre><span></span><code>  -t, --token TOKEN           The column name of an OPPRL token on the input
+                              data to transcode.  [required]
+  -r, --recipient FILENAME    The PEM file containing the recipients public
+                              key.
+  -k, --key FILENAME          The PEM file containing your private key.
+  -f, --format [parquet|csv]  The file format of input and output data files.
+                              [required]
+  -p, --parallelism INTEGER   The number of worker threads to parallelize
+                              over. Useful when the input dataset is
+                              partitioned into multiple part files. If not
+                              supplied, defaults to the number of logical
+                              cores.
+  --help                      Show this message and exit.
 </code></pre></div>
 <h1 id="limitations">Limitations</h1>
 <p>The following limitations of the spindle-token CLI are. For a superior experience, consider using spindle-token as a Python library. If your use case requires addressing some of these limitations, please open an <a href="https://github.com/spindle-health/spindle-token/issues">issue</a> with additional details. </p>
