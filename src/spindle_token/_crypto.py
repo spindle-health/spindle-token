@@ -68,7 +68,9 @@ class _AsymmetricEncrypter:
         if self._key is None:
             key = load_pem_public_key(self._public_key)
             if not isinstance(key, rsa.RSAPublicKey):
-                raise TypeError(f"Incorrect key type. Expected RSA public key, got {type(key)}.")
+                raise TypeError(
+                    f"Incorrect key type. Expected RSA public key, got {type(key)}."
+                )
             self._key = key
         return self._key
 
