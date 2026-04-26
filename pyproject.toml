@@ -61,5 +61,4 @@ line-length = 96
 [tool.pytest.ini_options]
 markers = [
     "integration: tests that build artifacts or depend on external tooling",
-    "performance: opt-in performance checks that are skipped by default",
 ]
