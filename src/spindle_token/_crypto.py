@@ -33,6 +33,7 @@ class _DeterministicEncrypter:
         self._cipher = None
 
     def _get_cipher(self):
+        # Cipher is cached for the lifetime of this instance. Key rotation requires a new instance.
         if self._cipher is None:
             self._cipher = AESGCMSIV(self._key)
         return self._cipher
@@ -65,6 +66,7 @@ class _AsymmetricEncrypter:
         self._key = None
 
     def _get_key(self):
+        # Key is cached for the lifetime of this instance. Key rotation requires a new instance.
         if self._key is None:
             key = load_pem_public_key(self._public_key)
             if not isinstance(key, rsa.RSAPublicKey):
@@ -101,6 +103,7 @@ class _AsymmetricDecrypter:
         self._key = None
 
     def _get_key(self):
+        # Key is cached for the lifetime of this instance. Key rotation requires a new instance.
         if self._key is None:
             key = load_pem_private_key(self._private_key, None)
             if not isinstance(key, rsa.RSAPrivateKey):
