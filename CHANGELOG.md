@@ -2,6 +2,14 @@
 
 All notable changes to `spindle-token` will be documented in this file.
 
+## 2.2.0
+
+### Performance
+
+- Improved Spark UDF crypto performance by reusing AES-GCM-SIV and RSA key objects
+  within each deserialized UDF callable instead of rebuilding them for every row.
+- In local Spark benchmarks, `transcode_in()` improved dramatically.
+
 ## 2.1.0
 
 ### Packaging and Architecture

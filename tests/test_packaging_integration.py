@@ -19,9 +19,9 @@ def test_wheel_metadata_marks_pyspark_as_spark_extra_only() -> None:
     assert result.returncode == 0, result.stderr
 
     dist_dir = Path(__file__).resolve().parents[1] / "dist"
-    wheel = sorted(dist_dir.glob("spindle_token-2.1.0-*.whl"))[-1]
+    wheel = sorted(dist_dir.glob("spindle_token-2.2.0-*.whl"))[-1]
     with zipfile.ZipFile(wheel) as zf:
-        metadata = zf.read("spindle_token-2.1.0.dist-info/METADATA").decode()
+        metadata = zf.read("spindle_token-2.2.0.dist-info/METADATA").decode()
 
     assert "Provides-Extra: spark" in metadata
     assert 'Requires-Dist: pyspark (>=3.5.0,<4.2.0) ; extra == "spark"' in metadata

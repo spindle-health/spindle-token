@@ -32,7 +32,7 @@ def test_base_package_imports_without_pyspark() -> None:
         import spindle_token._cli
         import spindle_token.opprl
 
-        assert spindle_token.__version__ == "2.1.0"
+        assert spindle_token.__version__ == "2.2.0"
         assert spindle_token.TokenProtocol is not None
         assert spindle_token.__all__ == [
             "PiiAttribute",

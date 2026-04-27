@@ -29,7 +29,7 @@ from spindle_token.core import PiiAttribute, Token, TokenProtocol
 if TYPE_CHECKING:
     from pyspark.sql import Column, DataFrame
 
-__version__ = "2.1.0"
+__version__ = "2.2.0"
 
 __all__ = [
     "PiiAttribute",
