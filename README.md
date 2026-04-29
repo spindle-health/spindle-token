@@ -23,6 +23,15 @@ pip install "spindle-token[spark]"
 The base `spindle-token` package remains importable without Spark so non-Spark
 environments and serverless dependency checks do not need to pull in PySpark.
 
+Applications that only need OPPRL token metadata can inspect supported V2 token
+names without Spark:
+
+```python
+from spindle_token.opprl.metadata import get_opprl_v2_tokens
+
+token_columns = {token.token_id: token.name for token in get_opprl_v2_tokens()}
+```
+
 The pre-v1.0 versions of this library were published under the name "carduus" and the deprecated APIs can be found [here](https://token.spindlehealth.com/carduus/api/).
 
 ## Getting Started
