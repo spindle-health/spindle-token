@@ -1143,6 +1143,12 @@
 </code></pre></div>
 <p>The base <code>spindle-token</code> package remains importable without Spark so non-Spark
 environments and serverless dependency checks do not need to pull in PySpark.</p>
+<p>Applications that only need OPPRL token metadata can inspect supported V2 token
+names without Spark:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">spindle_token.opprl.metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_opprl_v2_tokens</span>
+
+<span class="n">token_columns</span> <span class="o">=</span> <span class="p">{</span><span class="n">token</span><span class="o">.</span><span class="n">token_id</span><span class="p">:</span> <span class="n">token</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">get_opprl_v2_tokens</span><span class="p">()}</span>
+</code></pre></div>
 <p>The pre-v1.0 versions of this library were published under the name "carduus" and the deprecated APIs can be found <a href="https://token.spindlehealth.com/carduus/api/">here</a>.</p>
 <h2 id="getting-started">Getting Started</h2>
 <p>See the <a href="https://token.spindlehealth.com/guides/getting-started/">getting started guide</a> on the project's web page for an detailed explanation of how spindle-token is used including example code snippets.</p>

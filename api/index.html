@@ -608,6 +608,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#spindle_token.opprl.metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      metadata
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#spindle_token.core" class="md-nav__link">
     <span class="md-ellipsis">
       core
@@ -1363,6 +1372,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#spindle_token.opprl.metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      metadata
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#spindle_token.core" class="md-nav__link">
     <span class="md-ellipsis">
       core
@@ -1524,10 +1542,11 @@
 
   <h1>API</h1>
 
-<p>The spindle-token API is broken up into 3 namespaces: </p>
+<p>The spindle-token API is broken up into 4 namespaces: </p>
 <ol>
 <li>The top-level <code>spindle_token</code> module containing the most commonly used public functions.</li>
 <li>An OPPRL module containing implementations of every OPPRL protocol version, including PII normalization, token specifications, and cryptographic transformations.</li>
+<li>An OPPRL metadata module exposing Spark-free token metadata for lightweight schema inspection.</li>
 <li>A module of <code>core</code> abstractions than can be extended in advanced use cases to add additional functionality.</li>
 </ol>
 
@@ -2275,6 +2294,43 @@ to combine into the token.</p>
         <p>Standard configurations for different versions of the OPPRL protocol.</p>
 <p>This package is Spark-backed. Importing the package itself is safe, but accessing
 OPPRL version objects requires the optional <code>spark</code> extra.</p>
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="spindle_token.opprl.metadata" class="doc doc-heading">
+            <code>spindle_token.opprl.metadata</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
 
 
 
