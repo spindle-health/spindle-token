@@ -2,6 +2,16 @@
 
 All notable changes to `spindle-token` will be documented in this file.
 
+## Unreleased
+
+### Packaging and Metadata
+
+- Added Spark-free OPPRL v2 token metadata so downstream apps can inspect
+  supported token names and attribute IDs without installing the Spark optional
+  dependency.
+- Kept OPPRL v2 runtime token definitions backed by the same ordered metadata
+  used by the new metadata API.
+
 ## 2.2.0
 
 ### Performance

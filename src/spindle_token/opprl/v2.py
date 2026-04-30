@@ -32,6 +32,7 @@ from spindle_token.opprl._common import (
     PhoneNumberAttribute,
     SsnAttribute,
 )
+from spindle_token.opprl._v2_definitions import get_opprl_v2_definition
 
 __all__ = ["OpprlV2"]
 
@@ -89,6 +90,11 @@ class _ProtocolFactoryV2(TokenProtocolFactory[_ProtocolV2]):
 
     def bind(self, private_key: bytes, recipient_public_key: bytes | None) -> _ProtocolV2:
         return _ProtocolV2(private_key, recipient_public_key)
+
+
+def _token(token_id: str, protocol: TokenProtocolFactory) -> Token:
+    definition = get_opprl_v2_definition(token_id)
+    return Token(definition.name, protocol, definition.attribute_ids)
 
 
 class OpprlV2:
@@ -176,122 +182,28 @@ class OpprlV2:
 
     protocol: ClassVar[TokenProtocolFactory] = _ProtocolFactoryV2("opprl.v2")
 
-    token1: ClassVar[Token] = Token(
-        "opprl_token_1v2",
-        protocol,
-        (
-            first_name.initial.attr_id,
-            last_name.attr_id,
-            gender.attr_id,
-            birth_date.attr_id,
-        ),
-    )
+    token1: ClassVar[Token] = _token("token1", protocol)
 
-    token2: ClassVar[Token] = Token(
-        "opprl_token_2v2",
-        protocol,
-        (
-            first_name.soundex.attr_id,
-            last_name.soundex.attr_id,
-            gender.attr_id,
-            birth_date.attr_id,
-        ),
-    )
+    token2: ClassVar[Token] = _token("token2", protocol)
 
-    token3: ClassVar[Token] = Token(
-        "opprl_token_3v2",
-        protocol,
-        (
-            first_name.metaphone.attr_id,
-            last_name.metaphone.attr_id,
-            gender.attr_id,
-            birth_date.attr_id,
-        ),
-    )
+    token3: ClassVar[Token] = _token("token3", protocol)
 
-    token4: ClassVar[Token] = Token(
-        "opprl_token_4v2",
-        protocol,
-        (
-            first_name.initial.attr_id,
-            last_name.attr_id,
-            birth_date.attr_id,
-        ),
-    )
+    token4: ClassVar[Token] = _token("token4", protocol)
 
-    token5: ClassVar[Token] = Token(
-        "opprl_token_5v2",
-        protocol,
-        (
-            first_name.soundex.attr_id,
-            last_name.soundex.attr_id,
-            birth_date.attr_id,
-        ),
-    )
+    token5: ClassVar[Token] = _token("token5", protocol)
 
-    token6: ClassVar[Token] = Token(
-        "opprl_token_6v2",
-        protocol,
-        (
-            first_name.metaphone.attr_id,
-            last_name.metaphone.attr_id,
-            birth_date.attr_id,
-        ),
-    )
+    token6: ClassVar[Token] = _token("token6", protocol)
 
-    token7: ClassVar[Token] = Token(
-        "opprl_token_7v2",
-        protocol,
-        (
-            first_name.attr_id,
-            phone.attr_id,
-        ),
-    )
+    token7: ClassVar[Token] = _token("token7", protocol)
 
-    token8: ClassVar[Token] = Token(
-        "opprl_token_8v2",
-        protocol,
-        (
-            birth_date.attr_id,
-            phone.attr_id,
-        ),
-    )
+    token8: ClassVar[Token] = _token("token8", protocol)
 
-    token9: ClassVar[Token] = Token(
-        "opprl_token_9v2",
-        protocol,
-        (
-            first_name.attr_id,
-            ssn.attr_id,
-        ),
-    )
+    token9: ClassVar[Token] = _token("token9", protocol)
 
-    token10: ClassVar[Token] = Token(
-        "opprl_token_10v2",
-        protocol,
-        (
-            birth_date.attr_id,
-            ssn.attr_id,
-        ),
-    )
+    token10: ClassVar[Token] = _token("token10", protocol)
 
-    token11: ClassVar[Token] = Token(
-        "opprl_token_11v2",
-        protocol,
-        (email.attr_id,),
-    )
+    token11: ClassVar[Token] = _token("token11", protocol)
 
-    token12: ClassVar[Token] = Token(
-        "opprl_token_12v2",
-        protocol,
-        (hem.attr_id,),
-    )
+    token12: ClassVar[Token] = _token("token12", protocol)
 
-    token13: ClassVar[Token] = Token(
-        "opprl_token_13v2",
-        protocol,
-        (
-            group_number.attr_id,
-            member_id.attr_id,
-        ),
-    )
+    token13: ClassVar[Token] = _token("token13", protocol)
