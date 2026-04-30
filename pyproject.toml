@@ -1,6 +1,6 @@
 [project]
 name = "spindle-token"
-version = "2.2.0"
+version = "2.3.0"
 description = "PySpark implementation of the Open Privacy Preserving Record Linkage protocol."
 authors = [{ name = "Eddie Pantridge", email = "eddie@spindlehealth.com" }]
 readme = "README.md"
