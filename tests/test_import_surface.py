@@ -44,6 +44,7 @@ def test_base_package_imports_without_pyspark() -> None:
             "transcode_out",
             "transcode_in",
             "generate_pem_keys",
+            "generate_mlkem_keys",
         ]
 
         private_key, public_key = spindle_token.generate_pem_keys()
@@ -59,6 +60,13 @@ def test_base_package_imports_without_pyspark() -> None:
 
         try:
             spindle_token.opprl.OpprlV2
+        except ImportError as exc:
+            assert "optional 'spark' extra" in str(exc)
+        else:
+            raise AssertionError("expected ImportError")
+
+        try:
+            spindle_token.opprl.OpprlV3
         except ImportError as exc:
             assert "optional 'spark' extra" in str(exc)
         else:
@@ -87,9 +95,10 @@ def test_opprl_import_form_works_with_pyspark() -> None:
     )
 
     code = textwrap.dedent("""
-        from spindle_token.opprl import OpprlV2, IdentityAttribute
+        from spindle_token.opprl import OpprlV2, OpprlV3, IdentityAttribute
 
         assert OpprlV2.token1.name == "opprl_token_1v2"
+        assert OpprlV3.token1.name == "opprl_token_1v3"
         assert IdentityAttribute is not None
         """)
 
@@ -103,3 +112,21 @@ def test_opprl_import_form_works_with_pyspark() -> None:
     )
 
     assert result.returncode == 0, result.stderr
+
+
+def test_generate_mlkem_keys_returns_a_seed_and_matching_raw_public_key() -> None:
+    from cryptography.hazmat.primitives.asymmetric import mlkem
+    from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+
+    from spindle_token import generate_mlkem_keys
+
+    private_seed, public_key = generate_mlkem_keys()
+    reconstructed_private_key = mlkem.MLKEM768PrivateKey.from_seed_bytes(private_seed)
+    reconstructed_public_key = reconstructed_private_key.public_key().public_bytes(
+        encoding=Encoding.Raw,
+        format=PublicFormat.Raw,
+    )
+
+    assert len(private_seed) == 64
+    assert len(public_key) == 1184
+    assert public_key == reconstructed_public_key

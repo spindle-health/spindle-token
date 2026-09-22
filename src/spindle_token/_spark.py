@@ -21,6 +21,18 @@ def _bound_protocols(tokens: Iterable[Token], private_key: bytes, public_key: by
     return protocols
 
 
+def _uses_mlkem_keys(tokens: Iterable[Token]) -> bool:
+    protocol_ids = {token.protocol.factory_id for token in tokens}
+    if "opprl.v3" not in protocol_ids:
+        return False
+    if protocol_ids != {"opprl.v3"}:
+        raise ValueError(
+            "OPPRL v3 ML-KEM-768 tokens cannot mix with other protocol versions "
+            "in one operation; process them separately."
+        )
+    return True
+
+
 def tokenize(
     df: DataFrame,
     col_mapping: Mapping[PiiAttribute, str],
@@ -43,19 +55,22 @@ def tokenize(
             A collection of [`Token`][spindle_token.core.Token] objects that denotes which tokens (from which PII attributes)
             should be added to the dataframe.
         private_key:
-            Your private RSA key. This argument should only be set when reading from a secrets manager or testing, otherwise it is
-            recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your private key.
+            The private key bytes required by the selected protocol version. For v1/v2 this is an RSA PEM key;
+            for v3 this is a raw 64-byte ML-KEM-768 seed. When omitted, v3 reads a base64-encoded seed from
+            SPINDLE_TOKEN_PRIVATE_KEY while v1/v2 read RSA PEM from the same variable.
 
     Returns:
         The input `DataFrame` with by encrypted tokens added.
     """
     tokens = list(tokens)
+    use_mlkem = _uses_mlkem_keys(tokens)
     # Treat empty bytes the same as a missing key so callers fall back to env config.
     if not private_key:
-        private_key = private_key_from_env()
+        private_key = private_key_from_env(raw_base64=use_mlkem)
 
     # Raise clear error message if key is invalid.
-    load_pem_private_key(private_key, None)
+    if not use_mlkem:
+        load_pem_private_key(private_key, None)
 
     protocols = _bound_protocols(tokens, private_key, public_key=None)
 
@@ -136,25 +151,27 @@ def transcrypt_out(
             A collection of [`Token`][spindle_token.core.Token] objects that denote which columns of the input dataframe
             will be transcrypted into ephemeral tokens.
         recipient_public_key:
-            The public RSA key of the recipient who will be receiving the dataset with ephemeral tokens. Can also be supplied
-            the SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY environment variable.
+            The recipient public key bytes for the selected protocol version: RSA PEM for v1/v2 or raw
+            1,184-byte ML-KEM-768 data for v3. The v3 environment value is base64-encoded.
         private_key:
-            Your private RSA key. This argument should only be set when reading from a secrets manager or testing, otherwise it is
-            recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your private key.
+            The private key bytes for the selected protocol version: RSA PEM for v1/v2 or the raw 64-byte
+            ML-KEM-768 seed for v3. If omitted, the environment value is interpreted according to the version.
     Returns:
         The `DataFrame` with the tokens replaced by ephemeral tokens for sending to the recipient.
     """
     tokens = list(tokens)
+    use_mlkem = _uses_mlkem_keys(tokens)
     # Treat empty bytes the same as a missing key so callers fall back to env config.
     if not recipient_public_key:
-        recipient_public_key = public_key_from_env()
+        recipient_public_key = public_key_from_env(raw_base64=use_mlkem)
     # Treat empty bytes the same as a missing key so callers fall back to env config.
     if not private_key:
-        private_key = private_key_from_env()
+        private_key = private_key_from_env(raw_base64=use_mlkem)
 
     # Raise clear error message if key is invalid.
-    load_pem_private_key(private_key, None)
-    load_pem_public_key(recipient_public_key)
+    if not use_mlkem:
+        load_pem_private_key(private_key, None)
+        load_pem_public_key(recipient_public_key)
 
     protocols = _bound_protocols(tokens, private_key, recipient_public_key)
     return df.withColumns(
@@ -182,20 +199,22 @@ def transcrypt_in(
             A collection of [`Token`][spindle_token.core.Token] objects that denote which columns of the input dataframe
             will be transcrypted from ephemeral tokens into normal tokens.
         private_key:
-            Your private RSA key. Must be the corresponding private key for the public key given to the sender when calling
-            `transcrypt_out`. This argument should only be set when reading from a secrets manager or testing, otherwise it is
-            recommended to set the SPINDLE_TOKEN_PRIVATE_KEY environment variable with your private key.
+            The private key bytes for the selected protocol version, corresponding to the public key given
+            to the sender: RSA PEM for v1/v2 or the raw 64-byte ML-KEM-768 seed for v3. If omitted, the
+            v3 environment value is base64-decoded.
 
     Returns:
         The `DataFrame` with the ephemeral tokens replaced with normal tokens.
     """
     tokens = list(tokens)
+    use_mlkem = _uses_mlkem_keys(tokens)
     # Treat empty bytes the same as a missing key so callers fall back to env config.
     if not private_key:
-        private_key = private_key_from_env()
+        private_key = private_key_from_env(raw_base64=use_mlkem)
 
     # Raise clear error message if key is invalid.
-    load_pem_private_key(private_key, None)
+    if not use_mlkem:
+        load_pem_private_key(private_key, None)
     protocols = _bound_protocols(tokens, private_key, public_key=None)
     return df.withColumns(
         {

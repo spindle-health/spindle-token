@@ -10,12 +10,13 @@ from importlib import import_module
 
 from spindle_token._compat import _is_missing_pyspark
 
-__all__ = ["OpprlV0", "OpprlV1", "OpprlV2", "IdentityAttribute"]
+__all__ = ["OpprlV0", "OpprlV1", "OpprlV2", "OpprlV3", "IdentityAttribute"]
 
 _EXPORTS = {
     "OpprlV0": ("spindle_token.opprl.v0", "OpprlV0"),
     "OpprlV1": ("spindle_token.opprl.v1", "OpprlV1"),
     "OpprlV2": ("spindle_token.opprl.v2", "OpprlV2"),
+    "OpprlV3": ("spindle_token.opprl.v3", "OpprlV3"),
     "IdentityAttribute": ("spindle_token.opprl._common", "IdentityAttribute"),
 }
 

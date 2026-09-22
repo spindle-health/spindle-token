@@ -6,7 +6,7 @@ from pyspark.errors import AnalysisException
 from pyspark.sql import Row, SparkSession
 from spindle_token import tokenize
 from spindle_token._cli import TOKEN_SPECS, cli, infer_column_mapping
-from spindle_token.opprl import OpprlV2 as v2
+from spindle_token.opprl import OpprlV2 as v2, OpprlV3 as v3
 
 
 def test_v2_tokens_are_registered():
@@ -16,6 +16,15 @@ def test_v2_tokens_are_registered():
     mapping = infer_column_mapping(["first_name", "email"])
     assert mapping[v2.first_name] == "first_name"
     assert mapping[v2.email] == "email"
+
+
+def test_v3_tokens_are_registered():
+    assert v3.token1.name in TOKEN_SPECS
+    assert v3.token13.name in TOKEN_SPECS
+
+    mapping = infer_column_mapping(["first_name", "email"])
+    assert mapping[v3.first_name] == "first_name"
+    assert mapping[v3.email] == "email"
 
 
 class TestTokenizeCommand:

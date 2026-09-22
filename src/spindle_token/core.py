@@ -184,9 +184,9 @@ class TokenProtocolFactory(ABC, Generic[P]):
 
         Arguments:
             private_key:
-                The private RSA key to use when tokenizing PII and transcrypting tokens.
+                The private key bytes required by the selected protocol version.
             recipient_public_key:
-                The public RSA key of the intended data recipient to use when transcrypting tokens into ephemeral tokens.
+                The recipient public key bytes required by the selected protocol version, used when transcrypting tokens into ephemeral tokens.
                 Can be `None` if the instance of `TokenProtocol` will not be transcrypting tokens into ephemeral tokens.
 
         Returns:

@@ -31,6 +31,7 @@ class _LazyTokenSpecs(Mapping[str, Token]):
                 from spindle_token.opprl.v0 import OpprlV0 as v0
                 from spindle_token.opprl.v1 import OpprlV1 as v1
                 from spindle_token.opprl.v2 import OpprlV2 as v2
+                from spindle_token.opprl.v3 import OpprlV3 as v3
             except ModuleNotFoundError as exc:
                 if _is_missing_pyspark(exc):
                     raise _spark_error() from exc
@@ -66,6 +67,19 @@ class _LazyTokenSpecs(Mapping[str, Token]):
                 v2.token11.name: v2.token11,
                 v2.token12.name: v2.token12,
                 v2.token13.name: v2.token13,
+                v3.token1.name: v3.token1,
+                v3.token2.name: v3.token2,
+                v3.token3.name: v3.token3,
+                v3.token4.name: v3.token4,
+                v3.token5.name: v3.token5,
+                v3.token6.name: v3.token6,
+                v3.token7.name: v3.token7,
+                v3.token8.name: v3.token8,
+                v3.token9.name: v3.token9,
+                v3.token10.name: v3.token10,
+                v3.token11.name: v3.token11,
+                v3.token12.name: v3.token12,
+                v3.token13.name: v3.token13,
             }
         return self._data
 
@@ -92,22 +106,23 @@ class _LazyColumnAttributes(Mapping[str, list[PiiAttribute]]):
                 from spindle_token.opprl.v0 import OpprlV0 as v0
                 from spindle_token.opprl.v1 import OpprlV1 as v1
                 from spindle_token.opprl.v2 import OpprlV2 as v2
+                from spindle_token.opprl.v3 import OpprlV3 as v3
             except ModuleNotFoundError as exc:
                 if _is_missing_pyspark(exc):
                     raise _spark_error() from exc
                 raise
 
             self._data = {
-                "first_name": [v0.first_name, v1.first_name, v2.first_name],
-                "last_name": [v0.last_name, v1.last_name, v2.last_name],
-                "gender": [v0.gender, v1.gender, v2.gender],
-                "birth_date": [v0.birth_date, v1.birth_date, v2.birth_date],
-                "email": [v1.email, v2.email],
-                "hem": [v1.hem, v2.hem],
-                "phone": [v1.phone, v2.phone],
-                "ssn": [v1.ssn, v2.ssn],
-                "group_number": [v1.group_number, v2.group_number],
-                "member_id": [v1.member_id, v2.member_id],
+                "first_name": [v0.first_name, v1.first_name, v2.first_name, v3.first_name],
+                "last_name": [v0.last_name, v1.last_name, v2.last_name, v3.last_name],
+                "gender": [v0.gender, v1.gender, v2.gender, v3.gender],
+                "birth_date": [v0.birth_date, v1.birth_date, v2.birth_date, v3.birth_date],
+                "email": [v1.email, v2.email, v3.email],
+                "hem": [v1.hem, v2.hem, v3.hem],
+                "phone": [v1.phone, v2.phone, v3.phone],
+                "ssn": [v1.ssn, v2.ssn, v3.ssn],
+                "group_number": [v1.group_number, v2.group_number, v3.group_number],
+                "member_id": [v1.member_id, v2.member_id, v3.member_id],
             }
         return self._data
 
@@ -199,7 +214,7 @@ def common_options(func):
         "--key",
         envvar=_PRIVATE_KEY_ENV_VAR + "_FILE",
         type=click.File(mode="rb"),
-        help="The PEM file containing your private key.",
+        help="The private key file: RSA PEM for v1/v2 or a raw ML-KEM-768 seed for v3.",
     )(func)
     return func
 
@@ -345,7 +360,7 @@ def _run_transcrypt(
     "--recipient",
     envvar=_RECIPIENT_PUBLIC_KEY_ENV_VAR + "_FILE",
     type=click.File(mode="rb"),
-    help="The PEM file containing the recipients public key.",
+    help="The recipient public key file: RSA PEM for v1/v2 or raw ML-KEM-768 bytes for v3.",
 )
 @common_options
 @click.argument("input", type=click.Path(exists=True))

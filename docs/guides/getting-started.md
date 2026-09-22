@@ -35,7 +35,7 @@ You can also build spindle-token from source using [Poetry](https://python-poetr
 
 Tokenization is a specific use case of cryptography and relies on encryption keys. Spindle-token users are expected to provision and manage their own encryption keys.
 
-There are 3 kinds of encryption keys that play different roles:
+For OPPRL v1/v2 there are 3 kinds of encryption keys that play different roles:
 
   1. Your private RSA key - Used to transcrypt incoming data and derive a symmetric encryption key used to tokenize PII. **This key must never be shared or accessed by untrusted parties.**
   2. Your public RSA key - The public key counterpart to your private key. This key will be shared with trusted parties that will be sending you tokenized data.
@@ -45,13 +45,13 @@ There are 3 kinds of encryption keys that play different roles:
 
 Organization's often manage encryption keys using a secrets manager, such as [AWS Secrets Manger](https://aws.amazon.com/secrets-manager/), [HashiCorp Vault](https://www.hashicorp.com/en/products/vault), [Databricks Secrets Manger](https://docs.databricks.com/aws/en/security/secrets/), and [EnvKey](https://www.envkey.com/). It is recommended that spindle-token users adopt a secrets manager in order to control which principals have access to encryption keys.
 
-To help encourage users to not hard-code encryption keys in their source code, spindle-token will default to reading encryption keys from environment variables. Most secrets managers support the pattern of injecting secrets as ephemeral environment variables and the use of an `.env` file on developer workstations allow for easy local development. You can set the `SPINDLE_TOKEN_PRIVATE_KEY` environment variable with a private RSA keys in the PEM format.
+To help encourage users to not hard-code encryption keys in their source code, spindle-token will default to reading encryption keys from environment variables. Most secrets managers support the pattern of injecting secrets as ephemeral environment variables and the use of an `.env` file on developer workstations allow for easy local development. For v1/v2, set `SPINDLE_TOKEN_PRIVATE_KEY` to the private RSA key in PEM format. For v3, set it to the base64-encoded ML-KEM-768 private seed, as described below.
 
 In some cases, it may be appropriate to explicitly pass the private keys as arguments to the relevant spindle-token functions. For example, if your organization's secret manager encourages programmatic access at runtime or if you are overriding the encryption key during testing. Spindle-token functions support the explicit passing of encryption keys as `bytes` but it is highly recommended that users do not hardcode encryption keys into source code or put PEM files with production encryption keys into version control.
 
 This guide assumes that your private key is set via the `SPINDLE_TOKEN_PRIVATE_KEY` environment variable. For information about passing the private key as an explicit argument, see the spindle-token [API](../api.md) documentation.
 
-Public keys don't need to be managed as secrets. It is possible to specify the public key (in PEM format) for your intended data recipient with the `SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY` environment variable or pass the public key to spindle-token functions as an explicit argument. Users can pick whichever method is more convenient.
+Public keys don't need to be managed as secrets. For v1/v2, specify the recipient RSA public key in PEM format with `SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY`; for v3, set it to the base64-encoded raw ML-KEM-768 public key. Either key can also be passed to spindle-token functions as bytes.
 
 ### Generating New Keys
 
@@ -60,6 +60,18 @@ Spindle-token expects encryption keys to be represented with the [PEM](https://e
 You can generate these keys using tools like [`openssl`](https://www.openssl.org/) or by calling the `generate_pem_keys` function provided by spindle-token. This function will return a `tuple` containing 2 instances of `bytes`. The first is the PEM data for your private key that you must keep secret. The second is the PEM data for your public key that can may share with the parties you intend to receive data from.
 
 You can decode these keys into strings of text (using UTF-8) or write them into a `.pem` file for later use.
+
+### OPPRL v3 Keys
+
+OPPRL v3 uses ML-KEM-768 instead of RSA. Its private key is a raw 64-byte seed and its public key is 1,184 raw bytes; neither is PEM. Generate a matching pair with `generate_mlkem_keys()`:
+
+```python
+from spindle_token import generate_mlkem_keys
+
+private_seed, public_key = generate_mlkem_keys()
+```
+
+Pass these raw byte values to the tokenization and transcryption functions. If using the environment variables instead, set `SPINDLE_TOKEN_PRIVATE_KEY` to the base64-encoded seed and `SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY` to the base64-encoded public key. For v1/v2, those same variables continue to contain RSA PEM text. Process v3 tokens separately from tokens of other protocol versions; their key formats and tokens are incompatible.
 
 ``` python
 from spindle_token import generate_pem_keys

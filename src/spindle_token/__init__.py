@@ -16,7 +16,7 @@ from importlib import import_module
 from typing import TYPE_CHECKING
 from warnings import warn
 
-from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives.asymmetric import mlkem, rsa
 from cryptography.hazmat.primitives.serialization import (
     Encoding,
     NoEncryption,
@@ -42,6 +42,7 @@ __all__ = [
     "transcode_out",
     "transcode_in",
     "generate_pem_keys",
+    "generate_mlkem_keys",
 ]
 
 
@@ -136,3 +137,22 @@ def generate_pem_keys(key_size: int = 2048) -> tuple[bytes, bytes]:
         format=PublicFormat.SubjectPublicKeyInfo,
     )
     return private, public
+
+
+def generate_mlkem_keys() -> tuple[bytes, bytes]:
+    """Generate an ML-KEM-768 private seed and corresponding raw public key.
+
+    Returns:
+        A tuple containing the 64-byte private seed and 1,184-byte public key.
+
+    Raises:
+        cryptography.exceptions.UnsupportedAlgorithm: If the cryptographic backend
+            does not support ML-KEM.
+    """
+    private_key = mlkem.MLKEM768PrivateKey.generate()
+    private_seed = private_key.private_bytes_raw()
+    public_key = private_key.public_key().public_bytes(
+        encoding=Encoding.Raw,
+        format=PublicFormat.Raw,
+    )
+    return private_seed, public_key

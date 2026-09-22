@@ -1,6 +1,9 @@
 # Open Privacy Preserving Record Linkage Protocol
 
-Version 1.0
+Version 1.1
+
+This revision adds OPPRL v3. The v1 and v2 algorithms and wire formats
+remain unchanged.
 
 # 1. Overview
 
@@ -58,6 +61,12 @@ ingested using the recipient’s secret key. At no point in the
 for encryption and a private key for decryption. Allows secure
 communication without pre-sharing a secret key.
 
+**Key Encapsulation Mechanism (KEM):** A public-key mechanism in which a
+sender uses a recipient’s public key to produce a ciphertext and shared
+secret, and the recipient uses its private key to recover the same
+secret. OPPRL v3 uses ML-KEM-768 for this purpose; it does not directly
+encrypt the token hash with the public key.
+
 **Attribute:** A single field of a record denoting one piece of
 information about the subject. 
 
@@ -70,11 +79,11 @@ dataset, or a collection of related datasets.
 attribute. For example, a first initial attribute can be derived from
 a first name attribute. 
 
-**Ephemeral Token:** A token produced with
-non-deterministic encryption (ie. RSA with OAEP and MGF1) that is used
-when data is in transit from a sender to recipient. Ephemeral tokens
-cannot be used for record linkage until they are transcrypted into normal
-tokens by the recipient.
+**Ephemeral Token:** A token produced with non-deterministic encryption
+(RSA-OAEP for v1/v2, or ML-KEM-768 encapsulation with AES-GCM for v3)
+that is used when data is in transit from a sender to recipient.
+Ephemeral tokens cannot be used for record linkage until they are
+transcrypted into normal tokens by the recipient.
 
 **Implementer:** An individual or organization that creates a software
 tool that implements this specification.
@@ -117,10 +126,11 @@ individual or organization.
 The OPPRL protocol relies heavily on cryptographic functions. Some of
 these functions encrypt and decrypt values using an encryption key.
 
-## <a name="rsa_key"></a> 3.1 User Specific RSA Key Pair
+## <a name="rsa_key"></a> 3.1 Versions 1 and 2: User Specific RSA Key Pair
 
 A user/organization specific RSA key pair consisting of a private key
-and corresponding public key. Keys should be 2048 bits or larger
+and corresponding public key. This key pair is used by OPPRL versions 1
+and 2. Keys should be 2048 bits or larger
 \[RFC 8017\].
 
 Under no circumstances should a user’s private key be shared with other
@@ -131,18 +141,18 @@ Implementers may add additional functionality to manage this key pair on
 behalf of users, or rely on the user to supply their own keys. Secure
 method for this are out of scope for this protocol.
 
-## <a name="aes_key"></a> 3.2 Derived AES Key
+## <a name="aes_key"></a> 3.2 Versions 1 and 2: Derived AES Key
 
 A key used when performing AES-GCM-SIV symmetric encryption and
 decryption. To reduce the number of encryption keys that users must
 coordinate, this key is derived from the private key of the user
-specific RSA key pair.
+specific RSA key pair in OPPRL versions 1 and 2.
 
 During normal operation, users should not be accessing this AES key and
 it should never be persisted or output in any way by OPPRL
 implementations.
 
-### 3.2.1 Version >=1.0
+### 3.2.1 Version 1.x
 
 A 32 byte key is derived from the user’s private RSA key using the HKDF
 algorithm \[RFC 5869\].
@@ -151,10 +161,47 @@ When deriving the AES key using HKDF, no salt is used and the “info”
 argument is set as the UTF-8 encoding of the text “opprl.v1.aes” in
 order to ensure the derived key is specific to the OPPRL key derivation.
 
-### 3.2.2 Version <1.0
+### 3.2.2 Version 2.x
+
+The RSA private key is first decoded and re-encoded as DER PKCS#8 with
+no encryption. A 32-byte key is then derived from those canonical bytes
+using HKDF-SHA256 with no salt and `info` set to the UTF-8 encoding of
+`opprl.v2.aes`.
+
+### 3.2.3 Version <1.0
 
 A 32 byte key is derived from the user’s private RSA key using the
 SHAKE256 algorithm \[FIPS 202\].
+
+## 3.3 Version 3: ML-KEM-768 Key Pair
+
+An OPPRL v3 user/organization key pair consists of an ML-KEM-768 private
+key and its corresponding public key, as specified by FIPS 203. The
+private key is represented by the 64-byte KeyGen seed: the 32-byte `d`
+value followed by the 32-byte `z` value used by ML-KEM.KeyGen_internal.
+The public key is represented as 1,184 raw bytes. These keys are raw
+binary values; PEM encoding and RSA key canonicalization are not used
+for v3. NIST recognizes the seed as an acceptable key-pair format
+([NIST PQC FAQ](https://csrc.nist.gov/Projects/Post-Quantum-Cryptography/faqs)).
+
+The private seed must be kept secret and must never be shared. The
+public key must be authenticated as belonging to the intended recipient
+before it is used for transcryption. Key exchange and key management
+remain outside the scope of this protocol.
+
+An implementation may use v3 only when its cryptographic backend
+supports ML-KEM-768 key generation, encapsulation, and decapsulation. If
+the backend does not support these operations, the implementation must
+report that v3 is unsupported; it must not silently fall back to RSA.
+Implementers should check the current NIST FIPS 203 errata before
+deployment.
+
+## <a name="aes_key_v3"></a> 3.4 Version 3: Derived AES Key
+
+For v3 tokenization, a 32-byte AES key is derived from the 64-byte
+ML-KEM-768 private seed using HKDF-SHA256 \[RFC 5869\]. The salt is
+omitted. The `info` value is the UTF-8 encoding of `opprl.v3.aes`.
+Implementations must not persist or expose the derived key.
 
 # <a name="funcs"></a> 4. Functions
 
@@ -194,10 +241,11 @@ Example: `COLLAPSE_WS("Hello   world   ") => "Hello world "`
 
 ### `DECRYPT_AES_GCM_SIV`
 
-Decrypts input binary data using the AES-GCM-SIV algorithm and user’s
-secret key from <a href="#aes_key" class="ref">Section 3.2</a>. This specific
-variant of AES is resistant to nonce reuse, which is critical for
-tokenization applications \[RFC 8452\].
+Decrypts input binary data using the AES-GCM-SIV algorithm and the secret
+key derived for the applicable protocol version: Section 3.2 for v1/v2
+or Section 3.4 for v3. This specific variant of AES is resistant to
+nonce reuse, which is critical for tokenization applications
+\[RFC 8452\].
 
 ### `DECRYPT_RSA`
 
@@ -228,9 +276,9 @@ Example:
 
 ### `ENCRYPT_AES_GCM_SIV`
 
-Encrypts input binary data using the AES-GCM-SIV algorithm and user’s
-secret key from <a href="#aes_key" class="ref">Section 3.2</a>
-\[RFC 8452\].
+Encrypts input binary data using the AES-GCM-SIV algorithm and the secret
+key derived for the applicable protocol version: Section 3.2 for v1/v2
+or Section 3.4 for v3 \[RFC 8452\].
 
 ### `ENCRYPT_RSA`
 
@@ -689,8 +737,9 @@ each user’s respective secret key.
 - **`hash`:** A 64 byte hash value produced by
   <a href="#hashing" class="ref">Section 6.1.2</a>.
 
-- **`key`:** The 32 byte AES key described in
-  <a href="#aes_key" class="ref">Section 3.2</a>.
+- **`key`:** The 32-byte AES key described in
+  <a href="#aes_key" class="ref">Section 3.2</a> for v1/v2, or
+  <a href="#aes_key_v3" class="ref">Section 3.4</a> for v3.
 
 **Process:**
 
@@ -764,6 +813,11 @@ that they must appear in the joined PII string in
 
 - **Token 13**: Health Plan Group Number, Health Plan Member ID
 
+Version 3 uses the same normalized PII attributes and token attribute
+subsets listed above, with its v3-specific cryptographic procedures in
+Sections 3.3, 3.4, 7.3, and 7.4. V3 tokens remain distinct from v1/v2
+tokens and cannot be mixed with other protocol versions in one operation.
+
 # <a name="transcode"></a> 7. Transcrypting Tokens
 
 A key function of Privacy Preserving Record Linkage (PPRL) is the
@@ -788,7 +842,15 @@ Custodian and Recipient. The workflow is broken up into 2 data flows:
 one performed by the Custodian to prepare data to be shared, and one
 performed by the recipient to create linkable tokenized records.
 
-## <a name="transcode_out"></a> 7.1 Data Flow: Custodian Tokens to Ephemeral Tokens
+Sections 7.1 and 7.2 specify the RSA-based v1/v2 flow and remain
+unchanged. Sections 7.3 and 7.4 specify the ML-KEM-768-based v3 flow.
+The protocol version must be agreed out of band and must not be inferred
+from token bytes. V3 tokens do not equality-match v1/v2 tokens, even when
+they represent the same PII. A single operation must not mix v3 tokens
+with tokens from another protocol version; process each version
+separately.
+
+## <a name="transcode_out"></a> 7.1 Versions 1 and 2: Custodian Tokens to Ephemeral Tokens
 
 Prior to this data flow, the Recipient must have shared their public RSA
 key with the Custodian that will be sending data. This key exchange can
@@ -819,7 +881,7 @@ See function definitions in <a href="#funcs" class="ref"></a>.
 
 **Result:** A base64 encoded ephemeral token.
 
-## 7.2 Data Flow: Ephemeral Tokens to Recipient Tokens
+## 7.2 Versions 1 and 2: Ephemeral Tokens to Recipient Tokens
 
 This data flow is performed by a Recipient of ephemeral tokens created
 by a Custodian with the Recipient’s public key. Ephemeral tokens are
@@ -845,6 +907,75 @@ See function definitions in <a href="#funcs" class="ref"></a>.
 **Result:** A base64 encoded token that can be linked (via equality) to
 other data assets tokenized with the same Recipient’s private key.
 
+## 7.3 Version 3: Custodian Tokens to Ephemeral Tokens
+
+Before this flow, the Recipient provides its raw 1,184-byte ML-KEM-768
+public key to the Custodian. The Custodian must authenticate that the
+key belongs to the intended Recipient.
+
+**Inputs:**
+
+- **`token`:** A base64 encoded v3 token.
+- **`recipient_public_key`:** The Recipient’s raw ML-KEM-768 public key
+  (Section 3.3).
+- **`private_key_seed`:** The Custodian’s 64-byte ML-KEM-768 private
+  seed (Section 3.3).
+
+**Process:**
+
+    b = UNBASE64(token)
+    h = DECRYPT_AES_GCM_SIV(b, DERIVE_AES_KEY_V3(private_key_seed))
+    (shared_secret, kem_ciphertext) = ML_KEM_768_ENCAPSULATE(recipient_public_key)
+    k = HKDF_SHA256(shared_secret, salt=None,
+                    info=UTF8("opprl.v3.transcrypt.aesgcm"), length=32)
+    nonce = RANDOM_BYTES(12)
+    c = AES_GCM_ENCRYPT(k, nonce, h,
+                        associated_data=UTF8("opprl.v3.transcrypt"))
+    e = kem_ciphertext || nonce || c
+    return BASE64_NO_NEWLINE(e)
+
+`ML_KEM_768_ENCAPSULATE` returns the 32-byte shared secret followed by
+the 1,088-byte encapsulation ciphertext. `AES_GCM_ENCRYPT` uses AES-256-GCM
+with a 12-byte nonce and a 16-byte authentication tag; its output `c`
+includes the tag. The hash `h` is the 64-byte SHA-512 value recovered
+from the input token. The resulting binary ephemeral token is exactly
+1,180 bytes: 1,088 bytes of KEM ciphertext, 12 bytes of nonce, and 80
+bytes of AES-GCM ciphertext and tag.
+The nonce must be generated by a cryptographically secure random number
+generator and must not be reused with the same AES-GCM key.
+
+## 7.4 Version 3: Ephemeral Tokens to Recipient Tokens
+
+This flow accepts only v3 ephemeral tokens and the matching Recipient
+private seed.
+
+**Inputs:**
+
+- **`ephemeral_token`:** A base64 encoded v3 ephemeral token produced by
+  Section 7.3.
+- **`private_key_seed`:** The Recipient’s 64-byte ML-KEM-768 private
+  seed (Section 3.3).
+
+**Process:**
+
+    b = UNBASE64(ephemeral_token)
+    require LENGTH(b) == 1180
+    kem_ciphertext = b[0:1088]
+    nonce = b[1088:1100]
+    c = b[1100:1180]
+    shared_secret = ML_KEM_768_DECAPSULATE(private_key_seed, kem_ciphertext)
+    k = HKDF_SHA256(shared_secret, salt=None,
+                    info=UTF8("opprl.v3.transcrypt.aesgcm"), length=32)
+    h = AES_GCM_DECRYPT(k, nonce, c,
+                        associated_data=UTF8("opprl.v3.transcrypt"))
+    t = ENCRYPT_AES_GCM_SIV(h, DERIVE_AES_KEY_V3(private_key_seed))
+    return BASE64_NO_NEWLINE(t)
+
+If length validation, KEM decapsulation, or AES-GCM authentication fails,
+the input must be rejected and no token returned. The result is a v3
+token that can be linked by equality with tokens created using the same
+Recipient private seed.
+
 # 8. Security Engineering Considerations
 
 This section contains information for implementers that falls outside
@@ -855,8 +986,11 @@ based on the specific scenarios they are targeting.
 
 ## 8.1 Secrets Management
 
-The security of OPPRL replies upon the secrecy of user’s private RSA
-key, and the derived AES key. It is common for multiple individual users
+The security of OPPRL relies on the secrecy of the private key material
+and derived AES key. For v1/v2 this is the RSA private key; for v3 it is
+the ML-KEM-768 private seed. In v3, the seed is used both for KEM
+decapsulation and as input to token-key derivation, so its compromise
+exposes both operations. It is common for multiple individual users
 (both personnel and systems) within the same user organization to
 collaboratively maintain tokenized data assets, and therefore shared
 access to the organization’s secret key is required.
@@ -878,8 +1012,9 @@ User’s can perform a one-time Transcryption workflow as described in
 <a href="#transcode" class="ref">Section 7</a> where the user acts as both the
 sending Custodian and the Recipient.
 
-After rotating encryption keys, users must share their new public RSA
-key with the custodians that send them data. 
+After rotating encryption keys, users must share their new public key
+(RSA for v1/v2 or ML-KEM-768 for v3) with the custodians that send them
+data.
 
 When data recipients use a key rotation policy, it is recommended that 
 data custodian's sending data should communicate which public
@@ -889,6 +1024,18 @@ generated from the public key used to transcrypt the tokens into ephemeral
 tokens. This is currently out of scope for the OPPRL protocol.
 
 # References
+
+\[FIPS 203\]
+National Institute of Standards and Technology. 2024. “Module-Lattice-Based
+Key-Encapsulation Mechanism Standard.” Federal Information Processing
+Standards Publications (FIPS) 203. Washington, D.C.: U.S. Department of
+Commerce. <https://doi.org/10.6028/NIST.FIPS.203>.
+
+\[NIST SP 800-38D\]
+National Institute of Standards and Technology. 2007. “Recommendation
+for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC.”
+Special Publication 800-38D. Washington, D.C.: U.S. Department of Commerce.
+<https://doi.org/10.6028/NIST.SP.800-38D>.
 
 \[FIPS 202\]
 National Institute of Standards and Technology. 2015. “SHA-3 Standard:
@@ -953,4 +1100,3 @@ Number.” 11. Vol. 45. Social Security Administration.
 Social Security Administration. 2011. “Social Security Is Changing the
 Way SSNs Are Issued.” Social Security Administration.
 <https://www.ssa.gov/kc/SSAFactSheet--IssuingSSNs.pdf>.
-

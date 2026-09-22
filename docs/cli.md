@@ -36,23 +36,28 @@ spindle-token tokenize \
 
 ### Encryption Keys
 
-The OPPRL protocol leaves the responsibility of encryption key management to the user. The spindle-token CLI assumes the public and private keys are stored in files on the local filesystem. The location of the PEM file can be passed using the corresponding option or an environment variable. This table describes the option names and environment variables that can be use to supply private and public keys respectively.
+The OPPRL protocol leaves the responsibility of encryption key management to the user. Key format depends on the protocol version selected by the tokens:
+
+- OPPRL v1/v2 use RSA keys in PEM format.
+- OPPRL v3 uses raw ML-KEM-768 key bytes. The private key is the 64-byte seed and the public key is 1184 bytes.
+
+Key files are read as bytes. For environment variables that contain the key value directly (rather than a `_FILE` path), supply v1/v2 keys as UTF-8 PEM text and v3 keys as base64-encoded raw bytes. If both forms are set, the `_FILE` variant takes precedence. Do not mix v3 and non-v3 tokens in a single CLI operation.
 
 **Private Key**
 
-The private RSA key can be set using one of the following methods:
+The private key can be set using one of the following methods:
 
-- Use the `--key` option (or `-k` alias) to specify a path to a PEM file.
-- Set the `SPINDLE_TOKEN_PRIVATE_KEY_FILE` environment variable to specify a path the PEM file.
-- Set the `SPINDLE_TOKEN_PRIVATE_KEY` environment variable to specify the key as a UTF-8 string. If both environment variables are set, the `_FILE` variant takes precedence.
+- Use the `--key` option (or `-k` alias) to specify a PEM file for v1/v2, or a raw 64-byte ML-KEM-768 seed file for v3.
+- Set the `SPINDLE_TOKEN_PRIVATE_KEY_FILE` environment variable to the corresponding key file path.
+- Set `SPINDLE_TOKEN_PRIVATE_KEY` to UTF-8 PEM text for v1/v2 or base64-encoded raw seed bytes for v3.
 
 **Public Keys**
 
-The public keys of data recipients (used in transcryption) can be set using one of the following methods:
+The public key of the recipient (used in transcryption) can be set using one of the following methods:
 
-- Use the `--recipient` option (or `-r` alias) to specify a path to a PEM file.
-- Set the `SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY_FILE` environment variable to specify a path the PEM file.
-- Set the `SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY` environment variable to specify the key as a UTF-8 string. If both environment variables are set, the `_FILE` variant takes precedence.
+- Use the `--recipient` option (or `-r` alias) to specify a PEM file for v1/v2, or a raw 1184-byte ML-KEM-768 public-key file for v3.
+- Set the `SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY_FILE` environment variable to the corresponding key file path.
+- Set `SPINDLE_TOKEN_RECIPIENT_PUBLIC_KEY` to UTF-8 PEM text for v1/v2 or base64-encoded raw public-key bytes for v3.
 
 ### File Formats
 
